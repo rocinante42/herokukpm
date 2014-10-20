@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: 1
+  score: 1
+  active: false
+  poset_id: 
+  activity_id: 
+  game_id: 
+
+two:
+  status: 1
+  score: 1
+  active: false
+  poset_id: 
+  activity_id: 
+  game_id: 

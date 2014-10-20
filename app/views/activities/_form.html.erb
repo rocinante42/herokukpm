@@ -1,0 +1,49 @@
+<%= form_for(@activity) do |f| %>
+  <% if @activity.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@activity.errors.count, "error") %> prohibited this activity from being saved:</h2>
+
+      <ul>
+      <% @activity.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :level %><br>
+    <%= f.number_field :level %>
+  </div>
+  <div class="field">
+    <%= f.label :enjoy_score %><br>
+    <%= f.number_field :enjoy_score %>
+  </div>
+  <div class="field">
+    <%= f.label :complete_score %><br>
+    <%= f.number_field :complete_score %>
+  </div>
+  <div class="field">
+    <%= f.label :pass_counter %><br>
+    <%= f.number_field :pass_counter %>
+  </div>
+  <div class="field">
+    <%= f.label :fail_counter %><br>
+    <%= f.number_field :fail_counter %>
+  </div>
+  <div class="field">
+    <%= f.label :weight %><br>
+    <%= f.number_field :weight %>
+  </div>
+  <div class="field">
+    <%= f.label :max_level %><br>
+    <%= f.number_field :max_level %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

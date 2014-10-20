@@ -1,0 +1,35 @@
+<h1>Listing student_activities</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Score</th>
+      <th>Active</th>
+      <th>Poset</th>
+      <th>Activity</th>
+      <th>Game</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @student_activities.each do |student_activity| %>
+      <tr>
+        <td><%= student_activity.status %></td>
+        <td><%= student_activity.score %></td>
+        <td><%= student_activity.active %></td>
+        <td><%= student_activity.poset %></td>
+        <td><%= student_activity.activity %></td>
+        <td><%= student_activity.game %></td>
+        <td><%= link_to 'Show', student_activity %></td>
+        <td><%= link_to 'Edit', edit_student_activity_path(student_activity) %></td>
+        <td><%= link_to 'Destroy', student_activity, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Student activity', new_student_activity_path %>
