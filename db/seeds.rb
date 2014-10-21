@@ -31,3 +31,9 @@ Student.create({first_name: 'Jerlene', last_name: 'Rappaport', age: 23, location
 Student.create({first_name: 'Emerald', last_name: 'Mosby', age: 24, location: 'Anaheim, California', primary_language: 'EN', game_language: 'EN', first_time: true, classroom_id:2})
 Student.create({first_name: 'Lonny', last_name: 'Borgman', age: 25, location: 'Cincinnati, Ohio', primary_language: 'EN', game_language: 'EN', first_time: true, classroom_id:2})
 Student.create({first_name: 'Kathryne', last_name: 'Zumwalt', age: 26, location: 'Akron, Ohio', primary_language: 'EN', game_language: 'EN', first_time: true, classroom_id:1})
+
+Game.create({name: 'Chinese checkers'})
+Game.create({name: 'Draughts'})
+Game.create({name: 'Chess'})
+Game.create({name: 'Chopsticks'})
+
