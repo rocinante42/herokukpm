@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bubble:</strong>
+  <%= @bubble_game.bubble_id %>
+</p>
+
+<p>
+  <strong>Game:</strong>
+  <%= @bubble_game.game_id %>
+</p>
+
+<p>
+  <strong>Skin:</strong>
+  <%= @bubble_game.skin %>
+</p>
+
+<p>
+  <strong>Game params:</strong>
+  <%= @bubble_game.game_params %>
+</p>
+
+<p>
+  <strong>Scoring params:</strong>
+  <%= @bubble_game.scoring_params %>
+</p>
+
+<%= link_to 'Edit', edit_bubble_game_path(@bubble_game) %> |
+<%= link_to 'Back', bubble_games_path %>

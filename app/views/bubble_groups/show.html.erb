@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @bubble_group.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @bubble_group.description %>
+</p>
+
+<p>
+  <strong>Full poset:</strong>
+  <% if @bubble_group.full_poset %>
+    <%= link_to @bubble_group.full_poset.name, @bubble_group.full_poset %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Forward poset:</strong>
+  <% if @bubble_group.forward_poset %>
+    <%= link_to @bubble_group.forward_poset.name, @bubble_group.forward_poset %>
+  <% end %>
+</p>
+
+<p>
+  <strong>Backward poset:</strong>
+  <% if @bubble_group.backward_poset %>
+    <%= link_to @bubble_group.backward_poset.name, @bubble_group.backward_poset %>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_bubble_group_path(@bubble_group) %> |
+<%= link_to 'Back', bubble_groups_path %>

@@ -1,0 +1,29 @@
+<%= form_for(@bubble_status) do |f| %>
+  <% if @bubble_status.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bubble_status.errors.count, "error") %> prohibited this bubble_status from being saved:</h2>
+
+      <ul>
+      <% @bubble_status.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :bubble_id %><br>
+    <%= f.collection_select :bubble_id, Bubble.all, :id, :name, include_blank: true %>
+  </div>
+  <div class="field">
+    <%= f.label :passed %><br>
+    <%= f.check_box :passed %>
+  </div>
+  <div class="field">
+    <%= f.label :active %><br>
+    <%= f.check_box :active %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

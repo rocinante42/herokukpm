@@ -1,0 +1,31 @@
+<h1>Listing bubble_statuses</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Kid</th>
+      <th>Bubble</th>
+      <th>Passed</th>
+      <th>Active</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bubble_statuses.each do |bubble_status| %>
+      <tr>
+        <td><%= bubble_status.kid_id %></td>
+        <td><%= bubble_status.bubble_id %></td>
+        <td><%= bubble_status.passed %></td>
+        <td><%= bubble_status.active %></td>
+        <td><%= link_to 'Show', bubble_status %></td>
+        <td><%= link_to 'Edit', edit_bubble_status_path(bubble_status) %></td>
+        <td><%= link_to 'Destroy', bubble_status, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Bubble status', new_bubble_status_path %>

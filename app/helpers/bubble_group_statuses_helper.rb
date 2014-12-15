@@ -1,0 +1,2 @@
+module BubbleGroupStatusesHelper
+end

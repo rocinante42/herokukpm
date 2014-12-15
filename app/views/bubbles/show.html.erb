@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @bubble.name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @bubble.description %>
+</p>
+
+<p>
+  <strong>Bubble group:</strong>
+  <%= @bubble.bubble_group_id %>
+</p>
+
+<%= link_to 'Edit', edit_bubble_path(@bubble) %> |
+<%= link_to 'Back', bubbles_path %>

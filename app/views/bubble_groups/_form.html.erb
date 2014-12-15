@@ -1,0 +1,57 @@
+<%= form_for(@bubble_group) do |f| %>
+  <% if @bubble_group.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bubble_group.errors.count, "error") %> prohibited this bubble_group from being saved:</h2>
+
+      <ul>
+      <% @bubble_group.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_field :description %>
+  </div>
+
+  <h3>Select from existing posets</h3>
+  <div class="field">
+    <%= f.label :full_poset_id %><br>
+    <%= f.collection_select :full_poset_id, Poset.all, :id, :name, include_blank: true %>
+  </div>
+  <div class="field">
+    <%= f.label :forward_poset_id %><br>
+    <%= f.collection_select :forward_poset_id, Poset.all, :id, :name, include_blank: true %>
+  </div>
+  <div class="field">
+    <%= f.label :backward_poset_id %><br>
+    <%= f.collection_select :backward_poset_id, Poset.all, :id, :name, include_blank: true %>
+  </div>
+
+  <h3>Upload New Information</h3>
+  <div class="field">
+    Upload Bubbles: <%= f.file_field :bubble_file %>
+  </div>
+
+  <div class="field">
+    Full Poset: <%= f.file_field :full_poset_file %>
+  </div>
+
+  <div class="field">
+    Forward Poset: <%= f.file_field :forward_poset_file %>
+  </div>
+
+  <div class="field">
+    Backward Poset: <%= f.file_field :backward_poset_file %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

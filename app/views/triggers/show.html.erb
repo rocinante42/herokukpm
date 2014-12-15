@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Source:</strong>
+  <%= @trigger.source_id %>
+</p>
+
+<p>
+  <strong>Destination:</strong>
+  <%= @trigger.destination_id %>
+</p>
+
+<p>
+  <strong>Poset:</strong>
+  <%= @trigger.poset_id %>
+</p>
+
+<%= link_to 'Edit', edit_trigger_path(@trigger) %> |
+<%= link_to 'Back', triggers_path %>

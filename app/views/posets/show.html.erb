@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @poset.name %>
+</p>
+
+<h3>Edges</h3>
+<table>
+  <thead>
+    <tr>
+      <td>Source</td>
+      <td>Destination</td>
+    </tr>
+  </thead>
+  <% @poset.edges.each do |edge| %>
+    <tr>
+      <td><%= link_to edge.try(:source).try(:name), edge.source %></td>
+      <td><%= link_to edge.try(:destination).try(:name), edge.destination %></td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to 'Edit', edit_poset_path(@poset) %> |
+<%= link_to 'Back', posets_path %>

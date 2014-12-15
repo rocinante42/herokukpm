@@ -1,0 +1,29 @@
+<%= form_for(@edge) do |f| %>
+  <% if @edge.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@edge.errors.count, "error") %> prohibited this edge from being saved:</h2>
+
+      <ul>
+      <% @edge.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :source_id %><br>
+    <%= f.collection_select :source_id, Bubble.all, :id, lambda{ |bubble| "#{bubble.bubble_group.name} -- #{bubble.name}"} %>
+  </div>
+  <div class="field">
+    <%= f.label :destination_id %><br>
+    <%= f.collection_select :destination_id, Bubble.all, :id, lambda{ |bubble| "#{bubble.bubble_group.name} -- #{bubble.name}"} %>
+  </div>
+  <div class="field">
+    <%= f.label :poset_id %><br>
+    <%= f.collection_select :poset_id, Poset.all, :id, :name %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

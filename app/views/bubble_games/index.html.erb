@@ -1,0 +1,33 @@
+<h1>Listing bubble_games</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Bubble</th>
+      <th>Game</th>
+      <th>Skin</th>
+      <th>Game params</th>
+      <th>Scoring params</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bubble_games.each do |bubble_game| %>
+      <tr>
+        <td><%= bubble_game.bubble_id %></td>
+        <td><%= bubble_game.game_id %></td>
+        <td><%= bubble_game.skin %></td>
+        <td><%= bubble_game.game_params %></td>
+        <td><%= bubble_game.scoring_params %></td>
+        <td><%= link_to 'Show', bubble_game %></td>
+        <td><%= link_to 'Edit', edit_bubble_game_path(bubble_game) %></td>
+        <td><%= link_to 'Destroy', bubble_game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Bubble game', new_bubble_game_path %>

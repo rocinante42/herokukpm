@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Kid:</strong>
+  <%= @bubble_group_status.kid_id %>
+</p>
+
+<p>
+  <strong>Bubble group:</strong>
+  <%= @bubble_group_status.bubble_group_id %>
+</p>
+
+<p>
+  <strong>Poset:</strong>
+  <%= @bubble_group_status.poset_id %>
+</p>
+
+<p>
+  <strong>Pass counter:</strong>
+  <%= @bubble_group_status.pass_counter %>
+</p>
+
+<p>
+  <strong>Fail counter:</strong>
+  <%= @bubble_group_status.fail_counter %>
+</p>
+
+<%= link_to 'Edit', edit_bubble_group_status_path(@bubble_group_status) %> |
+<%= link_to 'Back', bubble_group_statuses_path %>

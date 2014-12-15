@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Bubble Group Status:</strong>
+  <%= link_to "Bubble Group Status", @bubble_status.bubble_group_status %>
+</p>
+
+<p>
+  <strong>Bubble:</strong>
+  <%= link_to @bubble_status.bubble.name, @bubble_status.bubble %>
+</p>
+
+<p>
+  <strong>Passed:</strong>
+  <%= @bubble_status.passed %>
+</p>
+
+<p>
+  <strong>Active:</strong>
+  <%= @bubble_status.active %>
+</p>
+
+<%= link_to 'Edit', edit_bubble_status_path(@bubble_status) %> |
+<%= link_to 'Back', bubble_statuses_path %>
