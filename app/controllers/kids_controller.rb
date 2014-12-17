@@ -68,21 +68,8 @@ class KidsController < ApplicationController
       @bubble_group = BubbleGroup.find(params[:bubble_group_id])
       @bubble_group_status = @kid.bubble_group_statuses.find_by(bubble_group: @bubble_group)
       unless @bubble_group_status
-        @bubble_group_status = @kid.bubble_group_statuses.create(
-          bubble_group: @bubble_group, 
-          poset: @bubble_group.full_poset
-        )
-
-        @bubble_group.bubbles.each do |bubble|
-          @bubble_group_status.bubble_statuses.create(bubble: bubble)
-        end
-
-        ## if this is a new bubble group status, activate all of the minima
-        @bubble_group_status.poset.minima.each do |bubble|
-          status = @bubble_group_status.bubble_statuses.find_by(bubble: bubble)
-          status.active = true
-          status.save
-        end
+        @bubble_group_status = @kid.bubble_group_statuses.create(bubble_group: @bubble_group)
+        @bubble_group_status.reset!
       end
 
       ## handle the passed in result, if present

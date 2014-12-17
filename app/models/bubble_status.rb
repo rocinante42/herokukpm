@@ -12,5 +12,15 @@ class BubbleStatus < ActiveRecord::Base
   def successors
     self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.successors(self.bubble_group_status.current_poset))
   end
+
+  def reset
+    self.passed = false
+    self.active = false
+  end
+
+  def reset!
+    self.reset
+    self.save!
+  end
 end
 

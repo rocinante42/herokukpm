@@ -7,6 +7,7 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   alias :current_poset :poset
 
+  ## accessors for information about the current poset
   def current_poset_type
     case poset_id
     when bubble_group.full_poset_id
@@ -44,5 +45,31 @@ class BubbleGroupStatus < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  ## sets up the statuses on all bubbles for the bubble group
+  def reset!
+    ## this should all be done in a single transaction, since we should do everything or nothing
+    ActiveRecord::Base.transaction do
+      ## reset the counters and the poset
+      self.pass_counter = 0
+      self.fail_counter = 0
+      self.poset = self.bubble_group.forward_poset
+      self.save!
+
+      ## reset the bubble statuses for each bubble
+      self.bubble_group.bubbles.each do |bubble|
+        status = self.bubble_statuses.find_or_initialize_by(bubble: bubble)
+        status.reset
+        status.save!
+      end
+
+      ## activate the minima
+      self.poset.minima.each do |bubble|
+        status = self.bubble_statuses.find_by(bubble: bubble)
+        status.active = true
+        status.save!
+      end
+    end 
   end
 end
