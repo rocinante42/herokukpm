@@ -16,6 +16,15 @@
     <%= f.text_field :name %>
   </div>
 
+  <div class="field">
+    <%= f.label :pass_threshold %><br>
+    <%= f.number_field :pass_threshold %>
+  </div>
+  <div class="field">
+    <%= f.label :fail_threshold %><br>
+    <%= f.number_field :fail_threshold %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

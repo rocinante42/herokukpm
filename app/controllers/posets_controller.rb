@@ -69,6 +69,6 @@ class PosetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def poset_params
-      params.require(:poset).permit(:name)
+      params.require(:poset).permit(:name, :pass_threshold, :fail_threshold)
     end
 end

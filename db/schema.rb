@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141212223421) do
+ActiveRecord::Schema.define(version: 20141217222846) do
 
   create_table "bubble_games", force: true do |t|
     t.integer  "bubble_id"
@@ -98,6 +98,8 @@ ActiveRecord::Schema.define(version: 20141212223421) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.integer  "fail_threshold", default: 2, null: false
+    t.integer  "pass_threshold", default: 2, null: false
   end
 
   create_table "schools", force: true do |t|

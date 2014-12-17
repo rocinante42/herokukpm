@@ -88,9 +88,10 @@ class BubbleGroupStatus < ActiveRecord::Base
 
     ## pass all of the nodes in the downset in the full poset
     bubble_status.downset(self.bubble_group.full_poset).update_all(passed: true, active: false)
+    bubble_status.reload
 
     ## switch poset, if necessary and possible
-    if self.pass_counter >= 2
+    if self.pass_counter >= self.current_poset.pass_threshold
       next_poset = self.next_poset
       unless self.current_poset == next_poset
         ## reset the pass counter and move to the next poset
@@ -108,16 +109,30 @@ class BubbleGroupStatus < ActiveRecord::Base
     self.pass_counter = 0
     self.fail_counter += 1
 
-    ## fail this bubble
-    bubble_status.passed = false
-    bubble_status.save
+    ## fail and deactivate everything in the upset
+    bubble_status.upset(self.bubble_group.full_poset).update_all(passed: false, active: false)
+    bubble_status.reload
+
+    ## if this bubble is a minimum, reactivate it
+    if bubble_status.predecessors.count == 0
+      bubble_status.active = true
+      bubble_status.save!
+    else
+      bubble_status.predecessors.each do |predecessor|
+        predecessor.active = true
+        predecessor.save!
+      end
+    end
 
     ## switch poset, if necessary
-    if false && (self.fail_counter >= 2)
+    if self.fail_counter >= self.current_poset.fail_threshold
       prev_poset = self.previous_poset
       unless self.poset == prev_poset
         self.fail_counter = 0
         self.poset = prev_poset
+
+        ## switch to backward poset
+        activate_max_passed
       end
     end
   end
@@ -149,17 +164,14 @@ class BubbleGroupStatus < ActiveRecord::Base
     ## get statuses of currently available bubbles
     bubbles = self.bubble_statuses.where(bubble: self.current_poset.bubbles).active
 
-    ## change the selection procedure based on the current poset
+    ## refine the bubbles, if possible
     case current_poset_type
-    when "Full"
-      logger.debug "IN THE FULL POSET"
-      ## do nothing
     when "Forward"
-      bubbles = bubbles.where(passed: false)
+      refined_bubbles = bubbles.where(passed: false)
+      bubbles = refined_bubbles unless refined_bubbles.count == 0
     when "Backward"
-      bubbles = bubbles.where(passed: true)
-    else
-      ## do nothing
+      refined_bubbles = bubbles.where(passed: true)
+      bubbles = refined_bubbles unless refined_bubbles.count == 0
     end
 
     ## return the available bubbles
@@ -198,6 +210,23 @@ class BubbleGroupStatus < ActiveRecord::Base
         unless failed_status.predecessors(poset).exists? passed: false
           failed_status.active = true
           failed_status.save
+        end
+      end
+    end
+
+    ## activate the maximum failed nodes in the current poset
+    def activate_max_passed(poset = nil)
+      ## default to current poset
+      poset ||= self.current_poset
+
+      ## fetch the passed bubble statuses in that poset
+      passed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: true)
+
+      ## activate nodes where all successors in that poset are failed
+      passed.each do |passed_status|
+        unless passed_status.successors(poset).exists? passed: true
+          passed_status.active = true
+          passed_status.save
         end
       end
     end
