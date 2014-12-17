@@ -5,12 +5,14 @@ class BubbleStatus < ActiveRecord::Base
   scope :active, ->{ where(active: true) }
   scope :passed, ->{ where(passed: true) }
 
-  def predecessors
-    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.predecessors(self.bubble_group_status.current_poset))
+  def predecessors(poset = nil)
+    poset ||= self.bubble_group_status.current_poset
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.predecessors(poset))
   end
 
-  def successors
-    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.successors(self.bubble_group_status.current_poset))
+  def successors(poset = nil)
+    poset ||= self.bubble_group_status.current_poset
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.successors(poset))
   end
 
   def reset
