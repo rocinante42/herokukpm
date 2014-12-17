@@ -2,7 +2,7 @@
   <h2>Kid <%= link_to @kid.full_name, @kid %> is playing <%= link_to @bubble_group.name, @bubble_group %></h1>
 
   <div>
-    <h3>Current Status</h3>
+    <h3><%= link_to 'Current Status', @bubble_group_status %></h3>
     <strong>Current Poset:</strong> <%= link_to @bubble_group_status.current_poset_type, @bubble_group_status.current_poset  %><br>
     <strong>Pass Count:</strong> <%= @bubble_group_status.pass_counter %><br>
     <strong>Fail Count:</strong> <%= @bubble_group_status.fail_counter %>
@@ -17,14 +17,14 @@
     <%= link_to "Fail",  play_kid_path(@kid, bubble_group_id: @bubble_group.id, bubble_status_id: @bubble_status.id, result: 'fail') %>
     <%= link_to "Enjoy", play_kid_path(@kid, bubble_group_id: @bubble_group.id, bubble_status_id: @bubble_status.id, result: 'enjoy') %>
 
-     <h3>Active Bubbles</h3>
+     <h3>Active Bubbles (<%= @available_bubbles.count %>)</h3>
      <ul>
-       <% @bubble_group_status.bubble_statuses.active.each do |status| %>
+       <% @available_bubbles.each do |status| %>
          <li><%= link_to status.bubble.name, status.bubble %></li>
        <% end %>
      </ul>
 
-     <h3>Passed Bubbles</h3>
+     <h3>Passed Bubbles (<%= @bubble_group_status.bubble_statuses.passed.count %>)</h3>
      <ul>
        <% @bubble_group_status.bubble_statuses.passed.each do |status| %>
          <li><%= link_to status.bubble.name, status.bubble %></li>

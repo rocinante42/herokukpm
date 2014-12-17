@@ -54,7 +54,7 @@ class BubbleGroupStatus < ActiveRecord::Base
       ## reset the counters and the poset
       self.pass_counter = 0
       self.fail_counter = 0
-      self.poset = self.bubble_group.forward_poset
+      self.poset = self.bubble_group.full_poset
       self.save!
 
       ## reset the bubble statuses for each bubble
@@ -83,17 +83,22 @@ class BubbleGroupStatus < ActiveRecord::Base
     bubble_status.passed = true
     bubble_status.save
 
-    ## deactivate all bubbles in the downset
-    bubbles = bubble_status.bubble.downset(self.current_poset)
-    statuses = self.bubble_statuses.where(bubble: bubbles).active
-    activation_check(statuses)
+    ## activate all required nodes in the current poset
+    activation_check(bubble_status)
 
-    ## switch poset, if necessary
-    if false && (self.pass_counter >= 2)
+    ## pass all of the nodes in the downset in the full poset
+    bubble_status.downset(self.bubble_group.full_poset).update_all(passed: true, active: false)
+
+    ## switch poset, if necessary and possible
+    if self.pass_counter >= 2
       next_poset = self.next_poset
       unless self.current_poset == next_poset
+        ## reset the pass counter and move to the next poset
         self.pass_counter = 0
         self.poset = next_poset
+
+        ## activate minimum failed in the new poset
+        activate_min_failed
       end
     end
   end
@@ -139,9 +144,34 @@ class BubbleGroupStatus < ActiveRecord::Base
     self.save!
   end
 
+  ## select a bubble for the kid to play
+  def available_bubbles
+    ## get statuses of currently available bubbles
+    bubbles = self.bubble_statuses.where(bubble: self.current_poset.bubbles).active
+
+    ## change the selection procedure based on the current poset
+    case current_poset_type
+    when "Full"
+      logger.debug "IN THE FULL POSET"
+      ## do nothing
+    when "Forward"
+      bubbles = bubbles.where(passed: false)
+    when "Backward"
+      bubbles = bubbles.where(passed: true)
+    else
+      ## do nothing
+    end
+
+    ## return the available bubbles
+    bubbles
+  end
+
   private
-    ## activates the next bubbles in the collection
-    def activation_check statuses
+    def activation_check(bubble_status)
+      ## get active bubbles in the downset
+      statuses = bubble_status.downset(self.current_poset).active
+
+      ## deactivate and check successors for each of those
       statuses.each do |status|
         status.active = false
         status.save!
@@ -151,6 +181,23 @@ class BubbleGroupStatus < ActiveRecord::Base
             successor_status.active = true
             successor_status.save!
           end
+        end
+      end
+    end
+
+    ## activate the minimum failed nodes in the current poset
+    def activate_min_failed(poset = nil)
+      ## default to the current poset
+      poset ||= self.current_poset
+
+      ## fetch the failed bubble statuses in that poset
+      failed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: false)
+
+      ## activate nodes where all predecessors in that poset are passed
+      failed.each do |failed_status|
+        unless failed_status.predecessors(poset).exists? passed: false
+          failed_status.active = true
+          failed_status.save
         end
       end
     end

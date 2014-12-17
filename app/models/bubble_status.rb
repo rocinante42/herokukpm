@@ -15,6 +15,16 @@ class BubbleStatus < ActiveRecord::Base
     self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.successors(poset))
   end
 
+  def downset(poset = nil)
+    poset ||= self.bubble_group_status.current_poset
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.downset(poset))
+  end
+
+  def upset(poset = nil)
+    poset ||= self.bubble_group_status.current_poset
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.upset(poset))
+  end
+
   def reset
     self.passed = false
     self.active = false

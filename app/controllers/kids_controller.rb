@@ -88,26 +88,12 @@ class KidsController < ApplicationController
       end
 
       ## return a randomly sampled active bubble
-      @bubble_status = @bubble_group_status.bubble_statuses.active.sample
+      @available_bubbles = @bubble_group_status.available_bubbles
+      @bubble_status = @available_bubbles.sample
     end
   end
 
   private
-    ## activates the next bubbles in the collection
-    def activation_check statuses
-      statuses.each do |status|
-        status.active = false
-        status.save
-
-        status.successors.each do |successor_status|
-          unless successor_status.predecessors.exists?( passed: false )
-            successor_status.active = true
-            successor_status.save
-          end
-        end
-      end
-    end
-
     # Use callbacks to share common setup or constraints between actions.
     def set_kid
       @kid = Kid.find(params[:id])
