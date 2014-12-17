@@ -19,12 +19,12 @@ class Poset < ActiveRecord::Base
     Bubble.where(id: self.edges.pluck(:destination_id).uniq - self.edges.pluck(:source_id).uniq)
   end
 
-  def self.create_from_csv csv_file, poset_params
+  def self.create_from_csv csv_file, bubbles, poset_params
     if csv_file
       poset = Poset.create(poset_params)
       CSV.foreach(csv_file.path, {headers:true}) do |row|
-        src = Bubble.find_by(name: row[0])
-        dst = Bubble.find_by(name: row[1])
+        src = bubbles.find_by(name: row[0])
+        dst = bubbles.find_by(name: row[1])
 
         Edge.create(source: src, destination: dst, poset: poset)
       end

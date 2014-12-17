@@ -32,14 +32,16 @@ class BubbleGroupsController < ApplicationController
       forward_poset_file = params[:bubble_group][:forward_poset_file]
       backward_poset_file = params[:bubble_group][:backward_poset_file]
 
+      bubbles = Bubble.all
       if bubble_file
-        bubbles = Bubble.create_from_csv bubble_file, {bubble_group: @bubble_group}
+        bubble_arr = Bubble.create_from_csv bubble_file, {bubble_group: @bubble_group}
+        bubbles = Bubble.where(id: bubble_arr.collect{ |b| b.id })
       end
 
       name = params[:bubble_group][:name]
-      full_poset = Poset.create_from_csv(full_poset_file, {name: "#{name} -- Full Poset"})
-      forward_poset = Poset.create_from_csv(forward_poset_file, {name: "#{name} -- Forward Poset"})
-      backward_poset = Poset.create_from_csv(backward_poset_file, {name: "#{name} -- Backward Poset"})
+      full_poset = Poset.create_from_csv(full_poset_file, bubbles, {name: "#{name} -- Full Poset"})
+      forward_poset = Poset.create_from_csv(forward_poset_file, bubbles, {name: "#{name} -- Forward Poset"})
+      backward_poset = Poset.create_from_csv(backward_poset_file, bubbles, {name: "#{name} -- Backward Poset"})
 
       @bubble_group.full_poset = full_poset if full_poset
       @bubble_group.forward_poset = forward_poset if forward_poset
