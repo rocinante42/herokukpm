@@ -72,4 +72,87 @@ class BubbleGroupStatus < ActiveRecord::Base
       end
     end 
   end
+
+  ## traversal methods
+  def pass bubble_status
+    ## adjust the counters
+    self.fail_counter = 0
+    self.pass_counter += 1
+
+    ## pass this bubble
+    bubble_status.passed = true
+    bubble_status.save
+
+    ## deactivate all bubbles in the downset
+    bubbles = bubble_status.bubble.downset(self.current_poset)
+    statuses = self.bubble_statuses.where(bubble: bubbles).active
+    activation_check(statuses)
+
+    ## switch poset, if necessary
+    if false && (self.pass_counter >= 2)
+      next_poset = self.next_poset
+      unless self.current_poset == next_poset
+        self.pass_counter = 0
+        self.poset = next_poset
+      end
+    end
+  end
+
+  def fail bubble_status
+    ## adjusts the counters
+    self.pass_counter = 0
+    self.fail_counter += 1
+
+    ## fail this bubble
+    bubble_status.passed = false
+    bubble_status.save
+
+    ## switch poset, if necessary
+    if false && (self.fail_counter >= 2)
+      prev_poset = self.previous_poset
+      unless self.poset == prev_poset
+        self.fail_counter = 0
+        self.poset = prev_poset
+      end
+    end
+  end
+
+  def enjoy bubble_status
+    ## adjust the counters
+    self.pass_counter = 0
+    self.fail_counter = 0
+  end
+
+  ## traversal methods with saves
+  def pass! bubble_status
+    self.pass bubble_status
+    self.save!
+  end
+
+  def fail! bubble_status
+    self.fail bubble_status
+    self.save!
+  end
+
+  def enjoy! bubble_status
+    self.enjoy bubble_status
+    self.save!
+  end
+
+  private
+    ## activates the next bubbles in the collection
+    def activation_check statuses
+      statuses.each do |status|
+        status.active = false
+        status.save!
+
+        status.successors.each do |successor_status|
+          unless successor_status.predecessors.exists?( passed: false )
+            successor_status.active = true
+            successor_status.save!
+          end
+        end
+      end
+    end
 end
+

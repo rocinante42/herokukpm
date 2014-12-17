@@ -64,58 +64,27 @@ class KidsController < ApplicationController
   ## GET /kids/1/play/
   def play
     if params.has_key? :bubble_group_id
-      ## find or create a bubble group status for this bubble group
+      ## fetch the bubble group
       @bubble_group = BubbleGroup.find(params[:bubble_group_id])
+
+      ## find or create the bubble group status
       @bubble_group_status = @kid.bubble_group_statuses.find_by(bubble_group: @bubble_group)
       unless @bubble_group_status
         @bubble_group_status = @kid.bubble_group_statuses.create(bubble_group: @bubble_group)
         @bubble_group_status.reset!
       end
 
-      ## handle the passed in result, if present
+      ## handle the result, if present
       if params.has_key?(:result) && params.has_key?(:bubble_status_id)
         bubble_status = BubbleStatus.find(params[:bubble_status_id])
-
         case params[:result]
         when 'pass'
-          @bubble_group_status.pass_counter += 1
-          @bubble_group_status.fail_counter = 0
-
-          ## pass that bubble
-          bubble_status.passed = true
-          bubble_status.save
-
-          ## activate next bubbles in set
-          bubbles = bubble_status.bubble.downset(@bubble_group_status.current_poset)
-          statuses = @bubble_group_status.bubble_statuses.where(bubble: bubbles).active
-          activation_check(statuses)
-
-          ## switch posets, if necessary
-          if false && @bubble_group_status.pass_counter >= 2
-            next_poset = @bubble_group_status.next_poset
-            unless @bubble_group_status.current_poset == next_poset
-              @bubble_group_status.pass_counter = 0
-              @bubble_group_status.poset = next_poset
-            end
-          end
+          @bubble_group_status.pass! bubble_status
         when 'fail'
-          @bubble_group_status.pass_counter = 0
-          @bubble_group_status.fail_counter += 1
-
-          ## switch posets, if necessary
-          if false && @bubble_group_status.fail_counter >= 2
-            prev_poset = @bubble_group_status.previous_poset
-            unless @bubble_group_status.current_poset == prev_poset
-              @bubble_group_status.fail_counter = 0
-              @bubble_group_status.poset = prev_poset
-            end
-          end
+          @bubble_group_status.fail! bubble_status
         when 'enjoy'
-          @bubble_group_status.pass_counter = 0
-          @bubble_group_status.fail_counter = 0
+          @bubble_group_status.enjoy! bubble_status
         end
-
-        @bubble_group_status.save
       end
 
       ## return a randomly sampled active bubble
