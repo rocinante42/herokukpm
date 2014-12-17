@@ -1,5 +1,5 @@
 class BubbleGroupStatusesController < ApplicationController
-  before_action :set_bubble_group_status, only: [:show, :edit, :update, :destroy]
+  before_action :set_bubble_group_status, only: [:show, :edit, :update, :destroy, :reset]
 
   # GET /bubble_group_statuses
   # GET /bubble_group_statuses.json
@@ -59,6 +59,12 @@ class BubbleGroupStatusesController < ApplicationController
       format.html { redirect_to bubble_group_statuses_url, notice: 'Bubble group status was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  ## POST /bubble_group_statuses/1/reset
+  def reset
+    @bubble_group_status.reset!
+    render action: :show
   end
 
   private

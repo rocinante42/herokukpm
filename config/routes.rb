@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :bubble_group_statuses
+  resources :bubble_group_statuses do
+    member do
+      get :reset
+    end
+  end
 
   resources :bubble_statuses
 
