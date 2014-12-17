@@ -90,6 +90,12 @@ class BubbleGroupStatus < ActiveRecord::Base
     bubble_status.downset(self.bubble_group.full_poset).update_all(passed: true, active: false)
     bubble_status.reload
 
+    ## if the bubble is a maximal, reactivate it
+    if bubble_status.successors.count == 0
+      bubble_status.active = true
+      bubble_status.save
+    end
+
     ## switch poset, if necessary and possible
     if self.pass_counter >= self.current_poset.pass_threshold
       next_poset = self.next_poset
@@ -98,8 +104,12 @@ class BubbleGroupStatus < ActiveRecord::Base
         self.pass_counter = 0
         self.poset = next_poset
 
-        ## activate minimum failed in the new poset
-        activate_min_failed
+        case current_poset_type
+        when "Forward"
+          activate_min_failed
+        when "Full"
+          clean_bubbles_backward
+        end
       end
     end
   end
@@ -131,8 +141,13 @@ class BubbleGroupStatus < ActiveRecord::Base
         self.fail_counter = 0
         self.poset = prev_poset
 
-        ## switch to backward poset
-        activate_max_passed
+        ## additional processing for tranfers
+        case current_poset_type
+        when "Backward"
+          activate_max_passed
+        when "Full"
+          clean_bubbles_forward
+        end
       end
     end
   end
@@ -227,6 +242,40 @@ class BubbleGroupStatus < ActiveRecord::Base
         unless passed_status.successors(poset).exists? passed: true
           passed_status.active = true
           passed_status.save
+        end
+      end
+    end
+
+    ## clean up when switching from backward to full
+    def clean_bubbles_backward(poset = nil)
+      ## default to full poset
+      poset = self.bubble_group.full_poset
+
+      ## check all active passed in the full poset
+      passed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: true, active: true)
+
+      ## deactivate if ALL SUCCESSORS are active
+      passed.each do |passed_status|
+        unless passed_status.successors(poset).exists? active: false
+          passed_status.active = false
+          passed_status.save
+        end
+      end
+    end
+
+    ## clean up when switching from forward to full
+    def clean_bubbles_forward(poset = nil)
+      ## default to full poset
+      poset = self.bubble_group.full_poset
+
+      ## check all active failed in the full poset
+      failed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: false, active: true)
+
+      ## deactivate unless ALL PREDECESSORS are passed
+      failed.each do |failed_status|
+        if failed_status.predecessors(poset).exists? passed: false
+          failed_status.active = true
+          failed_status.save
         end
       end
     end
