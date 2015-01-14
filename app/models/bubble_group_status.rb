@@ -247,16 +247,16 @@ class BubbleGroupStatus < ActiveRecord::Base
     end
 
     ## clean up when switching from backward to full
-    def clean_bubbles_backward(poset = nil)
+    def clean_bubbles_backward
       ## default to full poset
       poset = self.bubble_group.full_poset
 
       ## check all active passed in the full poset
       passed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: true, active: true)
 
-      ## deactivate if ALL SUCCESSORS are active
+      ## deactivate if ALL SUCCESSORS are passed
       passed.each do |passed_status|
-        unless passed_status.successors(poset).exists? active: false
+        unless passed_status.successors(poset).exists? passed: false
           passed_status.active = false
           passed_status.save
         end
@@ -264,7 +264,7 @@ class BubbleGroupStatus < ActiveRecord::Base
     end
 
     ## clean up when switching from forward to full
-    def clean_bubbles_forward(poset = nil)
+    def clean_bubbles_forward
       ## default to full poset
       poset = self.bubble_group.full_poset
 
@@ -274,7 +274,7 @@ class BubbleGroupStatus < ActiveRecord::Base
       ## deactivate unless ALL PREDECESSORS are passed
       failed.each do |failed_status|
         if failed_status.predecessors(poset).exists? passed: false
-          failed_status.active = true
+          failed_status.active = false
           failed_status.save
         end
       end
