@@ -15,8 +15,8 @@
   <tbody>
     <% @bubble_games.each do |bubble_game| %>
       <tr>
-        <td><%= bubble_game.bubble_id %></td>
-        <td><%= bubble_game.game_id %></td>
+        <td><%= link_to bubble_game.bubble.try(:name), bubble_game.bubble %></td>
+        <td><%= link_to bubble_game.game.try(:name), bubble_game.game %></td>
         <td><%= bubble_game.skin %></td>
         <td><%= bubble_game.game_params %></td>
         <td><%= bubble_game.scoring_params %></td>

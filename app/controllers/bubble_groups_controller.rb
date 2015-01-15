@@ -50,6 +50,12 @@ class BubbleGroupsController < ApplicationController
       @bubble_group.save
     end
 
+    ## create the bubble games, if possible
+    unless @bubble_games.errors.any?
+      bubble_game_file = params[:bubble_group][:bubble_game_file]
+      bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
+    end
+
     respond_to do |format|
       unless @bubble_group.errors.any?
         format.html { redirect_to @bubble_group, notice: 'Bubble group was successfully created.' }
@@ -64,6 +70,10 @@ class BubbleGroupsController < ApplicationController
   # PATCH/PUT /bubble_groups/1
   # PATCH/PUT /bubble_groups/1.json
   def update
+    ## create the bubble games, if possible
+    bubble_game_file = params[:bubble_group][:bubble_game_file]
+    bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
+
     respond_to do |format|
       if @bubble_group.update(bubble_group_params)
         format.html { redirect_to @bubble_group, notice: 'Bubble group was successfully updated.' }
