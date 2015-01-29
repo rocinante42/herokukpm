@@ -85,6 +85,8 @@ class BubbleGroupStatus < ActiveRecord::Base
 
     ## backward moves back to the full
     if current_poset_type == "Backward"
+      self.pass_counter = 0
+
       self.poset = self.bubble_group.full_poset
       clean_bubbles_backward
     else
@@ -130,6 +132,8 @@ class BubbleGroupStatus < ActiveRecord::Base
 
     ## if in forward poset, only need to fail current bubble, cleanup bubbles, and switch to full
     if current_poset_type == "Forward"
+      self.fail_counter = 0
+
       bubble_status.passed = false
       bubble_status.save
 
