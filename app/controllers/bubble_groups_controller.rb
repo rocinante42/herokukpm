@@ -51,7 +51,7 @@ class BubbleGroupsController < ApplicationController
     end
 
     ## create the bubble games, if possible
-    unless @bubble_games.errors.any?
+    unless @bubble_group.errors.any?
       bubble_game_file = params[:bubble_group][:bubble_game_file]
       bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
     end
