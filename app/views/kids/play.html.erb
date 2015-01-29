@@ -17,19 +17,42 @@
     <%= link_to "Fail",  play_kid_path(@kid, bubble_group_id: @bubble_group.id, bubble_status_id: @bubble_status.id, result: 'fail') %>
     <%= link_to "Enjoy", play_kid_path(@kid, bubble_group_id: @bubble_group.id, bubble_status_id: @bubble_status.id, result: 'enjoy') %>
 
-     <h3>Active Bubbles (<%= @available_bubbles.count %>)</h3>
-     <ul>
-       <% @available_bubbles.each do |status| %>
-         <li><%= link_to status.bubble.name, status.bubble %></li>
-       <% end %>
-     </ul>
-
-     <h3>Passed Bubbles (<%= @bubble_group_status.bubble_statuses.passed.count %>)</h3>
-     <ul>
-       <% @bubble_group_status.bubble_statuses.passed.each do |status| %>
-         <li><%= link_to status.bubble.name, status.bubble %></li>
-       <% end %>
-     </ul>
+    <table>
+      <tr>
+        <td>
+          <h3>Available Bubbles (<%= @available_bubbles.count %>)</h3>
+        </td>
+        <td>
+          <h3>Passed Bubbles (<%= @bubble_group_status.bubble_statuses.passed.count %>)</h3>
+        </td>
+        <td>
+          <h3>Active Bubbles in Full Poset (<%= @bubble_group_status.bubble_statuses.active.count %>)</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <ul>
+            <% @available_bubbles.each do |status| %>
+              <li><%= link_to status.bubble.name, status.bubble %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% @bubble_group_status.bubble_statuses.passed.each do |status| %>
+              <li><%= link_to status.bubble.name, status.bubble %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td>
+          <ul>
+            <% @bubble_group_status.bubble_statuses.active.each do |status| %>
+              <li><%= link_to status.bubble.name, status.bubble %></li>
+            <% end %>
+          </ul>
+        </td>
+      </tr>
+    </table>
   </div>
 <% else %>
   <h2>Select a Bubble Group to play:</h2>
