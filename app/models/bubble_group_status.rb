@@ -83,37 +83,41 @@ class BubbleGroupStatus < ActiveRecord::Base
     bubble_status.passed = true
     bubble_status.save
 
-    ## activate all required nodes in the current poset
-    activation_check(bubble_status)
+    ## backward moves back to the full
+    if current_poset_type == "Backward"
+      self.poset = self.bubble_group.full_poset
+      clean_bubbles_backward
+    else
+      ## activate all required nodes in the current poset
+      activation_check(bubble_status)
 
-    ## activate all required nodes in the full poset
-    if self.poset != self.bubble_group.full_poset
-      check_predecessors(bubble_status.successors(self.bubble_group.full_poset).failed, self.bubble_group.full_poset)
-    end
+      ## activate all required nodes in the full poset
+      if self.poset != self.bubble_group.full_poset
+        check_predecessors(bubble_status.successors(self.bubble_group.full_poset).failed, self.bubble_group.full_poset)
+      end
 
-    ## pass all of the nodes in the downset in the full poset
-    bubble_status.downset(self.bubble_group.full_poset).update_all(passed: true, active: false)
-    bubble_status.reload
+      ## pass all of the nodes in the downset in the full poset
+      bubble_status.downset(self.bubble_group.full_poset).update_all(passed: true, active: false)
+      bubble_status.reload
 
-    ## if the bubble is a maximal, reactivate it
-    if bubble_status.successors.count == 0
-      bubble_status.active = true
-      bubble_status.save
-    end
+      ## if the bubble is a maximal, reactivate it
+      if bubble_status.successors.count == 0
+        bubble_status.active = true
+        bubble_status.save
+      end
 
-    ## switch poset, if necessary and possible
-    if self.pass_counter >= self.current_poset.pass_threshold
-      next_poset = self.next_poset
-      unless self.current_poset == next_poset
-        ## reset the pass counter and move to the next poset
-        self.pass_counter = 0
-        self.poset = next_poset
+      ## switch poset, if necessary and possible
+      if self.pass_counter >= self.current_poset.pass_threshold
+        next_poset = self.next_poset
+        unless self.current_poset == next_poset
+          ## reset the pass counter and move to the next poset
+          self.pass_counter = 0
+          self.poset = next_poset
 
-        case current_poset_type
-        when "Forward"
-          activate_min_failed
-        when "Full"
-          clean_bubbles_backward
+          case current_poset_type
+          when "Forward"
+            activate_min_failed
+          end
         end
       end
     end
