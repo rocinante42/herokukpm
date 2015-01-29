@@ -128,40 +128,48 @@ class BubbleGroupStatus < ActiveRecord::Base
     self.pass_counter = 0
     self.fail_counter += 1
 
-    ## fail and deactivate everything in the upset
-    bubble_status.upset(self.bubble_group.full_poset).update_all(passed: false, active: false)
-    bubble_status.reload
+    ## if in forward poset, only need to fail current bubble, cleanup bubbles, and switch to full
+    if current_poset_type == "Forward"
+      bubble_status.passed = false
+      bubble_status.save
 
-    ## if this bubble is a minimum, reactivate it
-    if bubble_status.predecessors.count == 0
-      bubble_status.active = true
-      bubble_status.save!
-    end
+      clean_bubbles_forward
 
-    ## switch poset, if necessary
-    changed_poset = false
-    if self.fail_counter >= self.current_poset.fail_threshold
-      prev_poset = self.previous_poset
-      unless self.poset == prev_poset
-        self.fail_counter = 0
-        self.poset = prev_poset
-        changed_poset = true
+      self.poset = self.bubble_group.full_poset
+    else
+      ## fail and deactivate everything in the upset
+      bubble_status.upset(self.bubble_group.full_poset).update_all(passed: false, active: false)
+      bubble_status.reload
 
-        ## additional processing for tranfers
-        case current_poset_type
-        when "Backward"
-          activate_max_passed
-        when "Full"
-          clean_bubbles_forward
+      ## if this bubble is a minimum, reactivate it
+      if bubble_status.predecessors.count == 0
+        bubble_status.active = true
+        bubble_status.save!
+      end
+
+      ## switch poset, if necessary
+      changed_poset = false
+      if self.fail_counter >= self.current_poset.fail_threshold
+        prev_poset = self.previous_poset
+        unless self.poset == prev_poset
+          self.fail_counter = 0
+          self.poset = prev_poset
+          changed_poset = true
+
+          ## additional processing for tranfers
+          case current_poset_type
+          when "Backward"
+            activate_max_passed
+          end
         end
       end
-    end
 
-    ## activate all predecessors ONLY IF the poset wasn't changed
-    unless changed_poset
-      bubble_status.predecessors.each do |predecessor|
-        predecessor.active = true
-        predecessor.save!
+      ## activate all predecessors ONLY IF the poset wasn't changed
+      unless changed_poset
+        bubble_status.predecessors.each do |predecessor|
+          predecessor.active = true
+          predecessor.save!
+        end
       end
     end
   end
