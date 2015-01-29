@@ -3,7 +3,9 @@ class BubbleStatus < ActiveRecord::Base
   belongs_to :bubble
 
   scope :active, ->{ where(active: true) }
+  scope :inactive, -> { where(active: false) }
   scope :passed, ->{ where(passed: true) }
+  scope :failed, ->{ where(passed: false) }
 
   def predecessors(poset = nil)
     poset ||= self.bubble_group_status.current_poset
