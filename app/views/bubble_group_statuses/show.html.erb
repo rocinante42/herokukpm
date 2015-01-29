@@ -2,17 +2,17 @@
 
 <p>
   <strong>Kid:</strong>
-  <%= @bubble_group_status.kid_id %>
+  <%= link_to @bubble_group_status.kid.full_name, @bubble_group_status.kid %>
 </p>
 
 <p>
   <strong>Bubble group:</strong>
-  <%= @bubble_group_status.bubble_group_id %>
+  <%= link_to @bubble_group_status.bubble_group.name, @bubble_group_status.bubble_group %>
 </p>
 
 <p>
   <strong>Poset:</strong>
-  <%= @bubble_group_status.poset_id %>
+  <%= link_to @bubble_group_status.poset.name, @bubble_group_status.poset %>
 </p>
 
 <p>
