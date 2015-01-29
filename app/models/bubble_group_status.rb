@@ -88,7 +88,7 @@ class BubbleGroupStatus < ActiveRecord::Base
 
     ## activate all required nodes in the full poset
     if self.poset != self.bubble_group.full_poset
-      check_predecessors(bubble_status.successors(self.bubble_group.full_poset), self.bubble_group.full_poset)
+      check_predecessors(bubble_status.successors(self.bubble_group.full_poset).failed, self.bubble_group.full_poset)
     end
 
     ## pass all of the nodes in the downset in the full poset
@@ -223,8 +223,8 @@ class BubbleGroupStatus < ActiveRecord::Base
         status.active = false
         status.save!
 
-        ## activate if predecessors are all passed
-        check_predecessors(status.successors, self.current_poset)
+        ## activate if failed and predecessors are all passed
+        check_predecessors(status.successors.failed, self.current_poset)
       end
     end
 
