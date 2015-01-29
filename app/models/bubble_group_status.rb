@@ -151,6 +151,18 @@ class BubbleGroupStatus < ActiveRecord::Base
         bubble_status.save!
       end
 
+      ## activate all predecessors
+      bubble_status.predecessors.each do |predecessor|
+        predecessor.update( active: true )
+      end
+
+      ## activate all required nodes in the full poset
+      if self.poset != self.bubble_group.full_poset
+        bubble_status.predecessors(self.bubble_group.full_poset).each do |predecessor|
+          predecessor.update( active: true )
+        end
+      end
+
       ## switch poset, if necessary
       changed_poset = false
       if self.fail_counter >= self.current_poset.fail_threshold
@@ -165,14 +177,6 @@ class BubbleGroupStatus < ActiveRecord::Base
           when "Backward"
             activate_max_passed
           end
-        end
-      end
-
-      ## activate all predecessors ONLY IF the poset wasn't changed
-      unless changed_poset
-        bubble_status.predecessors.each do |predecessor|
-          predecessor.active = true
-          predecessor.save!
         end
       end
     end
