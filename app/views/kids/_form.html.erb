@@ -17,7 +17,7 @@
   </div>
   <div class="field">
     <%= f.label :classroom_id %><br>
-    <%= f.number_field :classroom_id %>
+    <%= f.collection_select :classroom_id, Classroom.all, :id, :name, include_blank: false %>
   </div>
   <div class="field">
     <%= f.label :first_name %><br>
