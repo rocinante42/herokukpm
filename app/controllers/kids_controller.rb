@@ -76,14 +76,22 @@ class KidsController < ApplicationController
 
       ## handle the result, if present
       if params.has_key?(:result) && params.has_key?(:bubble_status_id)
+        ## get bubble status
         bubble_status = BubbleStatus.find(params[:bubble_status_id])
-        case params[:result]
-        when 'pass'
-          @bubble_group_status.pass! bubble_status
-        when 'fail'
-          @bubble_group_status.fail! bubble_status
-        when 'enjoy'
-          @bubble_group_status.enjoy! bubble_status
+
+        ## check that this bubble can be played
+        available = @bubble_group_status.available_bubbles
+
+        if available.exists?(id: bubble_status.id)
+          ## update with result
+          case params[:result]
+          when 'pass'
+            @bubble_group_status.pass! bubble_status
+          when 'fail'
+            @bubble_group_status.fail! bubble_status
+          when 'enjoy'
+            @bubble_group_status.enjoy! bubble_status
+          end
         end
       end
 
