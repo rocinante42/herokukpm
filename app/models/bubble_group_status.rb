@@ -95,14 +95,13 @@ class BubbleGroupStatus < ActiveRecord::Base
 
       ## activate and pass all necessary nodes in the full set, and check successors for activation
       bubble_status.downset(self.bubble_group.full_poset).where('passed = (?) OR active = (?) OR id = (?)', false, true, bubble_status.id).each do |status|
-        status.update(passed: true, active: false)
+        status.update_columns(passed: true, active: false)
         check_predecessors(status.successors(self.bubble_group.full_poset).failed, self.bubble_group.full_poset)
       end
 
       ## if the bubble is a maximal, reactivate it
       if bubble_status.successors.count == 0
-        bubble_status.active = true
-        bubble_status.save
+        bubble_status.update_columns( active: true )
       end
 
       ## switch poset, if necessary and possible
