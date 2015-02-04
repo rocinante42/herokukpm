@@ -15,9 +15,9 @@
   <tbody>
     <% @bubble_group_statuses.each do |bubble_group_status| %>
       <tr>
-        <td><%= link_to bubble_group_status.kid.full_name, bubble_group_status.kid %></td>
-        <td><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></td>
-        <td><%= link_to bubble_group_status.poset.name, bubble_group_status.poset %></td>
+        <td><%= link_to bubble_group_status.kid.try(:full_name), bubble_group_status.kid %></td>
+        <td><%= link_to bubble_group_status.bubble_group.try(:name), bubble_group_status.bubble_group %></td>
+        <td><%= link_to bubble_group_status.poset.try(:name), bubble_group_status.poset %></td>
         <td><%= bubble_group_status.pass_counter %></td>
         <td><%= bubble_group_status.fail_counter %></td>
         <td><%= link_to 'Show', bubble_group_status %></td>
