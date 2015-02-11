@@ -11,9 +11,25 @@
 </p>
 
 <p>
-  <strong>Bubble group:</strong>
-  <%= @bubble.bubble_group_id %>
+  <strong>Bubble Group:</strong>
+  <%= link_to @bubble.bubble_group.name, @bubble.bubble_group %>
 </p>
 
+<h3>Bubble Games</h3>
+<table>
+  <tr>
+    <th>Game</th>
+    <th>Params</th>
+  </tr>
+  <% @bubble.bubble_games.each do |bubble_game| %>
+    <tr>
+      <td><%= link_to bubble_game.game.name, bubble_game.game %></td>
+      <td><%= bubble_game.game_params %></td>
+    </tr>
+  <% end %>
+</table>
+<br>
+
+<%= link_to 'Add Game', new_bubble_game_path(bubble_id: @bubble) %> |
 <%= link_to 'Edit', edit_bubble_path(@bubble) %> |
 <%= link_to 'Back', bubbles_path %>

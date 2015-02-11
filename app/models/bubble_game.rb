@@ -17,6 +17,7 @@ class BubbleGame < ActiveRecord::Base
         ## extract column info
         bubble_name = row[0]
         game_name = row[1]
+        params = row[2]
 
         ## fetch the bubble and game
         bubble = bubble_collection.where(name: bubble_name).first
@@ -25,8 +26,8 @@ class BubbleGame < ActiveRecord::Base
         ## create entry for valid bubbles and games or log errors
         if bubble && game
           bg = BubbleGame.find_or_initialize_by(bubble: bubble, game: game)
-          bg.update(bubble_game_params)
-          if !bg.save
+          
+          if !bg.update(bubble_game_params.merge(game_params: params))
             ## TODO :: potentially handle creation errors here
           else
             bubble_games << bg
