@@ -15,6 +15,8 @@ class BubblesController < ApplicationController
   # GET /bubbles/new
   def new
     @bubble = Bubble.new
+
+    @bubble.bubble_group = BubbleGroup.find(params[:bubble_group_id]) if params.has_key?(:bubble_group_id)
   end
 
   # GET /bubbles/1/edit
