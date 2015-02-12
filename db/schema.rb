@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141217222846) do
+ActiveRecord::Schema.define(version: 20150212003637) do
 
   create_table "bubble_games", force: true do |t|
     t.integer  "bubble_id"
@@ -27,10 +27,11 @@ ActiveRecord::Schema.define(version: 20141217222846) do
     t.integer  "kid_id"
     t.integer  "bubble_group_id"
     t.integer  "poset_id"
-    t.integer  "pass_counter",    default: 0, null: false
-    t.integer  "fail_counter",    default: 0, null: false
+    t.integer  "pass_counter",    default: 0,    null: false
+    t.integer  "fail_counter",    default: 0,    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",          default: true
   end
 
   create_table "bubble_groups", force: true do |t|

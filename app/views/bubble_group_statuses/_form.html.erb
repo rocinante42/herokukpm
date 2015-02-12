@@ -24,6 +24,10 @@
     <%= f.collection_select :poset_id, Poset.all, :id, :name, include_blank: true %>
   </div>
   <div class="field">
+    <%= f.label :active %>
+    <%= f.check_box :active %>
+  </div>
+  <div class="field">
     <%= f.label :pass_counter %><br>
     <%= f.number_field :pass_counter %>
   </div>
