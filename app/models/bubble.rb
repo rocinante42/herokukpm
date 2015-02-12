@@ -8,6 +8,8 @@ class Bubble < ActiveRecord::Base
 
   default_scope ->{ order(:bubble_group_id) }
 
+  validates :name, uniqueness: { scope: :bubble_group_id }
+
   def predecessors(poset)
     Bubble.where(id: poset.edges.entering(self).pluck(:source_id))
   end
