@@ -1,5 +1,5 @@
 class Classroom < ActiveRecord::Base
   belongs_to :school
 
-  has_many :kids
+  has_many :kids, dependent: :destroy
 end

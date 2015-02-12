@@ -36,6 +36,9 @@
   <% @bubble_group.bubbles.each do |bubble| %>
     <tr>
       <td><%= link_to bubble.name, bubble %></td>
+      <td><%= link_to 'Show', bubble %></td>
+      <td><%= link_to 'Edit', edit_bubble_path(bubble) %></td>
+      <td><%= link_to 'Destroy', bubble, method: :delete, data: { confirm: 'Are you sure?' } %></td>
     </tr>
   <% end %>
 </table>

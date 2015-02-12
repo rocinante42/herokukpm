@@ -3,7 +3,7 @@ class Bubble < ActiveRecord::Base
 
   belongs_to :bubble_group
 
-  has_many :bubble_games
+  has_many :bubble_games, dependent: :destroy
   has_many :games, through: :bubble_games
 
   default_scope ->{ order(:bubble_group_id) }
