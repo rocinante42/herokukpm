@@ -31,5 +31,14 @@
   <% end %>
 </p>
 
+<h4>Bubbles</h4>
+<table>
+  <% @bubble_group.bubbles.each do |bubble| %>
+    <tr>
+      <td><%= link_to bubble.name || 'Untitled', bubble %></td>
+    </tr>
+  <% end %>
+</table>
+
 <%= link_to 'Edit', edit_bubble_group_path(@bubble_group) %> |
 <%= link_to 'Back', bubble_groups_path %>
