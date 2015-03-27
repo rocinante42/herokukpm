@@ -1,5 +1,5 @@
 class KidsController < ApplicationController
-  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play]
+  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game]
 
   # GET /kids
   # GET /kids.json
@@ -98,6 +98,44 @@ class KidsController < ApplicationController
       ## return a randomly sampled active bubble
       @available_bubbles = @bubble_group_status.available_bubbles
       @bubble_status = @available_bubbles.sample
+    end
+  end
+
+  ## GET /kids/1/play_game/
+  def play_game
+    ## handle the result, if present
+    if params.has_key?(:result) && params.has_key?(:bubble_id)
+      ## get the bubble status
+      bubble_status = @kid.bubble_statuses.find(params[:bubble_id])
+      bubble_group_status = bubble_status.bubble_group_status
+
+      ## check that this bubble could have been played
+      available = bubble_group_status.available_bubbles
+      if available.exists?(id: bubble_status.id)
+        ## update with result
+        case params[:result]
+        when 'pass'
+          bubble_group_status.pass! bubble_status
+        when 'fail'
+          bubble_group_status.fail! bubble_status
+        when 'enjoy'
+          bubble_group_status.enjoy! bubble_status
+        end
+      end
+    end
+
+    ## fetch a randomly sampled active bubble
+    available = []
+    @kid.bubble_group_statuses.each do |bgs|
+      available += bgs.available_bubbles
+    end
+    @bubble_status = available.sample
+
+    if @bubble_status
+      ## extract the games, sample a game, and get the bubble-game object
+      @bubble = @bubble_status.bubble
+      @game = @bubble.games.sample
+      @bubble_game = @bubble.bubble_games.find_by(game: @game)
     end
   end
 

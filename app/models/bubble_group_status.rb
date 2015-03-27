@@ -5,6 +5,8 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   has_many :bubble_statuses, dependent: :destroy
 
+  scope :active, ->{ where(active: true) }
+
   alias :current_poset :poset
 
   ## accessors for information about the current poset

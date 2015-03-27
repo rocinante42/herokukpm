@@ -31,8 +31,11 @@
   <% end %>
 </p>
 
-<h4>Bubbles</h4>
 <table>
+  <tr>
+    <th>Bubbles</th>
+    <th colspan="3"></th>
+  </tr>
   <% @bubble_group.bubbles.each do |bubble| %>
     <tr>
       <td><%= link_to bubble.name, bubble %></td>

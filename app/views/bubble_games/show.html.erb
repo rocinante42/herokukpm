@@ -2,12 +2,12 @@
 
 <p>
   <strong>Bubble:</strong>
-  <%= @bubble_game.bubble_id %>
+  <%= link_to @bubble_game.bubble.name, @bubble_game.bubble %>
 </p>
 
 <p>
   <strong>Game:</strong>
-  <%= @bubble_game.game_id %>
+  <%= link_to @bubble_game.game.name, @bubble_game.game %>
 </p>
 
 <p>

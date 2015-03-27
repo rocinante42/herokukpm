@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :kids do
     member do
       get :play
+      get :play_game
     end
   end
 

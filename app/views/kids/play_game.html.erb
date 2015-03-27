@@ -1,0 +1,26 @@
+<% if @game %>
+  <h2>Kid <%= link_to @kid.full_name, @kid %> is playing <%= link_to @game.name, @game %></h1>
+
+  <table>
+    <tr>
+      <th>Bubble</th>
+      <th>Bubble-Game</th>
+      <th>Game</th>
+    </tr>
+    <tr>
+      <td><%= link_to @bubble.name, @bubble %></td>
+      <td><%= link_to "BubbleGame-#{@bubble.id}-#{@game.id}", @bubble_game %></td>
+      <td><%= link_to @game.name, @game %></td>
+    </tr>
+  </table>
+
+  <div>
+    <h3>Options</h3>
+    <%= link_to "Pass",  play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'pass') %>
+    <%= link_to "Fail",  play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'fail') %>
+    <%= link_to "Enjoy", play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'enjoy') %>
+  </div>
+<% else %>
+  <h2>Kid <%= link_to @kid.full_name, @kid %> has no games to play.</h2>
+<% end %>
+

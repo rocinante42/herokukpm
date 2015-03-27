@@ -11,14 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212003637) do
+ActiveRecord::Schema.define(version: 20150327001354) do
 
   create_table "bubble_games", force: true do |t|
     t.integer  "bubble_id"
     t.integer  "game_id"
     t.string   "skin"
-    t.string   "game_params"
-    t.string   "scoring_params"
+    t.text     "game_params",    limit: 255
+    t.text     "scoring_params", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end

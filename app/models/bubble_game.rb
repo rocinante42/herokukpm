@@ -21,7 +21,7 @@ class BubbleGame < ActiveRecord::Base
 
         ## fetch the bubble and game
         bubble = bubble_collection.where(name: bubble_name).first
-        game = game_collection.where(name: game_name).first
+        game = game_collection.find_or_create_by(name: game_name)
 
         ## create entry for valid bubbles and games or log errors
         if bubble && game
