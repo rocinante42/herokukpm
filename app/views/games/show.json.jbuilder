@@ -1,1 +1,4 @@
-json.extract! @game, :id, :name, :description, :created_at, :updated_at
+json.game do
+  json.partial! 'game', game: @game
+end
+

@@ -1,1 +1,4 @@
-json.extract! @bubble, :id, :name, :description, :bubble_group_id, :created_at, :updated_at
+json.bubble do
+  json.partial! 'bubble', bubble: @bubble
+end
+

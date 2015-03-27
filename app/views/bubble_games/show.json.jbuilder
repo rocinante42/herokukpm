@@ -1,1 +1,4 @@
-json.extract! @bubble_game, :id, :bubble_id, :game_id, :skin, :game_params, :scoring_params, :created_at, :updated_at
+json.bubble_game do
+  json.partial! 'bubble_game', bubble_game: @bubble_game
+end
+

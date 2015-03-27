@@ -1,1 +1,4 @@
-json.extract! @bubble_group_status, :id, :kid_id, :bubble_group_id, :poset_id, :pass_counter, :fail_counter, :created_at, :updated_at
+json.bubble_group_status do
+  json.partial! 'bubble_group_status', bubble_group_status: @bubble_group_status
+end
+

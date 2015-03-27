@@ -1,1 +1,4 @@
-json.extract! @edge, :id, :source_id, :destination_id, :poset_id, :created_at, :updated_at
+json.edge do
+  json.partial! 'edge', edge: @edge
+end
+

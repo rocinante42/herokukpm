@@ -1,1 +1,4 @@
-json.extract! @school, :id, :name, :created_at, :updated_at
+json.school do
+  json.partial! 'school', school: @school
+end
+

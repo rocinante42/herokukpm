@@ -1,1 +1,4 @@
-json.extract! @poset, :id, :created_at, :updated_at
+json.poset do
+  json.partial! 'poset', poset: @poset
+end
+
