@@ -1,10 +1,9 @@
-<h1>Listing kids</h1>
+<h1>Kids</h1>
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
-      <th>Login</th>
       <th>Classroom</th>
       <th colspan="4"></th>
     </tr>
@@ -14,9 +13,9 @@
     <% @kids.each do |kid| %>
       <tr>
         <td><%= kid.full_name %></td>
-        <td><%= kid.login_id %></td>
-        <td><%= kid.classroom_id %></td>
+        <td><%= link_to kid.classroom.name, kid.classroom if kid.classroom %></td>
         <td><%= link_to 'Play', play_kid_path(kid) %></td>
+        <td><%= link_to 'Play Games', play_game_kid_path(kid) %></td>
         <td><%= link_to 'Show', kid %></td>
         <td><%= link_to 'Edit', edit_kid_path(kid) %></td>
         <td><%= link_to 'Destroy', kid, method: :delete, data: { confirm: 'Are you sure?' } %></td>

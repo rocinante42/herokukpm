@@ -10,5 +10,25 @@
   <%= @game.description %>
 </p>
 
+<table>
+  <tr>
+    <th>Bubble Game</th>
+    <th>Bubble</th>
+    <th>Params</th>
+    <th colspan="3"></th>
+  </tr>
+  <% @game.bubble_games.each do |bubble_game| %>
+    <tr>
+      <td><%= link_to bubble_game.name, bubble_game %></td>
+      <td><%= link_to bubble_game.bubble.name, bubble_game.bubble %></td>
+      <td><%= bubble_game.game_params %></td>
+      <td><%= link_to 'Show', bubble_game %></td>
+      <td><%= link_to 'Edit', edit_bubble_game_path(bubble_game) %></td>
+      <td><%= link_to 'Destroy', bubble_game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>
+<br>
+
 <%= link_to 'Edit', edit_game_path(@game) %> |
 <%= link_to 'Back', games_path %>

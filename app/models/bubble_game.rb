@@ -42,4 +42,8 @@ class BubbleGame < ActiveRecord::Base
     ## return new collection of games
     return bubble_games
   end
+
+  def name
+    "BubbleGame-#{self.bubble_id}-#{self.game_id}"
+  end
 end

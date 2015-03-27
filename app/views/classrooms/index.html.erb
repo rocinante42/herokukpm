@@ -1,9 +1,10 @@
-<h1>Listing classrooms</h1>
+<h1>Classrooms</h1>
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
+      <th>School</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -11,7 +12,8 @@
   <tbody>
     <% @classrooms.each do |classroom| %>
       <tr>
-        <td><%= classroom.name %></td>
+        <td><%= link_to classroom.name, classroom %></td>
+        <td><%= link_to classroom.school.name, classroom.school if classroom.school %></td>
         <td><%= link_to 'Show', classroom %></td>
         <td><%= link_to 'Edit', edit_classroom_path(classroom) %></td>
         <td><%= link_to 'Destroy', classroom, method: :delete, data: { confirm: 'Are you sure?' } %></td>

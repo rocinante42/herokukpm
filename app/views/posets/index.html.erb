@@ -1,9 +1,10 @@
-<h1>Listing posets</h1>
+<h1>Posets</h1>
 
 <table>
   <thead>
     <tr>
       <th>Name</th>
+      <th>Bubbles</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -12,6 +13,7 @@
     <% @posets.each do |poset| %>
       <tr>
         <td><%= poset.name %></td>
+        <td><%= poset.bubbles.count %></td>
         <td><%= link_to 'Show', poset %></td>
         <td><%= link_to 'Edit', edit_poset_path(poset) %></td>
         <td><%= link_to 'Destroy', poset, method: :delete, data: { confirm: 'Are you sure?' } %></td>
