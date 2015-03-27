@@ -1,0 +1,11 @@
+<h2>Kid <%= link_to @kid.full_name, @kid %> can play <%= @games_hash.count %> games</h2>
+
+<% @games_hash.each do |game, bubble_games| %>
+  <p><strong><%= link_to game.name, game %></strong></p>
+  <ul>
+    <% bubble_games.each do |bubble_game| %>
+      <li><%= link_to bubble_game.name, bubble_game %></li>
+    <% end %>
+  </ul>
+<% end %>
+

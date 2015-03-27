@@ -1,5 +1,5 @@
 class KidsController < ApplicationController
-  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game]
+  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games]
 
   # GET /kids
   # GET /kids.json
@@ -136,6 +136,25 @@ class KidsController < ApplicationController
       @bubble = @bubble_status.bubble
       @game = @bubble.games.sample
       @bubble_game = @bubble.bubble_games.find_by(game: @game)
+    end
+  end
+
+  ## GET /kids/1/games
+  def games
+    ## fetch available bubbles
+    available = []
+    @kid.bubble_group_statuses.each do |bgs|
+      available += bgs.available_bubbles
+    end
+
+    ## games -> bubble_games
+    @games_hash = {}
+    available.each do |bubble_status|
+      bubble_status.bubble.bubble_games.each do |bubble_game|
+        arr = @games_hash[bubble_game.game] || []
+        arr << bubble_game
+        @games_hash[bubble_game.game] = arr
+      end
     end
   end
 

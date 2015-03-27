@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     member do
       get :play
       get :play_game
+      get :games
     end
   end
 
