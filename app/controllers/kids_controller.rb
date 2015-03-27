@@ -147,12 +147,14 @@ class KidsController < ApplicationController
       available += bgs.available_bubbles
     end
 
-    ## games -> bubble_games
+    ## sort info
+    @bubble_games = []
     @games_hash = {}
     available.each do |bubble_status|
       bubble_status.bubble.bubble_games.each do |bubble_game|
         arr = @games_hash[bubble_game.game] || []
         arr << bubble_game
+        @bubble_games << bubble_game
         @games_hash[bubble_game.game] = arr
       end
     end
