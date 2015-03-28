@@ -104,9 +104,9 @@ class KidsController < ApplicationController
   ## GET /kids/1/play_game/
   def play_game
     ## handle the result, if present
-    if params.has_key?(:result) && params.has_key?(:bubble_status_id)
+    if params.has_key?(:result) && params.has_key?(:bubble_id)
       ## get the bubble status
-      bubble_status = @kid.bubble_statuses.find(params[:bubble_status_id])
+      bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
       bubble_group_status = bubble_status.bubble_group_status
 
       ## check that this bubble could have been played
