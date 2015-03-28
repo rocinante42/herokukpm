@@ -16,6 +16,7 @@
         <td><%= link_to kid.classroom.name, kid.classroom if kid.classroom %></td>
         <td><%= link_to 'Play', play_kid_path(kid) %></td>
         <td><%= link_to 'Play Games', play_game_kid_path(kid) %></td>
+        <td><%= link_to 'Show Games', games_kid_path(kid) %></td>
         <td><%= link_to 'Show', kid %></td>
         <td><%= link_to 'Edit', edit_kid_path(kid) %></td>
         <td><%= link_to 'Destroy', kid, method: :delete, data: { confirm: 'Are you sure?' } %></td>
