@@ -1,6 +1,6 @@
 if @bubble_group
-  json.bubble do
-    json.partial! 'bubbles/bubble', bubble: @bubble_status.bubble, rec: 1
+  json.bubble_status do
+    json.partial! 'bubble_statuses/bubble_status', bubble_status: @bubble_status, rec: 2
   end
 else
   json.error "Select a bubble group"

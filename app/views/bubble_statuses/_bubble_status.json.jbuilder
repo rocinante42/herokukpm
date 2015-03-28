@@ -5,7 +5,7 @@ if rec == 0
   json.extract! bubble_status, :id
 else
   ## simple attrs
-  json.extract! bubble_status, :id, :passed, :active, :bubble_id, :bubble_group_status_id
+  json.extract! bubble_status, :id, :passed, :active
 
   ## relationships
   json.bubble do
