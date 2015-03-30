@@ -1,5 +1,5 @@
 class ClassroomsController < ApplicationController
-  before_action :set_classroom, only: [:show, :edit, :update, :destroy]
+  before_action :set_classroom, only: [:show, :edit, :update, :destroy, :activate]
 
   # GET /classrooms
   # GET /classrooms.json
@@ -10,6 +10,7 @@ class ClassroomsController < ApplicationController
   # GET /classrooms/1
   # GET /classrooms/1.json
   def show
+    @bubble_groups = BubbleGroup.all
   end
 
   # GET /classrooms/new
@@ -59,6 +60,20 @@ class ClassroomsController < ApplicationController
       format.html { redirect_to classrooms_url, notice: 'Classroom was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  ## POST /classrooms/1/activate
+  def activate
+    ## update the active status of all mentioned bubble group statuses
+    if params.has_key? :active
+      params[:active].each do |k, v|
+        status = BubbleGroupStatus.find(k)
+        status.update(active: (v == '1'))
+      end
+    end
+
+    ## return to the show page
+    redirect_to action: :show
   end
 
   private

@@ -9,7 +9,11 @@ Rails.application.routes.draw do
 
   resources :schools
 
-  resources :classrooms
+  resources :classrooms do
+    member do
+      post :activate
+    end
+  end
 
   resources :kids do
     member do

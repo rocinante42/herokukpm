@@ -31,6 +31,22 @@
   <%= @kid.primary_language %>
 </p>
 
+<table>
+  <tr>
+    <th>Status</th>
+    <th>Bubble Group</th>
+    <th>Actions</th>
+  </tr>
+  <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
+    <tr>
+      <td><%= link_to "Status", bubble_group_status %></td>
+      <td><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></td>
+      <td><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></td>
+    </tr>
+  <% end %>
+</table>
+<br>
+
 <%= link_to 'Play', play_kid_path(@kid) %> |
 <%= link_to 'Play Games', play_game_kid_path(@kid) %> |
 <%= link_to 'Show Games', games_kid_path(@kid) %> |

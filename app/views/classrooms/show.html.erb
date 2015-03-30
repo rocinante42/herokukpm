@@ -10,5 +10,32 @@
   <%= link_to @classroom.school.name, @classroom.school if @classroom.school %>
 </p>
 
+<%= form_tag activate_classroom_path(@classroom) do %>
+  <table>
+    <tr>
+      <th>Kid</th>
+      <% @bubble_groups.each do |bubble_group| %>
+        <th><%= link_to bubble_group.name, bubble_group %></th>
+      <% end %>
+    </tr>
+    <% @classroom.kids.each do |kid| %>
+      <tr>
+        <td><%= link_to kid.full_name, kid %></td>
+        <% @bubble_groups.each do |bubble_group| %>
+          <td>
+            <% status = kid.bubble_group_statuses.find_by(bubble_group: bubble_group) %>
+            <% if status %>
+              <%= hidden_field_tag "active[#{status.id}]", '0' %>
+              <%= check_box_tag "active[#{status.id}]", '1', status.active %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </table>
+  <%= submit_tag "Save" %>
+<% end %>
+<br>
+
 <%= link_to 'Edit', edit_classroom_path(@classroom) %> |
 <%= link_to 'Back', classrooms_path %>
