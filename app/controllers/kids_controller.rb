@@ -97,10 +97,10 @@ class KidsController < ApplicationController
 
     ## fetch a randomly sampled active bubble
     available = []
-    @kid.bubble_group_statuses.each do |bgs|
+    @kid.bubble_group_statuses.active.each do |bgs|
       available += bgs.available_bubbles
     end
-    @bubble_status = available.sample
+    @bubble_status = available.select{|bs| bs.bubble.games.count > 0 }.sample
 
     if @bubble_status
       ## extract the games, sample a game, and get the bubble-game object
@@ -120,7 +120,7 @@ class KidsController < ApplicationController
 
     ## fetch available bubbles
     available = []
-    @kid.bubble_group_statuses.each do |bgs|
+    @kid.bubble_group_statuses.active.each do |bgs|
       available += bgs.available_bubbles
     end
 
