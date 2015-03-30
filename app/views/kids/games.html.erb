@@ -1,11 +1,27 @@
 <h2>Kid <%= link_to @kid.full_name, @kid %> can play <%= @games_hash.count %> games</h2>
 
-<% @games_hash.each do |game, bubble_games| %>
-  <p><strong><%= link_to game.name, game %></strong></p>
-  <ul>
+<table>
+  <tr>
+    <th>Bubble Group</th>
+    <th>Game</th>
+    <th>BubbleGame</th>
+    <th>Bubble</th>
+    <th colspan="3">Actions</th>
+  </tr>
+  <% @games_hash.each do |game, bubble_games| %>
     <% bubble_games.each do |bubble_game| %>
-      <li><%= link_to bubble_game.name, bubble_game %></li>
+      <% bubble = bubble_game.bubble %>
+      <tr>
+        <td><%= link_to bubble.bubble_group.name, bubble.bubble_group %></td>
+        <td><%= link_to game.name, game %></td>
+        <td><%= link_to bubble_game.name, bubble_game %></td>
+        <td><%= link_to bubble.name, bubble %></td>
+
+        <td><%= link_to "Pass", games_kid_path(@kid, bubble_id: bubble.id, result: "play") %></td>
+        <td><%= link_to "Fail", games_kid_path(@kid, bubble_id: bubble.id, result: "fail") %></td>
+        <td><%= link_to "Enjoy", games_kid_path(@kid, bubble_id: bubble.id, result: "enjoy") %></td>
+      </tr>
     <% end %>
-  </ul>
-<% end %>
+  <% end %>
+</table>
 

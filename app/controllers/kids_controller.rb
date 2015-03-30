@@ -71,7 +71,6 @@ class KidsController < ApplicationController
       @bubble_group_status = @kid.bubble_group_statuses.find_by(bubble_group: @bubble_group)
       unless @bubble_group_status
         @bubble_group_status = @kid.bubble_group_statuses.create(bubble_group: @bubble_group)
-        @bubble_group_status.reset!
       end
 
       ## handle the result, if present
@@ -113,6 +112,12 @@ class KidsController < ApplicationController
 
   ## GET /kids/1/games
   def games
+    ## handle the result, if present
+    if params.has_key?(:result) && params.has_key?(:bubble_id)
+      bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
+      bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
+    end
+
     ## fetch available bubbles
     available = []
     @kid.bubble_group_statuses.each do |bgs|

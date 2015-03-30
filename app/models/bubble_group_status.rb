@@ -9,6 +9,9 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   alias :current_poset :poset
 
+  ## ensure that the bubble group status is fully formed after creation
+  after_create :reset!
+
   ## accessors for information about the current poset
   def current_poset_type
     case poset_id
