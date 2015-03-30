@@ -49,6 +49,23 @@ class BubbleGroupStatus < ActiveRecord::Base
     end
   end
 
+  ## standardized result handler
+  def safe_handle_result!(bubble_status, result)
+    ## check that this bubble could have been played
+    self.handle_result!(bubble_status, result) if self.available_bubbles.exists?(id: bubble_status.id)
+  end
+
+  def handle_result!(bubble_status, result)
+    case result
+    when 'pass'
+      self.pass! bubble_status
+    when 'fail'
+      self.fail! bubble_status
+    when 'enjoy'
+      self.enjoy! bubble_status
+    end
+  end
+
   ## sets up the statuses on all bubbles for the bubble group
   def reset!
     ## this should all be done in a single transaction, since we should do everything or nothing

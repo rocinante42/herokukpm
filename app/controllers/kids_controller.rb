@@ -78,21 +78,7 @@ class KidsController < ApplicationController
       if params.has_key?(:result) && params.has_key?(:bubble_status_id)
         ## get bubble status
         bubble_status = BubbleStatus.find(params[:bubble_status_id])
-
-        ## check that this bubble can be played
-        available = @bubble_group_status.available_bubbles
-
-        if available.exists?(id: bubble_status.id)
-          ## update with result
-          case params[:result]
-          when 'pass'
-            @bubble_group_status.pass! bubble_status
-          when 'fail'
-            @bubble_group_status.fail! bubble_status
-          when 'enjoy'
-            @bubble_group_status.enjoy! bubble_status
-          end
-        end
+        @bubble_group_status.safe_handle_result! bubble_status, params[:result]
       end
 
       ## return a randomly sampled active bubble
@@ -107,21 +93,7 @@ class KidsController < ApplicationController
     if params.has_key?(:result) && params.has_key?(:bubble_id)
       ## get the bubble status
       bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
-      bubble_group_status = bubble_status.bubble_group_status
-
-      ## check that this bubble could have been played
-      available = bubble_group_status.available_bubbles
-      if available.exists?(id: bubble_status.id)
-        ## update with result
-        case params[:result]
-        when 'pass'
-          bubble_group_status.pass! bubble_status
-        when 'fail'
-          bubble_group_status.fail! bubble_status
-        when 'enjoy'
-          bubble_group_status.enjoy! bubble_status
-        end
-      end
+      bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
     end
 
     ## fetch a randomly sampled active bubble
