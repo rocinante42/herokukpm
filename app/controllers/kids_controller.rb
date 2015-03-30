@@ -95,11 +95,12 @@ class KidsController < ApplicationController
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
     end
 
-    ## fetch a randomly sampled active bubble
+    ## build a bubble group status for each bubble group, if needed, and assemble all of the active bubbles
     available = []
-    @kid.bubble_group_statuses.active.each do |bgs|
-      available += bgs.available_bubbles
-    end
+    BubbleGroup.all.each do |bubble_group|
+      bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble_group)
+      available += bubble_group_status.available_bubbles
+    end 
     @bubble_status = available.select{|bs| bs.bubble.games.count > 0 }.sample
 
     if @bubble_status
@@ -118,11 +119,12 @@ class KidsController < ApplicationController
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
     end
 
-    ## fetch available bubbles
+    ## build a bubble group status for each bubble group, if needed, and assemble all of the active bubbles
     available = []
-    @kid.bubble_group_statuses.active.each do |bgs|
-      available += bgs.available_bubbles
-    end
+    BubbleGroup.all.each do |bubble_group|
+      bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble_group)
+      available += bubble_group_status.available_bubbles
+    end 
 
     ## sort info
     @bubble_games = []
