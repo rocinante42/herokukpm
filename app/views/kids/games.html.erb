@@ -17,7 +17,7 @@
         <td><%= link_to bubble_game.name, bubble_game %></td>
         <td><%= link_to bubble.name, bubble %></td>
 
-        <td><%= link_to "Pass", games_kid_path(@kid, bubble_id: bubble.id, result: "play") %></td>
+        <td><%= link_to "Pass", games_kid_path(@kid, bubble_id: bubble.id, result: "pass") %></td>
         <td><%= link_to "Fail", games_kid_path(@kid, bubble_id: bubble.id, result: "fail") %></td>
         <td><%= link_to "Enjoy", games_kid_path(@kid, bubble_id: bubble.id, result: "enjoy") %></td>
       </tr>
