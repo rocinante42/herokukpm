@@ -99,7 +99,9 @@ class KidsController < ApplicationController
     available = []
     BubbleGroup.all.each do |bubble_group|
       bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble_group)
-      available += bubble_group_status.available_bubbles
+      if bubble_group_status.active?
+        available += bubble_group_status.available_bubbles
+      end
     end 
     @bubble_status = available.select{|bs| bs.bubble.games.count > 0 }.sample
 
@@ -123,7 +125,9 @@ class KidsController < ApplicationController
     available = []
     BubbleGroup.all.each do |bubble_group|
       bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble_group)
-      available += bubble_group_status.available_bubbles
+      if bubble_group_status.active?
+        available += bubble_group_status.available_bubbles
+      end
     end 
 
     ## sort info
