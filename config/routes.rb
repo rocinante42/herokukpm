@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       get :play
       get :play_game
       get :games
+      post :result
     end
   end
 

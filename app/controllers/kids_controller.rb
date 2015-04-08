@@ -1,5 +1,5 @@
 class KidsController < ApplicationController
-  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games]
+  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games, :result]
 
   # GET /kids
   # GET /kids.json
@@ -140,6 +140,21 @@ class KidsController < ApplicationController
         @bubble_games << bubble_game
         @games_hash[bubble_game.game] = arr
       end
+    end
+  end
+
+  ## POST /kids/1/result
+  def result
+    success = false
+    if params.has_key?(:result) && params.has_key?(:bubble_id)
+      bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
+      bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
+      success = true
+    end
+
+    respond_to do |format|
+      format.html { redirect_to :back }
+      format.json { render json: {success: success} }
     end
   end
 
