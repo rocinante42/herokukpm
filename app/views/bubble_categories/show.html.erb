@@ -1,0 +1,18 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @bubble_category.name %>
+</p>
+
+<p>
+  <strong>Bubbles:</strong>
+  <ul>
+    <% @bubble_category.bubbles.each do |bubble| %>
+      <li><%= link_to bubble.name, bubble %></li>
+    <% end %>
+  </ul>
+</p>
+
+<%= link_to 'Edit', edit_bubble_category_path(@bubble_category) %> |
+<%= link_to 'Back', bubble_categories_path %>

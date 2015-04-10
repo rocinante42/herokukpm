@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150327001354) do
+ActiveRecord::Schema.define(version: 20150410215848) do
+
+  create_table "bubble_categories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "bubble_games", force: true do |t|
     t.integer  "bubble_id"
@@ -59,7 +65,10 @@ ActiveRecord::Schema.define(version: 20150327001354) do
     t.integer  "bubble_group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "bubble_category_id"
   end
+
+  add_index "bubbles", ["bubble_category_id"], name: "index_bubbles_on_bubble_category_id"
 
   create_table "classrooms", force: true do |t|
     t.string   "name"

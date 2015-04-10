@@ -15,6 +15,11 @@
   <%= link_to @bubble.bubble_group.name, @bubble.bubble_group %>
 </p>
 
+<p>
+  <strong>Bubble Category:</strong>
+  <%= link_to @bubble.bubble_category.name, @bubble.bubble_category if @bubble.bubble_category %>
+</p>
+
 <table>
   <tr>
     <th>Bubble Game</th>

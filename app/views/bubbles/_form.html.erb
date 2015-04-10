@@ -23,6 +23,10 @@
     <%= f.label :bubble_group_id %><br>
     <%= f.collection_select :bubble_group_id, BubbleGroup.all, :id, :name %>
   </div>
+  <div class="field">
+    <%= f.label :bubble_category_id %><br>
+    <%= f.collection_select :bubble_category_id, BubbleCategory.all, :id, :name %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

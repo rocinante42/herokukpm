@@ -2,6 +2,7 @@ class Bubble < ActiveRecord::Base
   require 'csv'
 
   belongs_to :bubble_group
+  belongs_to :bubble_category
 
   has_many :bubble_games, dependent: :destroy
   has_many :games, through: :bubble_games

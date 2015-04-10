@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :bubble_categories
+
   resources :bubble_group_statuses do
     member do
       get :reset
