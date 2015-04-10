@@ -51,6 +51,13 @@ class Bubble < ActiveRecord::Base
         params = bubble_params.clone
         params[:name] = row[0]
         params[:description] = row[1]
+        category_name = row[2]
+
+        unless category_name.blank?
+          category = BubbleCategory.find_or_create_by(name: category_name)
+          params[:bubble_category_id] = category.id
+        end
+
         bubbles << Bubble.create(params)
       end
     end

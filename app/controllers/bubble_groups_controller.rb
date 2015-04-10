@@ -54,6 +54,9 @@ class BubbleGroupsController < ApplicationController
     unless @bubble_group.errors.any?
       bubble_game_file = params[:bubble_group][:bubble_game_file]
       bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
+
+      bubble_category_file = params[:bubble_group][:bubble_category_file]
+      bubble_categories = BubbleCategory.create_from_csv(bubble_category_file, bubble_group: @bubble_group)
     end
 
     respond_to do |format|
@@ -73,6 +76,9 @@ class BubbleGroupsController < ApplicationController
     ## create the bubble games, if possible
     bubble_game_file = params[:bubble_group][:bubble_game_file]
     bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
+
+    bubble_category_file = params[:bubble_group][:bubble_category_file]
+    bubble_categories = BubbleCategory.create_from_csv(bubble_category_file, bubble_group: @bubble_group)
 
     respond_to do |format|
       if @bubble_group.update(bubble_group_params)
