@@ -1,0 +1,22 @@
+<h2>Reports for <%= link_to @kid.full_name, @kid %></h2>
+
+<table>
+  <tr>
+    <th>Category</th>
+    <th>Passed</th>
+    <th>Active</th>
+    <th>Total</th>
+  </tr>
+  <% @reports.each do |category, stats| %>
+    <tr>
+      <td><%= link_to category.name, category %></td>
+      <td><%= stats[:passed] %></td>
+      <td><%= stats[:active] %></td>
+      <td><%= stats[:total] %></td>
+    </tr>
+  <% end %>
+</table>
+<br>
+
+<%= link_to 'Back', @kid %>
+

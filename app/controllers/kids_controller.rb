@@ -1,5 +1,5 @@
 class KidsController < ApplicationController
-  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games, :result]
+  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games, :result, :reports]
 
   # GET /kids
   # GET /kids.json
@@ -19,6 +19,22 @@ class KidsController < ApplicationController
 
   # GET /kids/1/edit
   def edit
+  end
+
+  ## GET /kids/1/report
+  def reports
+    @reports = {}
+    BubbleCategory.all.each do |category|
+      ## fetch the statuses for this category
+      statuses = @kid.bubble_statuses.joins(:bubble).where(bubbles: {bubble_category_id: category.id})
+
+      ## store stats for those statuses
+      @reports[category] = {
+        passed: statuses.passed.count,
+        active: statuses.active.count,
+        total: statuses.count
+      }
+    end
   end
 
   # POST /kids

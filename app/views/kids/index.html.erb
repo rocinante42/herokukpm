@@ -5,7 +5,7 @@
     <tr>
       <th>Name</th>
       <th>Classroom</th>
-      <th colspan="4"></th>
+      <th colspan="7"></th>
     </tr>
   </thead>
 
@@ -17,6 +17,7 @@
         <td><%= link_to 'Play', play_kid_path(kid) %></td>
         <td><%= link_to 'Play Games', play_game_kid_path(kid) %></td>
         <td><%= link_to 'Show Games', games_kid_path(kid) %></td>
+        <td><%= link_to 'Reports', reports_kid_path(kid) %></td>
         <td><%= link_to 'Show', kid %></td>
         <td><%= link_to 'Edit', edit_kid_path(kid) %></td>
         <td><%= link_to 'Destroy', kid, method: :delete, data: { confirm: 'Are you sure?' } %></td>
