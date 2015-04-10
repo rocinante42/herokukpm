@@ -5,14 +5,23 @@
   <%= @bubble_category.name %>
 </p>
 
-<p>
-  <strong>Bubbles:</strong>
-  <ul>
-    <% @bubble_category.bubbles.each do |bubble| %>
-      <li><%= link_to bubble.name, bubble %></li>
+<% grouped_bubbles = @bubble_category.bubbles.group_by(&:bubble_group) %>
+
+<table>
+  <tr>
+    <th>Bubble Group</th>
+    <th>Bubble</th>
+  </tr>
+  <% grouped_bubbles.each do |group, bubbles| %>
+    <% bubbles.each do |bubble| %>
+      <tr>
+        <td><%= link_to group.name, group %></td>
+        <td><%= link_to bubble.name, bubble %></td>
+      </tr>
     <% end %>
-  </ul>
-</p>
+  <% end %>
+</table>
+<br>
 
 <%= link_to 'Edit', edit_bubble_category_path(@bubble_category) %> |
 <%= link_to 'Back', bubble_categories_path %>
