@@ -157,6 +157,15 @@ class KidsController < ApplicationController
         @games_hash[bubble_game.game] = arr
       end
     end
+
+    ## filter the results on the game name itself
+    if params.has_key? :game_names
+      game_names = params[:game_names]
+      game_names = [game_names] unless game_names.is_a? Array
+
+      @bubble_games.delete_if{ |bg| !game_names.include? bg.game.name }
+      @games_hash.delete_if{ |g, v| !game_names.include? g.name }
+    end
   end
 
   ## POST /kids/1/result
