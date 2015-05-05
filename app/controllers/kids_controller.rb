@@ -1,5 +1,6 @@
 class KidsController < ApplicationController
   before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games, :result, :reports]
+  skip_before_filter :verify_authenticity_token, :only => [:result]
 
   # GET /kids
   # GET /kids.json
