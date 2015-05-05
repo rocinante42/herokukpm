@@ -179,7 +179,6 @@ class KidsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html { redirect_to :back }
       format.json { render json: {success: success} }
     end
   end
