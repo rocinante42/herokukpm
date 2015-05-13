@@ -1,4 +1,4 @@
-json.array!(@bubble_games) do |bubble_game|
-  json.partial! 'bubble_games/bubble_game', bubble_game: bubble_game, rec: 2
+json.array!(@games_hash.keys) do |game|
+  json.partial! 'games/game', game: game
 end
 

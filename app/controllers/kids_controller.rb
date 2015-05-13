@@ -112,6 +112,11 @@ class KidsController < ApplicationController
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
     end
 
+    ## if a game id was passed in, we want a bubble that supports that game
+    if params[:game_id].present?
+      @game = Game.find(params[:game_id])
+    end
+
     ## build a bubble group status for each bubble group, if needed, and assemble all of the active bubbles
     available = []
     BubbleGroup.all.each do |bubble_group|
@@ -120,13 +125,27 @@ class KidsController < ApplicationController
         available += bubble_group_status.available_bubbles
       end
     end 
-    @bubble_status = available.select{|bs| bs.bubble.games.count > 0 }.sample
 
-    if @bubble_status
-      ## extract the games, sample a game, and get the bubble-game object
-      @bubble = @bubble_status.bubble
-      @game = @bubble.games.sample
-      @bubble_game = @bubble.bubble_games.find_by(game: @game)
+    ## randomly select one of the bubble statuses
+    if @game
+      ## select a bubble status that supports the selected game
+      @bubble_status = available.select{ |bs| bs.bubble.games.include? @game }.sample
+
+      ## get the bubble, and the bubble_game
+      if @bubble_status
+        @bubble = @bubble_status.bubble
+        @bubble_game = @bubble.bubble_games.find_by(game: @game)
+      end
+    else
+      ## select any of the bubble statuses
+      @bubble_status = available.select{|bs| bs.bubble.games.count > 0 }.sample
+
+      if @bubble_status
+        ## extract the games, sample a game, and get the bubble-game object
+        @bubble = @bubble_status.bubble
+        @game = @bubble.games.sample
+        @bubble_game = @bubble.bubble_games.find_by(game: @game)
+      end
     end
   end
 
