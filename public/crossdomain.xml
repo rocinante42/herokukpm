@@ -2,4 +2,5 @@
 <!-- http://www.adobe.com/crossdomain.xml -->
 <cross-domain-policy>
   <allow-access-from domain="*.emotionrays.com" />
+  <allow-access-from domain="www.oddimation.com" />
 </cross-domain-policy>
