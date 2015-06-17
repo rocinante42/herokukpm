@@ -3,4 +3,5 @@
 <cross-domain-policy>
   <allow-access-from domain="*.emotionrays.com" />
   <allow-access-from domain="*.oddimation.com" />
+  <allow-http-request-headers-from domain="*.oddimation.com" headers="*" secure="false"/>
 </cross-domain-policy>
