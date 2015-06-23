@@ -26,8 +26,8 @@ class TriggersController < ApplicationController
   def create
     @trigger = Trigger.new(trigger_params)
 
-    if params.has_key? :trigger_csv_file
-      ## TODO :: process file
+    if params[:trigger].has_key? :trigger_csv_file
+      Trigger.create_from_csv params[:trigger][:trigger_csv_file]
 
       redirect_to triggers_url
     else
