@@ -192,6 +192,11 @@ class KidsController < ApplicationController
   def result
     success = false
     if params.has_key?(:result) && params.has_key?(:bubble_id)
+      ## ensure that the bubble group status exists
+      bubble = Bubble.find(params[:bubble_id])
+      bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble.bubble_group)
+
+      ## update the bubble status as needed
       bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
       success = true
