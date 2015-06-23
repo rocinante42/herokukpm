@@ -26,13 +26,19 @@ class TriggersController < ApplicationController
   def create
     @trigger = Trigger.new(trigger_params)
 
-    respond_to do |format|
-      if @trigger.save
-        format.html { redirect_to @trigger, notice: 'Trigger was successfully created.' }
-        format.json { render :show, status: :created, location: @trigger }
-      else
-        format.html { render :new }
-        format.json { render json: @trigger.errors, status: :unprocessable_entity }
+    if params.has_key? :trigger_csv_file
+      ## TODO :: process file
+
+      redirect_to triggers_url
+    else
+      respond_to do |format|
+        if @trigger.save
+          format.html { redirect_to @trigger, notice: 'Trigger was successfully created.' }
+          format.json { render :show, status: :created, location: @trigger }
+        else
+          format.html { render :new }
+          format.json { render json: @trigger.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -69,6 +75,6 @@ class TriggersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def trigger_params
-      params.require(:trigger).permit(:source_id, :destination_id, :poset_id)
+      params.require(:trigger).permit(:bubble_id, :bubble_group_id)
     end
 end

@@ -3,9 +3,8 @@
 <table>
   <thead>
     <tr>
-      <th>Source</th>
-      <th>Destination</th>
-      <th>Poset</th>
+      <th>Bubble</th>
+      <th>Bubble Group</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -13,9 +12,8 @@
   <tbody>
     <% @triggers.each do |trigger| %>
       <tr>
-        <td><%= trigger.source_id %></td>
-        <td><%= trigger.destination_id %></td>
-        <td><%= trigger.poset_id %></td>
+        <td><%= link_to trigger.bubble.try(:name), trigger.bubble %></td>
+        <td><%= link_to trigger.bubble_group.try(:name), trigger.bubble_group %></td>
         <td><%= link_to 'Show', trigger %></td>
         <td><%= link_to 'Edit', edit_trigger_path(trigger) %></td>
         <td><%= link_to 'Destroy', trigger, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -12,17 +12,21 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :source_id %><br>
-    <%= f.number_field :source_id %>
+    <%= f.label :bubble_id %><br>
+    <%= f.collection_select :bubble_id, Bubble.all, :id, :name, include_blank: false %>
   </div>
   <div class="field">
-    <%= f.label :destination_id %><br>
-    <%= f.number_field :destination_id %>
+    <%= f.label :bubble_group_id, "Bubble Group" %><br>
+    <%= f.collection_select :bubble_group_id, BubbleGroup.all, :id, :name, include_blank: false %>
   </div>
-  <div class="field">
-    <%= f.label :poset_id %><br>
-    <%= f.number_field :poset_id %>
-  </div>
+
+  <% if @trigger.new_record? %>
+    <h3>Create from CSV</h3>
+    <div class="field">
+      Trigger CSV: <%= f.file_field :trigger_csv_file %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>
