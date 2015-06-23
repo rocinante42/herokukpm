@@ -34,6 +34,10 @@ class BubbleGroupStatus < ActiveRecord::Base
     self.active == ACTIVE_ACTIVE
   end
 
+  def human_active_string
+    ACTIVE_HUMAN_NAMES[self.active]
+  end
+
   ## accessors for information about the current poset
   def current_poset_type
     case poset_id
