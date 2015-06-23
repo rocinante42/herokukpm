@@ -4,7 +4,7 @@ class BubbleGroupStatus < ActiveRecord::Base
   belongs_to :poset
 
   has_many :bubble_statuses, dependent: :destroy
-  has_many :triggers, dependent: :destroy
+  has_many :triggers, through: :bubble_group
 
   alias :current_poset :poset
 
@@ -38,7 +38,7 @@ class BubbleGroupStatus < ActiveRecord::Base
     else
       return true if self.bubble_statuses.passed.count > 0
 
-      bubble_ids = self.triggers.pluck(:bubble_id).uniq
+      bubble_ids = self.bubble_group.triggers.pluck(:bubble_id).uniq
       unpassed_triggers = self.kid.bubble_statuses.where(bubble_id: bubble_ids).passed
 
       return (unpassed_triggers.count == bubble_ids.count)
