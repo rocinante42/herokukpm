@@ -5,12 +5,34 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   has_many :bubble_statuses, dependent: :destroy
 
-  scope :active, ->{ where(active: true) }
+  scope :active, ->{ where(active: ACTIVE_ACTIVE) }
 
   alias :current_poset :poset
 
+  ## active allowed values
+  ACTIVE_VALUES = [
+    ACTIVE_NONE = 0,
+    ACTIVE_ACTIVE = 1,
+    ACTIVE_INACTIVE = 2
+  ]
+
+  ACTIVE_HUMAN_NAMES = {
+    ACTIVE_NONE => 'None',
+    ACTIVE_ACTIVE => 'Active',
+    ACTIVE_INACTIVE => 'Inactive'
+  }
+
+  ACTIVE_SELECT_OPTIONS = ACTIVE_HUMAN_NAMES.invert.to_a
+
+  ## validations
+  validates :active, inclusion: ACTIVE_VALUES
+
   ## ensure that the bubble group status is fully formed after creation
   after_create :reset!
+
+  def active?
+    self.active == ACTIVE_ACTIVE
+  end
 
   ## accessors for information about the current poset
   def current_poset_type

@@ -68,7 +68,7 @@ class ClassroomsController < ApplicationController
     if params.has_key? :active
       params[:active].each do |k, v|
         status = BubbleGroupStatus.find(k)
-        status.update(active: (v == '1'))
+        status.update(active: v.to_i)
       end
     end
 

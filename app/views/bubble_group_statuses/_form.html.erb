@@ -25,7 +25,7 @@
   </div>
   <div class="field">
     <%= f.label :active %>
-    <%= f.check_box :active %>
+    <%= f.select :active, BubbleGroupStatus::ACTIVE_SELECT_OPTIONS, include_blank: false %>
   </div>
   <div class="field">
     <%= f.label :pass_counter %><br>
