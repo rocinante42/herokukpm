@@ -1,0 +1,44 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ */
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "*";
+
+@import url(http://fonts.googleapis.com/css?family=Cabin:400,700);
+.font-brand {font-family: 'Cabin', sans-serif;}
+
+body {font-family: "Myriad Pro", sans-serif;}
+
+#kmLoginPage {
+  .nav-tabs > li > a {border: 0px solid transparent;}
+  .nav-tabs-justified > .active > a, .nav-tabs.nav-justified > .active > a,
+  .nav-tabs-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:hover,
+  .nav-tabs-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:focus {border-bottom:solid 8px #f0642a; background: #f0642a;}
+  .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {border-bottom:solid 8px #f0642a; background: #f8a41b; border-radius:0; color:#ffffff; font-size:20px;}
+  #login_form form {margin:100px 0;}
+  .form-control {height:42px; border-radius:10px; border:solid 3px #c8c8c8; font-size:18px;}
+  .control-label {text-align:left; padding-top:2px; font-size:28px; color:#45549c; font-weight:200;}
+  #forgot_password {font-size:18px;}
+  #go {margin:30px 0; display:inline-block; width:70px; height:70px; line-height:77px; background:#b5bbd7; color:#ffffff; font-size:24px; text-align:center;
+    &:hover {text-decoration:none; background:#45549c;}
+  }
+}
+
+#kmLoginHeader {color:#ffffff; background:#6e86c8; box-shadow:0 -10px 15px 10px #000; position:relative; z-index:1;
+  > .row {margin-top:20px; margin-bottom:20px; background:#45549c;
+    h1 {font-size: 48px; margin:30px 0 30px; font-weight:700;
+      &:first-child {padding-right:70px;}
+      &:last-child {padding-left:70px;}
+    }
+  }
+}
