@@ -41,7 +41,8 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
-  root to: 'home#index'
+  root to: 'home#home'
   get 'home/index'
+  get 'home/home'
 end
 
