@@ -1,4 +1,5 @@
 class TriggersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_trigger, only: [:show, :edit, :update, :destroy]
 
   # GET /triggers

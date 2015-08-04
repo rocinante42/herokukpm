@@ -1,5 +1,6 @@
 class BubbleCategoriesController < ApplicationController
-  before_action :set_bubble_category, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  load_and_authorize_resource
 
   # GET /bubble_categories
   # GET /bubble_categories.json

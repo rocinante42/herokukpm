@@ -1,5 +1,6 @@
 class BubbleStatusesController < ApplicationController
-  before_action :set_bubble_status, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  load_and_authorize_resource
 
   # GET /bubble_statuses
   # GET /bubble_statuses.json

@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+
+  root to: 'home#index'
+  get 'home/index'
+  get 'home/home'
+
+  devise_for :users, controllers: { registrations: "registrations" }
+  resources :roles
+
   resources :bubble_categories
 
   resources :bubble_group_statuses do
@@ -41,8 +49,5 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
-  root to: 'home#home'
-  get 'home/index'
-  get 'home/home'
-end
 
+end

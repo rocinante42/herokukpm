@@ -1,5 +1,6 @@
 class KidsController < ApplicationController
-  before_action :set_kid, only: [:show, :edit, :update, :destroy, :play, :play_game, :games, :result, :reports]
+  before_action :authenticate_user!
+  load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:result]
 
   # GET /kids
@@ -124,7 +125,7 @@ class KidsController < ApplicationController
       if bubble_group_status.active?
         available += bubble_group_status.available_bubbles
       end
-    end 
+    end
 
     ## randomly select one of the bubble statuses
     if @game
@@ -164,7 +165,7 @@ class KidsController < ApplicationController
       if bubble_group_status.active?
         available += bubble_group_status.available_bubbles
       end
-    end 
+    end
 
     ## sort info
     @bubble_games = []
