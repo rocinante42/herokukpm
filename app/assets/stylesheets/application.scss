@@ -25,12 +25,16 @@ body {font-family: "Myriad Pro", sans-serif;}
   .nav-tabs-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:hover,
   .nav-tabs-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:focus {border-bottom:solid 8px #f0642a; background: #f0642a;}
   .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {border-bottom:solid 8px #f0642a; background: #f8a41b; border-radius:0; color:#ffffff; font-size:20px;}
-  #login_form form {margin:100px 0;}
+  #login_form form {margin-top:100px;}
+  #login_form #login_problem {margin-top:50px;}
   .form-control {height:42px; border-radius:10px; border:solid 3px #c8c8c8; font-size:18px;}
   .control-label {text-align:left; padding-top:2px; font-size:28px; color:#45549c; font-weight:200;}
   #forgot_password {font-size:18px;}
-  #go {margin:30px 0; display:inline-block; width:70px; height:70px; line-height:77px; background:#b5bbd7; color:#ffffff; font-size:24px; text-align:center;
+  #go {margin:30px 0; display:inline-block; width:70px; height:70px; line-height:77px; background:#b5bbd7; color:#ffffff; font-size:24px; text-align:center; border:none;
     &:hover {text-decoration:none; background:#45549c;}
+  }
+  #error_explanation {
+    h2 {font-size:16px;}
   }
 }
 

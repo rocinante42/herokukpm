@@ -1,0 +1,76 @@
+<div id="kmLoginPage">
+  <%= render 'devise/shared/header' %>
+
+  <div class="container-fluid">
+    <div class="row">
+      <ul class="nav nav-tabs nav-justified">
+        <li role="presentation"><%= link_to 'login', new_user_session_path %></li>
+        <li role="presentation" class="active"><a data-toggle="tab" href="#register_form">Register</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="tab-content container">
+    <div class="tab-pane fade in active" id="login_form">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form-horizontal'}) do |f| %>
+
+        <div class="row text-danger">
+          <div class="col-md-6 col-md-offset-3">
+            <%= devise_error_messages! %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3">
+
+            <div class="form-group">
+              <%= f.label :first_name, class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <%= f.text_field :first_name, class: 'form-control', placeholder: 'First Name' %>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :last_name, class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last Name' %>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :direct_phone, class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <%= f.text_field :direct_phone, class: 'form-control', placeholder: 'Phone' %>
+              </div>
+            </div>
+            <div class="form-group">
+              <%= f.label :email, class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <%= f.email_field :email, class: 'form-control', placeholder: 'E-mail', autofocus: true %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password, class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <%= f.password_field :password, class: 'form-control', placeholder: 'Password', autocomplete: "off" %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :password_confirmation, raw('&nbsp;'), class: 'col-sm-4 control-label' %>
+              <div class="col-sm-8">
+                <%= f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password', autocomplete: "off" %>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row text-right">
+          <div class="col-md-6 col-md-offset-3">
+            <%= f.submit "GO", id: 'go', class: 'img-circle' %>
+          </div>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

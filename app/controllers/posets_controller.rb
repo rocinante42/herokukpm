@@ -1,5 +1,6 @@
 class PosetsController < ApplicationController
-  before_action :set_poset, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!
+  load_and_authorize_resource
 
   # GET /posets
   # GET /posets.json
