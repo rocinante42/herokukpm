@@ -3,8 +3,6 @@ class DeviseCreateUsers < ActiveRecord::Migration
     create_table(:users) do |t|
       #Role
       t.belongs_to :role, index: true
-      ## Admin?
-      t.boolean :admin
       ##Data by User
       t.string :first_name
       t.string :last_name

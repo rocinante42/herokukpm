@@ -8,6 +8,16 @@
   <%= link_to @classroom.school.name, @classroom.school if @classroom.school %>
 </p>
 
+<p>
+  <strong>Teacher:</strong>
+  <%= @classroom.teacher.full_name if @classroom.teacher %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @classroom.class_type.type_name if @classroom.class_type %>
+</p>
+
 <%= form_tag activate_classroom_path(@classroom) do %>
   <table>
     <tr>

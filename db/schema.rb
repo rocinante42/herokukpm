@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150803190748) do
+ActiveRecord::Schema.define(version: 20150806093208) do
 
   create_table "bubble_categories", force: true do |t|
     t.string   "name"
@@ -70,12 +70,24 @@ ActiveRecord::Schema.define(version: 20150803190748) do
 
   add_index "bubbles", ["bubble_category_id"], name: "index_bubbles_on_bubble_category_id"
 
+  create_table "classroom_types", force: true do |t|
+    t.string   "type_name"
+    t.string   "type_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "classrooms", force: true do |t|
     t.string   "name"
+    t.integer  "classroom_type_id"
+    t.integer  "user_id"
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "classrooms", ["classroom_type_id"], name: "index_classrooms_on_classroom_type_id"
+  add_index "classrooms", ["user_id"], name: "index_classrooms_on_user_id"
 
   create_table "edges", force: true do |t|
     t.integer  "source_id"
@@ -134,7 +146,6 @@ ActiveRecord::Schema.define(version: 20150803190748) do
 
   create_table "users", force: true do |t|
     t.integer  "role_id"
-    t.boolean  "admin"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "direct_phone"
