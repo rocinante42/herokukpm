@@ -1,0 +1,35 @@
+<div class="container-fluid kmHeader">
+  <div class="row">
+    <div class="container">
+      <% classname = user_signed_in? ? 'col-md-5' : 'col-md-12' %>
+      <div class="<%= classname %> text-center font-brand title">
+        <h1>Kids Play Math</h1>
+        <h1>Teachers Room</h1>
+      </div>
+      <% if user_signed_in? %>
+        <div class="col-md-7">
+          <div class="media">
+            <div class="media-body media-left media-middle text-right">
+              <h1>Welcome, <%= current_user.last_name %></h1>
+            </div>
+            <div class="media-left media-right media-middle">
+              <%= image_tag 'avatar.png', class: 'img-responisve img-circle' %>
+            </div>
+            <div class="media-right media-middle">
+              <div class="dropdown">
+                <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <i class="fa fa-cog fa-2x"></i>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="#">Action</a></li>
+                  <li><a href="#">Another action</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

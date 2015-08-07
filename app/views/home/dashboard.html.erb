@@ -1,0 +1,110 @@
+<div class="container-fluid kmSection">
+  <div class="row content-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" class="active">
+          <%= link_to '#asd' do%>
+            Dashboard
+            <span class="caret"></span>
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to '#asd' do%>
+            Classroom
+            <span class="caret"></span>
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to '#asd' do%>
+            Activities
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to '#asd' do%>
+            Teacher Mode
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Average Play Time per Kid</h4>
+      </div>
+      <div class="pull-right">
+        <div class="dropdown simple">
+          <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span>Classroom 1</span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li><a href="#">Classroom 2</a></li>
+            <li><a href="#">Classroom 3</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="row text-center apt-head">
+    <div class="col-md-2 col-md-offset-1">
+      <h1>8 kids</h1>
+      <p>0-24 minutes</p>
+    </div>
+    <div class="col-md-2">
+      <h1>3 kids</h1>
+      <p>24-48 minutes</p>
+    </div>
+    <div class="col-md-2">
+      <h1>2 kids</h1>
+      <p>48-72 minutes</p>
+    </div>
+    <div class="col-md-2">
+      <h1>3 kids</h1>
+      <p>72-96 minutes</p>
+    </div>
+    <div class="col-md-2">
+      <h1>5 kids</h1>
+      <p>96-120 minutes</p>
+    </div>
+  </div>
+
+  <% max_kid_count = 9 %>
+  <% kids_count_per_timegroup = [8, 3, 2, 3, 5] %>
+  <%# one row has a height of 40px %>
+  <% row_height = 40 %>
+  <% total_grid_height = max_kid_count * row_height %>
+  <div class="row apt-body">
+    <div class="col-md-1 font-xxlarge text-right apt-y-axis">
+      <% (1..max_kid_count).to_a.reverse.each do |item| %>
+        <div><%= item %></div>
+      <% end %>
+    </div>
+    <% 5.times do |index| %>
+      <div class="col-md-2">
+        <div class="grid" style="height: <%= total_grid_height %>px;">
+          <div class="apt-bar" style="height: <%= kids_count_per_timegroup[index] * row_height %>px;"></div>
+        </div>
+        <div class="apt-x-axis text-center font-xxlarge">
+          <%= "#{24 * index} - #{24 * (index + 1)} minutes" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Activity Progress</h4>
+      </div>
+    </div>
+  </div>
+</div>
