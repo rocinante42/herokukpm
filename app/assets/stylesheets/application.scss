@@ -14,15 +14,15 @@
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@import "*";
-
-@import url(http://fonts.googleapis.com/css?family=Cabin:400,700);
-.font-brand {font-family: 'Cabin', sans-serif;}
-
 
 $color-brand: #f8a41b;
 $color-brand-fade: #f0642a;
 $color-inv: #ffffff;
+
+@import "*";
+
+@import url(http://fonts.googleapis.com/css?family=Cabin:400,700);
+.font-brand {font-family: 'Cabin', sans-serif;}
 
 body {font-family: "Myriad Pro", sans-serif; color:#808080;}
 i {vertical-align:middle;}
@@ -32,80 +32,3 @@ a, a:focus, a:hover, a:active {display:inline-block; text-decoration:none;}
 .font-large {font-size:16px;}
 .font-xlarge {font-size:18px;}
 .font-xxlarge {font-size:22px;}
-
-.content-tabs {background:$color-brand; border-bottom:solid 8px $color-brand-fade;
-  .nav-tabs > li > a {border: 0 solid transparent;}
-  .nav-tabs-justified > .active > a, .nav-tabs.nav-justified > .active > a,
-  .nav-tabs-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:hover,
-  .nav-tabs-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:focus {border:0 solid transparent; background: $color-brand-fade; color:$color-inv;}
-  .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {background:$color-brand; border-radius:0; color:$color-brand-fade; font-size:20px;}
-}
-
-#kmLoginPage {
-  #login_form form {margin-top:100px;}
-  #login_form #login_problem {margin-top:50px;}
-  .form-control {height:42px; border-radius:10px; border:solid 3px #c8c8c8; font-size:18px;}
-  .control-label {text-align:left; padding-top:2px; font-size:28px; color:#45549c; font-weight:200;}
-  #forgot_password {font-size:18px;}
-  #go {margin:30px 0; display:inline-block; width:70px; height:70px; line-height:77px; background:#b5bbd7; color:#ffffff; font-size:24px; text-align:center; border:none;
-    &:hover {text-decoration:none; background:#45549c;}
-  }
-  #error_explanation {
-    h2 {font-size:16px;}
-  }
-}
-
-.kmHeader {color:#ffffff; background:#6e86c8; position:relative; z-index:1;
-  > .row {margin-top:20px; margin-bottom:20px; background:#45549c;
-    h1 {margin:10px 0 10px; font-size: 38px; font-weight:700;}
-    .title h1 {
-      &:first-child {margin-top:30px; padding-right:70px;}
-      &:last-child {margin-bottom:30px; padding-left:70px;}
-    }
-    .media {margin:20px 0; overflow:visible;
-      .img-circle {border:solid 4px #d2dbe4;}
-    }
-  }
-  &.kmLoginHeader {box-shadow:0 -10px 15px 10px #000;
-    > .row h1 {margin:20px 0 20px; font-size:48px;}
-  }
-}
-
-
-$section-color: #296cbd;
-.kmSection {margin-top: 20px;
-  .kmSectionTitle {padding:10px 0; background:$section-color; color:$color-inv;
-    h4 {margin:0; font-weight:normal;}
-  }
-  .dropdown.simple {margin-top:-1px; margin-bottom:-1px;
-    > a > span {padding-top:2px;}
-  }
-}
-
-.dropdown {
-  > a {color:$color-inv;
-    > span {display:inline-block; vertical-align:middle;}
-  }
-  &.simple {
-    > a {padding-left:10px; padding-right:10px; background:$color-brand-fade; border-radius:10px;}
-  }
-}
-
-
-.apt-head {
-  > div {padding-left:10px; padding-right:10px; border-right:solid 2px #cccccc;
-    &:last-child {border-right:none;}
-  }
-  h1 {font-size:46px;}
-  p {font-size:18px;}
-}
-
-$row-height: 40px;
-.apt-body {
-  > div {padding-left:0; padding-right:0;
-    &:first-child {padding-right:15px; background:none;}
-  }
-  .apt-y-axis {line-height:$row-height;}
-  .grid {position:relative; margin-bottom:$row-height / 2; background: url(asset_path('apt-grid.png')) repeat;}
-  .apt-bar {position:absolute; bottom:-$row-height / 2; left:10px; right:10px; background:rgba(0, 185, 185, 0.8);}
-}
