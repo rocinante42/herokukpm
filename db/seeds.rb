@@ -80,41 +80,32 @@ classroom_2 = Classroom.find_or_create_by({
     })
 
 #/////////////////Bubble Categories///////////////
-p "Creating Categories Cardinality"
-categorie_1 = BubbleCategory.find_or_create_by({name: "Cardinality5"})
-categorie_2 = BubbleCategory.find_or_create_by({name: "Cardinality10"})
-categorie_3 = BubbleCategory.find_or_create_by({name: "Cardinality15"})
-categorie_4 = BubbleCategory.find_or_create_by({name: "Cardinality20"})
-p "Creating Categories Base10-Produce"
-categorie_5 = BubbleCategory.find_or_create_by({name: "Base10-Produce_10"})
-categorie_6 = BubbleCategory.find_or_create_by({name: "Base10-Produce_20"})
-categorie_7 = BubbleCategory.find_or_create_by({name: "Base10-Produce_30"})
-categorie_8 = BubbleCategory.find_or_create_by({name: "Base10-Produce_40"})
-p "Creating Categories Base10-count"
-categorie_9 = BubbleCategory.find_or_create_by({name: "Base10-count_10"})
-categorie_10 = BubbleCategory.find_or_create_by({name: "Base10-count_20"})
-categorie_11 = BubbleCategory.find_or_create_by({name: "Base10-count_30"})
-categorie_12 = BubbleCategory.find_or_create_by({name: "Base10-count_40"})
-p "Creating Categories NumberLine"
-categorie_13 = BubbleCategory.find_or_create_by({name: "NumberLine_10"})
-categorie_14 = BubbleCategory.find_or_create_by({name: "NumberLine_20"})
-categorie_15 = BubbleCategory.find_or_create_by({name: "NumberLine_70"})
-categorie_16 = BubbleCategory.find_or_create_by({name: "NumberLine_120"})
-p "Creating Categories CountAll"
-categorie_17 = BubbleCategory.find_or_create_by({name: "CountAll_5"})
-categorie_18 = BubbleCategory.find_or_create_by({name: "CountAll_10"})
-categorie_19 = BubbleCategory.find_or_create_by({name: "CountAll_15"})
-categorie_20 = BubbleCategory.find_or_create_by({name: "CountAll_20"})
-p "Creating Categories CountOn"
-categorie_21 = BubbleCategory.find_or_create_by({name: "CountOn_5"})
-categorie_22 = BubbleCategory.find_or_create_by({name: "CountOn_10"})
-categorie_23 = BubbleCategory.find_or_create_by({name: "CountOn_15"})
-categorie_24 = BubbleCategory.find_or_create_by({name: "CountOn_20"})
-p "Creating Categories Comparison"
-categorie_25 = BubbleCategory.find_or_create_by({name: "Comparison_5"})
-categorie_26 = BubbleCategory.find_or_create_by({name: "Comparison_10"})
-categorie_27 = BubbleCategory.find_or_create_by({name: "Comparison_15"})
-categorie_28 = BubbleCategory.find_or_create_by({name: "Comparison_20"})
+p "Creating Categories "
+category_list = ["Cardinality","CountAll_","CountOn_","Comparison_" ]
+count = 5
+category_list.each do |category|
+   while count != 25
+      BubbleCategory.find_or_create_by({name: "#{category}#{count}"})
+      count += 5
+   end
+   count = 5
+end
+
+category_list_1 = ["Base10-Produce_","Base10-count_"]
+count_1 = 10
+category_list_1.each do |category|
+   while count_1 != 50
+      BubbleCategory.find_or_create_by({name: "#{category}#{count_1}"})
+      count_1 += 10
+   end
+   count_1 = 10
+end
+
+ BubbleCategory.find_or_create_by({name: "NumberLine_10"})
+ BubbleCategory.find_or_create_by({name: "NumberLine_20"})
+ BubbleCategory.find_or_create_by({name: "NumberLine_70"})
+ BubbleCategory.find_or_create_by({name: "NumberLine_120"})
+
 
 #/////////////////Bubble Groups///////////////
 p "Creating Bubble Groups"
