@@ -70,6 +70,6 @@ class BubbleStatusesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bubble_status_params
-      params.require(:bubble_status).permit(:kid_id, :bubble_id, :passed, :active)
+      params.require(:bubble_status).permit(:bubble_group_status_id, :bubble_id, :passed, :active)
     end
 end

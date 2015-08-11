@@ -21,7 +21,11 @@
   </div>
   <div class="field">
     <%= f.label "Teacher" %><br>
+    <%if current_user.admin? %>
+    <%= f.collection_select :user_id, User.teachers, :id, :full_name, include_blank: true %>
+    <%else%>
     <%= f.collection_select :user_id, User.teachers, :id, :full_name, { selected: current_user.id } %>
+    <% end %>
   </div>
   <div class="field">
     <%= f.label "Classroom type" %><br>

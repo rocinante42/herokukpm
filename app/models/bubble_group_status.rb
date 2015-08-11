@@ -129,7 +129,7 @@ class BubbleGroupStatus < ActiveRecord::Base
         status.active = true
         status.save!
       end
-    end 
+    end
   end
 
   ## traversal methods
@@ -263,7 +263,6 @@ class BubbleGroupStatus < ActiveRecord::Base
   def available_bubbles
     ## get statuses of currently available bubbles
     bubbles = self.bubble_statuses.where(bubble: self.current_poset.bubbles).active
-
     ## refine the bubbles, if possible
     case current_poset_type
     when "Forward"
@@ -366,4 +365,3 @@ class BubbleGroupStatus < ActiveRecord::Base
       end
     end
 end
-
