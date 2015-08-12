@@ -37,14 +37,18 @@
       </div>
       <div class="pull-right">
         <div class="dropdown simple">
+          <% if @classrooms.any? %>
           <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span>Classroom 1</span>
+            <span><%= @classrooms.first.name %></span>
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#">Classroom 2</a></li>
-            <li><a href="#">Classroom 3</a></li>
+            <% others = @classrooms.reject {|classroom| classroom == @classrooms.first} %>
+            <%= others.each do |classroom| %>
+              <li><a href="#"><%= classroom.name %></a></li>
+            <% end %>
           </ul>
+          <% end %>
         </div>
       </div>
     </div>
@@ -141,14 +145,17 @@
 
   <div class="row kmSection text-center">
     <div class="dropdown simple">
-      <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <span>Classroom 1</span>
-        <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li><a href="#">Classroom 2</a></li>
-        <li><a href="#">Classroom 3</a></li>
-      </ul>
+      <% if @classrooms.any? %>
+        <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <span><%= @classrooms.first.name %></span>
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <%= others.each do |classroom| %>
+            <li><a href="#"><%= classroom.name %></a></li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
   </div>
 
