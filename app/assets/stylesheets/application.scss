@@ -12,37 +12,23 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+$color-brand: #f8a41b;
+$color-brand-fade: #f0642a;
+$color-inv: #ffffff;
+
 @import "*";
 
 @import url(http://fonts.googleapis.com/css?family=Cabin:400,700);
 .font-brand {font-family: 'Cabin', sans-serif;}
 
-body {font-family: "Myriad Pro", sans-serif;}
-
-#kmLoginPage {
-  .nav-tabs > li > a {border: 0px solid transparent;}
-  .nav-tabs-justified > .active > a, .nav-tabs.nav-justified > .active > a,
-  .nav-tabs-justified > .active > a:hover, .nav-tabs.nav-justified > .active > a:hover,
-  .nav-tabs-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:focus {border-bottom:solid 8px #f0642a; background: #f0642a;}
-  .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {border-bottom:solid 8px #f0642a; background: #f8a41b; border-radius:0; color:#ffffff; font-size:20px;}
-  #login_form form {margin-top:100px;}
-  #login_form #login_problem {margin-top:50px;}
-  .form-control {height:42px; border-radius:10px; border:solid 3px #c8c8c8; font-size:18px;}
-  .control-label {text-align:left; padding-top:2px; font-size:28px; color:#45549c; font-weight:200;}
-  #forgot_password {font-size:18px;}
-  #go {margin:30px 0; display:inline-block; width:70px; height:70px; line-height:77px; background:#b5bbd7; color:#ffffff; font-size:24px; text-align:center; border:none;
-    &:hover {text-decoration:none; background:#45549c;}
-  }
-  #error_explanation {
-    h2 {font-size:16px;}
-  }
-}
-
-#kmLoginHeader {color:#ffffff; background:#6e86c8; box-shadow:0 -10px 15px 10px #000; position:relative; z-index:1;
-  > .row {margin-top:20px; margin-bottom:20px; background:#45549c;
-    h1 {font-size: 48px; margin:30px 0 30px; font-weight:700;
-      &:first-child {padding-right:70px;}
-      &:last-child {padding-left:70px;}
-    }
-  }
-}
+body {font-family: "Myriad Pro", sans-serif; color:#808080;}
+i {vertical-align:middle;}
+.nowrap {white-space:nowrap;}
+a, a:focus, a:hover, a:active {display:inline-block; text-decoration:none;}
+.font-normal {font-size:14px;}
+.font-large {font-size:16px;}
+.font-xlarge {font-size:18px;}
+.font-xxlarge {font-size:22px;}

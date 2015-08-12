@@ -1,0 +1,8 @@
+.dropdown {display:inline-block;
+  > a {color:$color-inv;
+    > span {display:inline-block; vertical-align:middle;}
+  }
+  &.simple {
+    > a {padding-top:2px; padding-left:10px; padding-right:10px; background:$color-brand-fade; border-radius:10px;}
+  }
+}

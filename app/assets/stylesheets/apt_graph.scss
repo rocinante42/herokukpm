@@ -1,0 +1,35 @@
+.apt-head {
+  > div {padding-left:10px; padding-right:10px; border-right:solid 2px #cccccc;
+    &:last-child {border-right:none;}
+  }
+  h1 {font-size:46px;}
+  p {font-size:18px;}
+}
+
+$row-height: 40px;
+.apt-body {margin-top:20px;
+  .apt-col {padding-left:0; padding-right:0; transition: background 0.2s ease;}
+  .apt-y-axis {line-height:$row-height;}
+  .grid {position:relative; margin-bottom:$row-height / 2; background: url(asset_path('apt-grid.png')) repeat; opacity:0.7;}
+  .apt-bar {position:absolute; bottom:-$row-height / 2; left:10px; right:10px; background:rgba(0, 185, 185, 0.8); transition: background 0.2s ease;}
+  .apt-x-axis {border-top:solid 7px #666666; transition: background, color 0.2s ease;}
+  .apt-tip {visibility:hidden; margin-top:-20px; margin-bottom:-20px; z-index:-1; transition: margin 0.2s ease;}
+}
+.apt-col:hover {background: rgba(0, 0, 0, 0.1);
+  .grid {opacity:1;}
+  .apt-bar {background:$color-brand;}
+  .apt-x-axis {background:$color-brand; color:$color-inv;}
+  .apt-tip {visibility:visible; margin-top:0; margin-bottom:0; z-index:0;}
+}
+
+$arrow-size: 10px;
+$padding: 10px;
+.apt-tip {position:absolute; width:100%;
+  .apt-tip-content {position:relative; margin:0 20px; padding:$padding; border-radius:10px; background:$color-brand-fade; color:$color-inv; box-shadow:0 0 20px #999;}
+  &.top .apt-tip-content:after, &.bottom .apt-tip-content:before {position:absolute; content:''; left:50%; margin-left:-$arrow-size;}
+  &.top .apt-tip-content:after {margin-top:$padding; border:solid $arrow-size $color-brand-fade; border-color: $color-brand-fade transparent transparent;}
+  &.bottom .apt-tip-content:before {margin-top:-2 * $arrow-size - $padding; border:solid $arrow-size $color-brand-fade; border-color:transparent transparent $color-brand-fade;}
+  h4 {margin:0 0 5px; font-weight:normal;}
+  li {font-size:12px;}
+  a {color:$color-inv;}
+}

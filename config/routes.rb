@@ -48,5 +48,5 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
-
+  get 'dashboard' => 'home#dashboard'
 end
