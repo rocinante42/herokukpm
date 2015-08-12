@@ -6,3 +6,39 @@
     > a {padding-top:2px; padding-left:10px; padding-right:10px; background:$color-brand-fade; border-radius:10px;}
   }
 }
+
+$width: 150px;
+$height: 30px;
+$border: 2px;
+$inner-height: $height - $border * 2;
+$icon-height: 20px; //font-awesome default icon height
+.btn-multi {position:relative; width:$width; height:$height; border-radius:100px; text-align:center; border:solid 2px transparent;
+  > .action {position:absolute; display:table; height:$inner-height; width:100%;
+    > .action-media {position:absolute; width:25px; padding-top:($inner-height - $icon-height) / 2;}
+    > .action-body {display:table-cell; vertical-align:middle;}
+    + .extra-action {position:absolute; top:0; right:0; left:0; height:100%;
+      > .extra-container {display:table; width:100%;}
+    }
+    &.action-left {
+      + .extra-action {left:30px; text-align:right;
+        .dropdown.simple > a {border-radius: 0 100px 100px 0;}
+      }
+      > .action-media {left:5px;}
+      > .action-body {padding-left:28px;}
+    }
+    &.action-right {
+      + .extra-action {right:30px; text-align: left;
+        .dropdown.simple > a {border-radius: 100px 0 0 100px;}
+      }
+      > .action-media {right:5px;}
+      > .action-body {padding-right:28px;}
+    }
+  }
+  a {color:$color-inv;}
+  &.btn-warning {border-color:$color-brand; background:$color-brand;}
+  &.info {border-color:$color-info; background:$color-info;}
+  &.success {border-color:$color-success; background:$color-success;}
+  .extra-action .dropdown.simple {width:100%;
+    > a {width:100%; padding-top:4px; padding-bottom:2px;}
+  }
+}
