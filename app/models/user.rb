@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :role
+  has_many :classrooms
+  scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_presence_of :first_name, :last_name
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
@@ -13,6 +15,10 @@ class User < ActiveRecord::Base
     self.role = Role.find_by name: "Teacher" if self.role.nil?
   end
 
+  def full_name
+    first_name + " " + last_name
+  end
+  
   def admin?
     self.role.name == "Admin"
   end

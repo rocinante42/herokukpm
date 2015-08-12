@@ -33,6 +33,11 @@ gem 'spring',        group: :development
 gem 'devise'
 gem 'cancancan', '~> 1.10'
 
+
+gem 'pry', group: :development
+gem 'pry-remote', group: :development
+gem 'pry-nav', group: :development
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

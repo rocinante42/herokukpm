@@ -1,6 +1,8 @@
 class BubbleGroupStatusesController < ApplicationController
   before_action :authenticate_user!
+  #before_action :set_bubble_group_status, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource
+
 
   # GET /bubble_group_statuses
   # GET /bubble_group_statuses.json

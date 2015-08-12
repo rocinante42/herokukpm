@@ -1,6 +1,6 @@
 class TriggersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_trigger, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /triggers
   # GET /triggers.json

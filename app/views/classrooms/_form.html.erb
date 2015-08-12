@@ -19,6 +19,18 @@
     <%= f.label :school %><br>
     <%= f.collection_select :school_id, School.all, :id, :name %>
   </div>
+  <div class="field">
+    <%= f.label "Teacher" %><br>
+    <%if current_user.admin? %>
+    <%= f.collection_select :user_id, User.teachers, :id, :full_name, include_blank: true %>
+    <%else%>
+    <%= f.collection_select :user_id, User.teachers, :id, :full_name, { selected: current_user.id } %>
+    <% end %>
+  </div>
+  <div class="field">
+    <%= f.label "Classroom type" %><br>
+    <%= f.collection_select :classroom_type_id, ClassroomType.all, :id, :type_name%>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>

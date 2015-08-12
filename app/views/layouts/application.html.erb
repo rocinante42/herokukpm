@@ -9,9 +9,9 @@
 <body>
 <div class="hidden">
   <% if user_signed_in? %>
-    Signed in as <%= current_user.first_name %>. Not you?
-    <%= link_to "Edit profile", edit_user_registration_path %>
-    <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+   Signed in as <%= current_user.full_name %>. Not you?
+   <%= link_to "Edit profile", edit_user_registration_path %>
+   <%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
 
     <% flash.each do |name, msg| %>
       <%= content_tag :div, msg, id: "flash_#{name}" %>
