@@ -24,3 +24,8 @@
 }
 
 .btn-simple {padding-top:5px; padding-bottom:3px; border-width:0; line-height:1em; border-radius:100px;}
+.btn-large {padding-top:10px; padding-bottom:8px; padding-left:20px; padding-right:20px;}
+.btn-wide {min-width:150px;}
+.btn-warning {background:$color-brand;}
+.btn-info {background:$color-info;}
+.btn-success {background:$color-success;}

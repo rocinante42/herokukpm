@@ -1,44 +1,81 @@
+$dd-toggle-padding: 10px;
 .dropdown {display:inline-block;
   > a {color:$color-inv;
     > span {display:inline-block; vertical-align:middle;}
   }
   &.simple {
-    > a {padding-top:2px; padding-left:10px; padding-right:10px; background:$color-brand-fade; border-radius:10px;}
+    > a {padding-top:2px; padding-left:$dd-toggle-padding; padding-right:$dd-toggle-padding; background:$color-brand-fade; border-radius:10px;}
   }
+  &.medium > a > span.value {min-width:150px;}
 }
 
-$width: 150px;
+$width: 115px;
 $height: 30px;
 $border: 2px;
 $inner-height: $height - $border * 2;
+$action-width: 25px;
+$action-offset: 5px;
+$extra-action-offset: 30px;
 $icon-height: 20px; //font-awesome default icon height
-.btn-multi {position:relative; width:$width; height:$height; border-radius:100px; text-align:center; border:solid 2px transparent;
-  > .action {position:absolute; display:table; height:$inner-height; width:100%;
-    > .action-media {position:absolute; width:25px; padding-top:($inner-height - $icon-height) / 2;}
+.btn-multi {position:relative; width:$width; height:$height; text-align:center;
+  > .action {position:absolute; display:table; height:$height; width:100%; border-radius:100px;
+    > .action-media {position:absolute; top:$border; width:$action-width; padding-top:($inner-height - $icon-height) / 2;}
     > .action-body {display:table-cell; vertical-align:middle;}
-    + .extra-action {position:absolute; top:0; right:0; left:0; height:100%;
+    + .extra-action {position:absolute; top:$border; right:$border; left:$border; height:100%;
       > .extra-container {display:table; width:100%;}
     }
     &.action-left {
-      + .extra-action {left:30px; text-align:right;
+      + .extra-action {left:$extra-action-offset; text-align:right;
         .dropdown.simple > a {border-radius: 0 100px 100px 0;}
       }
-      > .action-media {left:5px;}
-      > .action-body {padding-left:28px;}
+      > .action-media {left:$action-offset;}
+      > .action-body {padding-left:$action-width; padding-right:$action-offset;}
     }
     &.action-right {
-      + .extra-action {right:30px; text-align: left;
+      + .extra-action {right:$extra-action-offset; text-align: left;
         .dropdown.simple > a {border-radius: 100px 0 0 100px;}
       }
-      > .action-media {right:5px;}
-      > .action-body {padding-right:28px;}
+      > .action-media {right:$action-offset;}
+      > .action-body {padding-right:$action-width; padding-left:$action-offset;}
     }
+    &.warning {background:$color-brand;
+      &:hover {background:$color-brand-em;}
+    }
+    &.info {background:$color-info;
+      &:hover {background:$color-info-em;}
+    }
+    &.success {background:$color-success;
+      &:hover {background:$color-success-em;}
+    }
+
   }
   a {color:$color-inv;}
-  &.btn-warning {border-color:$color-brand; background:$color-brand;}
-  &.info {border-color:$color-info; background:$color-info;}
-  &.success {border-color:$color-success; background:$color-success;}
-  .extra-action .dropdown.simple {width:100%;
-    > a {width:100%; padding-top:4px; padding-bottom:2px;}
+  .extra-action .dropdown.simple {width:100%; text-align:left;
+    > a {width:100%; padding-top:4px; padding-bottom:2px;
+      > span:first-child {min-width:$width - $border - $extra-action-offset - $dd-toggle-padding * 2 - 13px} /* 13px is a caret size (10px) + space between inline-blocks (3px)*/
+    }
+  }
+}
+
+/* TABLES */
+table.table {width:100%;
+  &.row-separate {border-collapse:separate; border-spacing:0 8px;}
+  &.row-col-separate {border-collapse:separate; border-spacing:8px;}
+  &.inline {width:auto;}
+  &.solid > * > tr > * {border:none;}
+  > thead > tr > th {font-weight:normal; border-bottom:solid 2px #cccccc; color:#cccccc;}
+  > tbody {
+    > tr {position:relative;}
+  }
+  > * > tr {
+    &.col-pad > * {padding-left:10px; padding-right:10px;}
+    > *.col-pad {padding-left:10px; padding-right:10px;}
+    &.v-middle > * {vertical-align:middle;}
+    &.no-border-top > * {border-top:none;}
+    > *.minimal {width:1px; white-space:nowrap;}
+  }
+  &.fit > * > tr > * {
+    &:first-child {padding-left:0;}
+    &:last-child {padding-right:0;}
   }
 }
