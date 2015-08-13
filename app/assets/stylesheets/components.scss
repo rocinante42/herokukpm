@@ -73,6 +73,7 @@ table.table {width:100%;
     &.v-middle > * {vertical-align:middle;}
     &.no-border-top > * {border-top:none;}
     > *.minimal {width:1px; white-space:nowrap;}
+    > *.equal {width:50%;}
   }
   &.fit > * > tr > * {
     &:first-child {padding-left:0;}

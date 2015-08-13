@@ -23,6 +23,7 @@ $color-info: #0092ce;
 $color-info-em: #0087be;
 $color-success: #167f3a;
 $color-success-em: #147134;
+$color-main: #363636;
 
 @import "*";
 
@@ -37,3 +38,4 @@ a, a:focus, a:hover, a:active {display:inline-block; text-decoration:none;}
 .font-large {font-size:16px;}
 .font-xlarge {font-size:18px;}
 .font-xxlarge {font-size:22px;}
+.text-main {color:$color-main;}
