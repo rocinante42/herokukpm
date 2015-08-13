@@ -1,0 +1,370 @@
+<div class="container-fluid kmSection">
+  <div class="row content-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs nav-justified">
+        <li role="presentation">
+          <%= link_to dashboard_path do%>
+            Dashboard
+            <span class="caret"></span>
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to '#classroom', data: {toggle: 'tab'} do%>
+            Classroom
+            <span class="caret"></span>
+          <% end %>
+        </li>
+        <li role="presentation" class="active">
+          <%= link_to '#activities', data: {toggle: 'tab'} do%>
+            Activities
+          <% end %>
+        </li>
+        <li role="presentation">
+          <%= link_to '#teacher_mode', data: {toggle: 'tab'} do%>
+            Teacher Mode
+          <% end %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Activities</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="row">
+    <table class="table inline solid fit">
+      <tbody>
+        <tr class="col-pad">
+          <td>
+            <h4>Choose Categories:</h4>
+          </td>
+          <td>
+            <h4>Choose Classroom:</h4>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="dropdown simple medium select">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value">Kindergarten</span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li class="hidden"><a href="javascript:">Kindergarten</a></li>
+                <li><a href="javascript:">Grade 1</a></li>
+              </ul>
+              <input type="hidden" value="Kindergarten">
+            </div>
+          </td>
+          <td>
+            <div class="dropdown simple medium select">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value">Classroom 1</span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li class="hidden"><a href="javascript:">Classroom 1</a></li>
+                <li><a href="javascript:">Classroom 2</a></li>
+                <li><a href="javascript:">Classroom 3</a></li>
+              </ul>
+              <input type="hidden" value="Classroom 1">
+            </div>
+          </td>
+          <td>
+            <%= link_to 'Set', 'javascript:;', class: 'btn btn-warning btn-simple' %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="row">
+    <h4>Choose Activities</h4>
+    <table class="table fit">
+      <thead>
+        <tr>
+          <th class="text-center">Classroom</th>
+          <th class="text-center">Counting and<br>Cardinality to 20</th>
+          <th class="text-center">Base 10</th>
+          <th class="text-center">Number Line Model</th>
+          <th class="text-center">Count All</th>
+          <th class="text-center">Count On</th>
+          <th class="text-center minimal">Compare</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="text-center v-middle">
+        <td class="text-left">
+          <span class="text-main font-large">Kidergarten<br>Categories: Classroom 1</span>
+        </td>
+
+        <td>
+          <div class="btn-multi center-block">
+            <%= link_to 'javascript:;', class: 'warning action action-right' do %>
+              <div class="action-media">
+                <i class="fa fa-play"></i>
+              </div>
+              <div class="action-body">
+                <div></div>
+              </div>
+            <% end %>
+            <div class="extra-action">
+              <div class="extra-container">
+                <div class="dropdown simple select">
+                  <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="value">No Time</span>
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li class="hidden"><a href="javascript:">No Time</a></li>
+                    <li><a href="javascript:">2 Hours</a></li>
+                    <li><a href="javascript:">1 Day</a></li>
+                    <li><a href="javascript:">2 Days</a></li>
+                    <li><a href="javascript:">5 Days</a></li>
+                  </ul>
+                  <input type="hidden" value="No Time">
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <div class="btn-multi center-block">
+            <%= link_to 'javascript:;', class: 'warning action action-right' do %>
+              <div class="action-media">
+                <i class="fa fa-play"></i>
+              </div>
+              <div class="action-body">
+                <div></div>
+              </div>
+            <% end %>
+            <div class="extra-action">
+              <div class="extra-container">
+                <div class="dropdown simple select">
+                  <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span class="value">2 Hours</span>
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right">
+                    <li><a href="javascript:">No Time</a></li>
+                    <li class="hidden"><a href="#">2 Hours</a></li>
+                    <li><a href="javascript:">1 Day</a></li>
+                    <li><a href="javascript:">2 Days</a></li>
+                    <li><a href="javascript:">5 Days</a></li>
+                  </ul>
+                  <input type="hidden" value="2 Hours">
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+
+        <td>
+          <div class="btn-multi center-block">
+            <%= link_to 'javascript:', class: 'info action action-left' do %>
+              <div class="action-media">
+                <i class="fa fa-play"></i>
+              </div>
+              <div class="action-body">
+                <div>pause</div>
+              </div>
+            <% end %>
+          </div>
+        </td>
+
+        <td>
+          <div class="btn-multi center-block">
+            <%= link_to 'javascript:', class: 'success action action-left' do %>
+              <div class="action-media">
+                <i class="fa fa-pause"></i>
+              </div>
+              <div class="action-body">
+                <div>80 min left</div>
+              </div>
+            <% end %>
+          </div>
+        </td>
+
+        <td>
+          <div class="btn-multi center-block">
+            <%= link_to 'javascript:', class: 'success action action-left' do %>
+              <div class="action-media">
+                <i class="fa fa-pause"></i>
+              </div>
+              <div class="action-body">
+                <div>80 min left</div>
+              </div>
+            <% end %>
+          </div>
+        </td>
+
+        <td>
+          <div class="btn-multi center-block">
+            <%= link_to 'javascript:', class: 'success action action-left' do %>
+              <div class="action-media">
+                <i class="fa fa-pause"></i>
+              </div>
+              <div class="action-body">
+                <div>80 min left</div>
+              </div>
+            <% end %>
+          </div>
+        </td>
+
+      </tr>
+      </tbody>
+
+
+      <thead>
+        <tr class="no-border-top">
+          <th class="text-center">Students</th>
+          <th colspan="999"></th>
+        </tr>
+      </thead>
+      <tbody>
+      <% students = ['Danielle Way', 'Laura Ellsworth', 'Mary Sabatini', 'Gloria Lee', 'Jim Chevalier'] %>
+      <% students.each do |student| %>
+        <tr class="text-center v-middle">
+          <td class="text-left">
+            <span class="text-main font-large"><%= student %></span>
+          </td>
+
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'warning action action-right' do %>
+                <div class="action-media">
+                  <i class="fa fa-play"></i>
+                </div>
+                <div class="action-body">
+                  <div></div>
+                </div>
+              <% end %>
+              <div class="extra-action">
+                <div class="extra-container">
+                  <div class="dropdown simple select">
+                    <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="value">No Time</span>
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li class="hidden"><a href="javascript:">No Time</a></li>
+                      <li><a href="javascript:">2 Hours</a></li>
+                      <li><a href="javascript:">1 Day</a></li>
+                      <li><a href="javascript:">2 Days</a></li>
+                      <li><a href="javascript:">5 Days</a></li>
+                    </ul>
+                    <input type="hidden" value="No Time">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'warning action action-right' do %>
+                <div class="action-media">
+                  <i class="fa fa-play"></i>
+                </div>
+                <div class="action-body">
+                  <div></div>
+                </div>
+              <% end %>
+              <div class="extra-action">
+                <div class="extra-container">
+                  <div class="dropdown simple select">
+                    <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="value">2 Hours</span>
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <li><a href="javascript:">No Time</a></li>
+                      <li class="hidden"><a href="#">2 Hours</a></li>
+                      <li><a href="javascript:">1 Day</a></li>
+                      <li><a href="javascript:">2 Days</a></li>
+                      <li><a href="javascript:">5 Days</a></li>
+                      <input type="hidden" value="2 Hours">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'info action action-left' do %>
+                <div class="action-media">
+                  <i class="fa fa-play"></i>
+                </div>
+                <div class="action-body">
+                  <div>pause</div>
+                </div>
+              <% end %>
+            </div>
+          </td>
+
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'success action action-left' do %>
+                <div class="action-media">
+                  <i class="fa fa-pause"></i>
+                </div>
+                <div class="action-body">
+                  <div>80 min left</div>
+                </div>
+              <% end %>
+            </div>
+          </td>
+
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'success action action-left' do %>
+                <div class="action-media">
+                  <i class="fa fa-pause"></i>
+                </div>
+                <div class="action-body">
+                  <div>80 min left</div>
+                </div>
+              <% end %>
+            </div>
+          </td>
+
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'success action action-left' do %>
+                <div class="action-media">
+                  <i class="fa fa-pause"></i>
+                </div>
+                <div class="action-body">
+                  <div>80 min left</div>
+                </div>
+              <% end %>
+            </div>
+          </td>
+
+        </tr>
+      <% end %>
+      <tr>
+        <td colspan="999" class="text-right">
+          <%= link_to 'Set All', 'javascript:', class: 'btn btn-warning btn-simple btn-large btn-wide' %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
