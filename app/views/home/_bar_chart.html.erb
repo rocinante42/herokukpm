@@ -1,0 +1,36 @@
+<% rows_count = 10 if local_assigns[:rows_count].nil? %>
+<%# one row has a height of 40px %>
+<% row_height = 40 %>
+<% total_grid_height = rows_count * row_height %>
+
+<% if local_assigns[:title] %>
+  <div class="row apt-title text-center">
+    <div class="col-md-12">
+      <h3><%= title %></h3>
+    </div>
+  </div>
+<% end %>
+
+<div class="row apt-body">
+  <div class="col-md-2 font-xxlarge text-right apt-y-axis">
+    <% (1..rows_count).to_a.reverse.each do |item| %>
+      <div><%= item * 10 %>%</div>
+    <% end %>
+  </div>
+  <div class="col-md-10">
+    <div class="row">
+      <% columns_count = values.length %>
+      <% columns_count.times do |index| %>
+        <div class="col-md-<%= 12 / columns_count %> apt-col">
+          <div class="grid" style="height: <%= total_grid_height %>px;">
+            <% current_col_height = values[index] * row_height / 10 %>
+            <div class="apt-bar" style="height: <%= current_col_height %>px;"></div>
+          </div>
+          <div class="apt-x-axis text-center font-xxlarge">
+            <%= "#{10 * index + (index/100.0).ceil} - #{10 * (index + 1)}" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
