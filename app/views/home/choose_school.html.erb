@@ -1,15 +1,18 @@
-<% data = ['East High School', 'Denver School of the Arts', 'South High School', 'Green School'] %>
-<% data.each do |school| %>
-  <div class="container kmSection">
-    <div class="row kmSectionTitle">
-      <div class="container">
-        <div class="pull-left">
-          <h4><%= school %></h4>
-        </div>
-        <div class="pull-right">
-          <%= link_to 'Select','javascript:', class: 'btn btn-wide btn-warning btn-large btn-simple' %>
+<% if current_user.schools.any? %>
+  <% current_user.schools.each do |school| %>
+    <div class="container kmSection">
+      <div class="row kmSectionTitle">
+        <div class="container">
+          <div class="pull-left">
+            <h4><%= school.name %></h4>
+          </div>
+          <div class="pull-right">
+            <%= link_to 'Select', set_school_path(school_id: school.id), class: 'btn btn-wide btn-warning btn-large btn-simple' %>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  <% end %>
+<% else %>
+  <div class="centered">You have no associated schools and classrooms.</div>
 <% end %>
