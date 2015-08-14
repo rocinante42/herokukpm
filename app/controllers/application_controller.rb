@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_filter :teacher_requires_school
+  before_filter :teacher_requires_school, :clear_current_school
   helper_method :current_school
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+  end
+
+  def clear_current_school
+    self.current_school = nil if current_user.teacher? && request.path == destroy_user_session_path
   end
 
 end
