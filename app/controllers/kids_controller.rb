@@ -74,7 +74,7 @@ class KidsController < ApplicationController
   def destroy
     @kid.destroy
     respond_to do |format|
-      format.html { redirect_to kids_url, notice: 'Kid was successfully destroyed.' }
+      format.html { redirect_to :back, notice: 'Kid was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
