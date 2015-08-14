@@ -31,6 +31,9 @@
 $title-color: #296cbd;
 .kmSection {margin-top: 20px;
   .kmSectionTitle {padding:10px 0; background:$title-color; color:$color-inv;
+    > .container {display:table;
+      > .pull-left {display:table-cell; float:none !important; vertical-align:middle;} //override bootstrap's !important
+    }
     h4 {margin:0; font-weight:normal;}
     .dropdown.simple {margin-top:-1px; margin-bottom:-1px;}
   }
