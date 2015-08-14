@@ -157,7 +157,7 @@
     <div class="tab-pane active" id="kindergarten" role="tabpanel">
 
       <div class="row kmSection">
-        <ul class="nav nav-pills simple nav-justified">
+        <ul class="nav nav-pills simple nav-justified nowrap">
           <li role="presentation" class="active"><a href="#kg_count_card_20" data-toggle="pill">Counting and Cardianlity to 20</a></li>
           <li role="presentation"><a href="#kg_base_10" data-toggle="pill">Base 10</a></li>
           <li role="presentation"><a href="#kg_number_line_model" data-toggle="pill">Number line model</a></li>
@@ -165,33 +165,31 @@
         </ul>
       </div>
 
-      <div class="container kmSection">
-        <div class="tab-content">
-          <div class="tab-pane active" id="kg_count_card_20" role="tabpanel">
-            <div class="row">
-              <div class="col-md-6">
-                <%= render 'bar_chart', title: 'Count', values: [75, 25], rows_count: 10 %>
-              </div>
-              <div class="col-md-6">
-                <%= render 'bar_chart', title: 'Produce', values: [33, 66], rows_count: 10 %>
-              </div>
+      <div class="tab-content">
+        <div class="tab-pane active" id="kg_count_card_20" role="tabpanel">
+          <div class="row">
+            <div class="col-md-6">
+              <%= render 'bar_chart', title: 'Count', values: [75, 25], rows_count: 10 %>
+            </div>
+            <div class="col-md-6">
+              <%= render 'bar_chart', title: 'Produce', values: [33, 66], rows_count: 10 %>
             </div>
           </div>
-
-          <div class="tab-pane" id="kg_base_10" role="tabpanel">
-            <%= render 'bar_chart', title: 'Count', values: [15, 40, 10, 80], rows_count: 10 %>
-            <%= render 'bar_chart', title: 'Produce', values: [20, 10, 15, 55], rows_count: 10 %>
-          </div>
-
-          <div class="tab-pane" id="kg_number_line_model" role="tabpanel">
-            <%= render 'bar_chart', values: [15, 40, 10, 80], rows_count: 10 %>
-          </div>
-
-          <div class="tab-pane" id="kg_count_all" role="tabpanel">
-            <%= render 'bar_chart', values: [20, 10, 15, 55], rows_count: 10 %>
-          </div>
-
         </div>
+
+        <div class="tab-pane" id="kg_base_10" role="tabpanel">
+          <%= render 'bar_chart', title: 'Count', values: [15, 40, 10, 80], rows_count: 10 %>
+          <%= render 'bar_chart', title: 'Produce', values: [20, 10, 15, 55], rows_count: 10 %>
+        </div>
+
+        <div class="tab-pane" id="kg_number_line_model" role="tabpanel">
+          <%= render 'bar_chart', values: [15, 40, 10, 80], rows_count: 10 %>
+        </div>
+
+        <div class="tab-pane" id="kg_count_all" role="tabpanel">
+          <%= render 'bar_chart', values: [20, 10, 15, 55], rows_count: 10 %>
+        </div>
+
       </div>
 
     </div>
@@ -199,7 +197,7 @@
     <div class="tab-pane" id="first_grade" role="tabpanel">
 
       <div class="row kmSection">
-        <ul class="nav nav-pills simple nav-justified">
+        <ul class="nav nav-pills simple nav-justified nowrap">
           <li role="presentation" class="active"><a href="#g1_count_card_20" data-toggle="pill">Counting and Cardianlity to 20</a></li>
           <li role="presentation"><a href="#g1_base_10" data-toggle="pill">Base 10</a></li>
           <li role="presentation"><a href="#g1_number_line_model" data-toggle="pill">Number line model</a></li>
@@ -209,41 +207,39 @@
         </ul>
       </div>
 
-      <div class="container kmSection">
-        <div class="tab-content">
-          <div class="tab-pane active" id="g1_count_card_20" role="tabpanel">
-            <div class="row">
-              <div class="col-md-6">
-                <%= render 'bar_chart', title: 'Count', values: [25, 75] %>
-              </div>
-              <div class="col-md-6">
-                <%= render 'bar_chart', title: 'Produce', values: [33, 66] %>
-              </div>
+      <div class="tab-content">
+        <div class="tab-pane active" id="g1_count_card_20" role="tabpanel">
+          <div class="row">
+            <div class="col-md-6">
+              <%= render 'bar_chart', title: 'Count', values: [25, 75] %>
+            </div>
+            <div class="col-md-6">
+              <%= render 'bar_chart', title: 'Produce', values: [33, 66] %>
             </div>
           </div>
-
-          <div class="tab-pane" id="g1_base_10" role="tabpanel">
-            <%= render 'bar_chart', title: 'Count', values: [15, 40, 10, 80] %>
-            <%= render 'bar_chart', title: 'Produce', values: [20, 10, 15, 55] %>
-          </div>
-
-          <div class="tab-pane" id="g1_number_line_model" role="tabpanel">
-            <%= render 'bar_chart', values: [20, 10, 15, 55] %>
-          </div>
-
-          <div class="tab-pane" id="g1_count_all" role="tabpanel">
-            <%= render 'bar_chart', values: [75, 100, 20, 50] %>
-          </div>
-
-          <div class="tab-pane" id="g1_count_on" role="tabpanel">
-            <%= render 'bar_chart', values: [80, 60, 45, 15] %>
-          </div>
-
-          <div class="tab-pane" id="g1_compare" role="tabpanel">
-            <%= render 'bar_chart', values: [30, 35, 75, 10] %>
-          </div>
-
         </div>
+
+        <div class="tab-pane" id="g1_base_10" role="tabpanel">
+          <%= render 'bar_chart', title: 'Count', values: [15, 40, 10, 80] %>
+          <%= render 'bar_chart', title: 'Produce', values: [20, 10, 15, 55] %>
+        </div>
+
+        <div class="tab-pane" id="g1_number_line_model" role="tabpanel">
+          <%= render 'bar_chart', values: [20, 10, 15, 55] %>
+        </div>
+
+        <div class="tab-pane" id="g1_count_all" role="tabpanel">
+          <%= render 'bar_chart', values: [75, 100, 20, 50] %>
+        </div>
+
+        <div class="tab-pane" id="g1_count_on" role="tabpanel">
+          <%= render 'bar_chart', values: [80, 60, 45, 15] %>
+        </div>
+
+        <div class="tab-pane" id="g1_compare" role="tabpanel">
+          <%= render 'bar_chart', values: [30, 35, 75, 10] %>
+        </div>
+
       </div>
 
     </div>
