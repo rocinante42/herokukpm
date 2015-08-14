@@ -5,7 +5,21 @@ class ClassroomsController < ApplicationController
   # GET /classrooms
   # GET /classrooms.json
   def index
-    @classrooms = Classroom.all
+    classrooms = Classroom.all
+    @classroom_types = ClassroomType.all
+
+    if params.has_key? :classroom
+      @current_classroom = Classroom.find(params[:classroom])
+      @current_classroom_type = @current_classroom.classroom_type
+    else
+      @current_classroom = classrooms.sample
+      @current_classroom_type = @current_classroom.classroom_type
+    end
+
+    @classroom_hash = {}
+    @classroom_types.each do |ct|
+      @classroom_hash[ct.id] = ct.classrooms.pluck(:id, :name)
+    end
   end
 
   # GET /classrooms/1
@@ -85,6 +99,6 @@ class ClassroomsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def classroom_params
-      params.require(:classroom).permit(:name, :school_id, :classroom_type,:user_id)
+      params.require(:classroom).permit(:name, :school_id, :classroom_type_id,:user_id)
     end
 end

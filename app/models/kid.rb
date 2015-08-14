@@ -7,4 +7,20 @@ class Kid < ActiveRecord::Base
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
+
+  def kindergarten?
+    classroom.kindergarten?
+  end
+
+  def first_grade?
+    classroom.first_grade?
+  end
+
+  def male?
+    gender == 1
+  end
+
+  def female?
+    gender == 2
+  end
 end
