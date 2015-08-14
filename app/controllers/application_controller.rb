@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_current_school
-    self.current_school = nil if current_user.teacher? && request.path == destroy_user_session_path
+    self.current_school = nil if user_signed_in? && current_user.teacher? && request.path == destroy_user_session_path
   end
 
 end
