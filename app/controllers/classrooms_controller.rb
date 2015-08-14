@@ -5,7 +5,11 @@ class ClassroomsController < ApplicationController
   # GET /classrooms
   # GET /classrooms.json
   def index
-    classrooms = Classroom.all
+    if current_user.teacher?
+      classrooms = Classroom.where(school: current_school, user: current_user)
+    else
+      classrooms = Classroom.all
+    end
     @classroom_types = ClassroomType.all
 
     if params.has_key? :classroom
@@ -18,8 +22,9 @@ class ClassroomsController < ApplicationController
 
     @classroom_hash = {}
     @classroom_types.each do |ct|
-      @classroom_hash[ct.id] = ct.classrooms.pluck(:id, :name)
-    end
+      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, user: current_user) : ct.classrooms
+      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
+    end 
   end
 
   # GET /classrooms/1

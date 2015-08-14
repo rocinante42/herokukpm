@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :role
   has_many :classrooms
+  has_many :schools, -> { uniq }, through: :classrooms
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_presence_of :first_name, :last_name
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true

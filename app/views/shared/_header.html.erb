@@ -13,20 +13,22 @@
           <div class="media">
             <div class="media-body media-left media-middle text-right">
               <h1>Welcome, <%= current_user.first_name %></h1>
-              <div class="font-large">
-                <span>School:</span>
-                <div class="dropdown select">
-                  <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span class="value"><%= data.first %></span>
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-right">
-                    <% data.each_with_index do |school, i| %>
-                      <li<%= raw(' class="hidden"') if i == 0 %>><%= link_to school, 'javascript:' %></li>
-                    <% end %>
-                  </ul>
+              <% if current_user.teacher? && action_name != "choose_school" %>
+                <div class="font-large">
+                  <span>School:</span>
+                  <div class="dropdown select">
+                    <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="value"><%= current_school.name %></span>
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <% current_user.schools.each do |school| %>
+                        <li><%= link_to school.name, set_school_path(school_id: school.id) %></li>
+                      <% end %>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              <% end %>
             </div>
             <div class="media-left media-right media-middle">
               <%= image_tag 'avatar.png', class: 'img-responisve img-circle' %>
