@@ -57,4 +57,6 @@ Rails.application.routes.draw do
   get 'dashboard' => 'home#dashboard'
   get 'activities' => 'home#activities'
   get 'report' => 'home#report'
+  get 'report' => 'home#report'
+  get 'choose_school' => 'home#choose_school'
 end
