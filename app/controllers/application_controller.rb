@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
     if user_signed_in? && current_user.teacher? && !paths.include?(request.path)
       unless session[:school_id]
         if current_user.schools.count == 1
-          self.current_school = current_user.schools.first
+          self.current_school = current_user.schools.first.id
           redirect_to dashboard_path
         else
           redirect_to choose_school_path
