@@ -63,6 +63,9 @@ table.table {width:100%;
   &.row-col-separate {border-collapse:separate; border-spacing:8px;}
   &.inline {width:auto;}
   &.solid > * > tr > * {border:none;}
+  &.continual {margin-bottom:0;}
+  > .row-high > tr > * {height:55px;}
+  > .v-middle > tr > * {vertical-align:middle;}
   > thead > tr > th {font-weight:normal; border-bottom:solid 2px #cccccc; color:#cccccc;}
   > tbody {
     > tr {position:relative;}
@@ -79,4 +82,27 @@ table.table {width:100%;
     &:first-child {padding-left:0;}
     &:last-child {padding-right:0;}
   }
+}
+
+/* GRID */
+.grid {
+  > .grid-row {
+    $border: solid 2px #ccc;
+    $border-radius: 8px;
+    > .grid-col {border-top:$border}
+    &:first-child > .grid-col {
+      &:first-child {border-top-left-radius:$border-radius;}
+      &:last-child {border-top-right-radius:$border-radius;}
+    }
+    &:last-child > .grid-col {border-bottom:$border;
+      &:first-child {border-bottom-left-radius:$border-radius;}
+      &:last-child {border-bottom-right-radius:$border-radius;}
+    }
+    > .grid-col {
+      &:first-child {border-left:$border;}
+      &:last-child {border-right:$border;}
+    }
+  }
+  $padding: 10px;
+  &.grid-pad > .grid-row > .grid-col {padding: $padding;}
 }
