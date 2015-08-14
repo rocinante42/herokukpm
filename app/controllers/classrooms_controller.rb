@@ -7,10 +7,11 @@ class ClassroomsController < ApplicationController
   def index
     if current_user.teacher?
       classrooms = Classroom.where(school: current_school, user: current_user)
+      @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
     else
       classrooms = Classroom.all
+      @classroom_types = ClassroomType.all
     end
-    @classroom_types = ClassroomType.all
 
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
