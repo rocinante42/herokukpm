@@ -5,6 +5,7 @@ class Classroom < ActiveRecord::Base
   validates_presence_of :school
 
   has_many :kids, dependent: :destroy
+  has_many :assignments
 
   def teacher
     user

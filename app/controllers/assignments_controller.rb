@@ -21,8 +21,6 @@ class AssignmentsController < ApplicationController
   end
 
   def create
-    #time_limit = Time.at(params[:assignment][:time_limit].to_i).utc.strftime("%H:%M:%S")
-    #params[:assignment][:time_limit] = time_limit
     @assignment = Assignment.new(assignment_params)
     @assignment.save
     redirect_to :back
@@ -44,6 +42,6 @@ class AssignmentsController < ApplicationController
     end
 
     def assignment_params
-      params.require(:assignment).permit(:kid_id, :bubble_group_id, :status, :time_limit)
+      params.require(:assignment).permit(:kid_id, :bubble_group_id, :status, :time_limit, :classroom_id)
     end
 end

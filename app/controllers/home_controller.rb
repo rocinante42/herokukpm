@@ -36,16 +36,19 @@ class HomeController < ApplicationController
       @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
     end 
     
-    @kid_assignments_hash = {}
-    
-    @current_classroom.kids.each do |kid|
-      bubble_group_assignments = {}
-      BubbleGroup.all.find_each do |bg|
+    @total_assignments_hash = {}
+    BubbleGroup.all.find_each do |bg|
+      assignment = @current_classroom.assignments.general.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
+      assignment.status = Assignment::NONE if assignment.new_record?
+      @total_assignments_hash[bg.id] = {}
+      @total_assignments_hash[bg.id][:bubble_group] = bg
+      @total_assignments_hash[bg.id][:global_assignment] = assignment
+      @current_classroom.kids.each do |kid|
         assignment = kid.assignments.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
         assignment.status = Assignment::NONE if assignment.new_record?
-        bubble_group_assignments[bg.id] = assignment
+        @total_assignments_hash[bg.id][:kid_assignments] ||= {}
+        @total_assignments_hash[bg.id][:kid_assignments][kid.id] = assignment
       end
-      @kid_assignments_hash[kid.id] = bubble_group_assignments
     end
 
     @time_options = [['None', nil], ['2 Hours', 2.hours], ['1 Day', 1.days], ['2 Days', 2.days], ['5 Days', 5.days]]

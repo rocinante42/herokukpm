@@ -9,13 +9,13 @@
           <% end %>
         </li>
         <li role="presentation">
-          <%= link_to '#classroom', data: {toggle: 'tab'} do%>
+          <%= link_to classrooms_path do%>
             Classroom
             <span class="caret"></span>
           <% end %>
         </li>
         <li role="presentation" class="active">
-          <%= link_to '#activities', data: {toggle: 'tab'} do%>
+          <%= link_to activities_path do%>
             Activities
           <% end %>
         </li>
@@ -99,8 +99,8 @@
       <thead>
         <tr>
           <th class="text-center">Classroom</th>
-          <% BubbleGroup.pluck(:name).each do |bg_name| %>
-            <th class="text-center"><%= bg_name %></th>
+          <% @total_assignments_hash.each do |bg_id, info| %>
+            <th class="text-center"><%= info[:bubble_group].name %></th>
           <% end %>
         </tr>
       </thead>
@@ -109,63 +109,13 @@
         <td class="text-center">
           <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
         </td>
-
-        <td>
-          <div class="btn-multi center-block">
-            <%= link_to 'javascript:;', class: 'warning action action-right' do %>
-              <div class="action-media">
-                <i class="fa fa-play"></i>
-              </div>
-              <div class="action-body">
-                <div></div>
-              </div>
-            <% end %>
-            <div class="extra-action">
-              <div class="extra-container">
-                <div class="dropdown simple select">
-                  <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    <span class="value">No Time</span>
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="hidden"><a href="javascript:">No Time</a></li>
-                    <li><a href="javascript:">2 Hours</a></li>
-                    <li><a href="javascript:">1 Day</a></li>
-                    <li><a href="javascript:">2 Days</a></li>
-                    <li><a href="javascript:">5 Days</a></li>
-                  </ul>
-                  <input type="hidden" value="No Time">
-                </div>
-              </div>
-            </div>
-          </div>
-        </td>
-
-        <td>
-          <div class="btn-multi center-block">
-            <%= link_to 'javascript:', class: 'info action action-left' do %>
-              <div class="action-media">
-                <i class="fa fa-play"></i>
-              </div>
-              <div class="action-body">
-                <div>pause</div>
-              </div>
-            <% end %>
-          </div>
-        </td>
-
-        <td>
-          <div class="btn-multi center-block">
-            <%= link_to 'javascript:', class: 'success action action-left' do %>
-              <div class="action-media">
-                <i class="fa fa-pause"></i>
-              </div>
-              <div class="action-body">
-                <div>80 min left</div>
-              </div>
-            <% end %>
-          </div>
-        </td>
+        <% @total_assignments_hash.each do |bg_id, info| %>
+          <% bg = info[:bubble_group] %>
+          <% assignment = info[:global_assignment] %>
+          <td>
+            <%= render 'assignments/form', assignment: assignment, kid: nil, bg:bg %>
+          </td>
+        <% end %>
 
       </tr>
       </tbody>
@@ -178,87 +128,20 @@
         </tr>
       </thead>
       <tbody>
-      <% @current_classroom.kids.each do |kid| %>
-        <tr class="text-center v-middle">
-          <td class="text-center">
-            <span class="text-main font-large"><%= kid.full_name %></span>
-          </td>
-          <% BubbleGroup.all.find_each do |bg| %>
-            <% assignment = @kid_assignments_hash[kid.id][bg.id] %>
+        <% @current_classroom.kids.each do |kid| %>
+          <tr class="text-center v-middle">
+            <td class="text-center">
+              <span class="text-main font-large"><%= kid.full_name %></span>
+            </td>
+            <% BubbleGroup.all.find_each do |bg| %>
+              <% assignment = @total_assignments_hash[bg.id][:kid_assignments][kid.id] %>
                 <td>
-                  <% if assignment.none? %>
-                    <%= form_for assignment do |f| %>
-                      <%= f.hidden_field :status, value: Assignment::ACTIVE %>
-                      <%= f.hidden_field :kid_id, value: kid.id %>
-                      <%= f.hidden_field :bubble_group_id, value: bg.id %>
-                        <div class="btn-multi center-block">
-                          <%= link_to 'javascript:', class: 'warning action action-right' do %>
-                            <div class="action-media">
-                              <i class="fa fa-play"></i>
-                            </div>
-                            <div class="action-body">
-                              <div></div>
-                            </div>
-                          <% end %>
-                        <div class="extra-action">
-                          <div class="extra-container">
-                            <div class="dropdown simple select">
-                              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <span class="value">No Time</span>
-                                <span class="caret"></span>
-                              </a>
-                              <ul class="dropdown-menu dropdown-menu-right">
-                                <% @time_options.each do |to| %>
-                                  <li><a href="javascript:" data-id="<%= to[1] %>"><%= to[0] %></a></li>
-                                <% end %>
-                              </ul>
-                              <%= f.hidden_field :time_limit %>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    <% end %>
-                  <% end %>
-                  <% if assignment.inactive? %>
-                    <%= form_for assignment do |f| %>
-                      <%= f.hidden_field :status, value: Assignment::ACTIVE %>
-                      <div class="btn-multi center-block">
-                        <%= link_to 'javascript:', class: 'info action action-left' do %>
-                          <div class="action-media">
-                            <i class="fa fa-play"></i>
-                          </div>
-                          <div class="action-body">
-                            <div>pause</div>
-                          </div>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  <% end %>
-                  <% if assignment.active? %>
-                    <%= form_for assignment do |f| %>
-                      <%= f.hidden_field :status, value: Assignment::INACTIVE %>
-                      <div class="btn-multi center-block">
-                        <%= link_to 'javascript:', class: 'success action action-left' do %>
-                          <div class="action-media">
-                            <i class="fa fa-pause"></i>
-                          </div>
-                          <div class="action-body">
-                            <div><%= distance_of_time_in_words(assignment.time_left_in_seconds) + " left" %></div>
-                          </div>
-                        <% end %>
-                      </div>
-                    <% end %>
-                  <% end %>
+                  <%= render 'assignments/form', assignment: assignment, kid: kid, bg:bg %>
                 </td>
-          <% end %>
+            <% end %>
 
-        </tr>
-      <% end %>
-      <tr>
-        <td colspan="999" class="text-right">
-          <%= link_to 'Set All', 'javascript:', class: 'btn btn-warning btn-simple btn-large btn-wide' %>
-        </td>
-      </tr>
+          </tr>
+        <% end %>
       </tbody>
     </table>
 

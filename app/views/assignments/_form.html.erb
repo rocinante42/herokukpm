@@ -1,29 +1,64 @@
-<%= form_for(@assignment) do |f| %>
-  <% if @assignment.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@assignment.errors.count, "error") %> prohibited this assignment from being saved:</h2>
-
-      <ul>
-      <% @assignment.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<% if assignment.none? %>
+  <%= form_for assignment do |f| %>
+    <%= f.hidden_field :status, value: Assignment::ACTIVE %>
+    <%= f.hidden_field :kid_id, value: kid.try(:id) %>
+    <%= f.hidden_field :bubble_group_id, value: bg.id %>
+    <%= f.hidden_field :classroom_id, value: @current_classroom.id %>
+      <div class="btn-multi center-block">
+        <%= link_to 'javascript:', class: 'warning action action-right' do %>
+          <div class="action-media">
+            <i class="fa fa-play"></i>
+          </div>
+          <div class="action-body">
+            <div></div>
+          </div>
+        <% end %>
+      <div class="extra-action">
+        <div class="extra-container">
+          <div class="dropdown simple select">
+            <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span class="value">No Time</span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <% @time_options.each do |to| %>
+                <li><a href="javascript:" data-id="<%= to[1] %>"><%= to[0] %></a></li>
+              <% end %>
+            </ul>
+            <%= f.hidden_field :time_limit %>
+          </div>
+        </div>
+      </div>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :kid_id %><br>
-    <%= f.text_field :kid_id %>
-  </div>
-  <div class="field">
-    <%= f.label :bubble_group_id %><br>
-    <%= f.text_field :bubble_group_id %>
-  </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.number_field :status %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<% end %>
+<% if assignment.inactive? %>
+  <%= form_for assignment do |f| %>
+    <%= f.hidden_field :status, value: Assignment::ACTIVE %>
+    <div class="btn-multi center-block">
+      <%= link_to 'javascript:', class: 'info action action-left' do %>
+        <div class="action-media">
+          <i class="fa fa-play"></i>
+        </div>
+        <div class="action-body">
+          <div>pause</div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>
+<% if assignment.active? %>
+  <%= form_for assignment do |f| %>
+    <%= f.hidden_field :status, value: Assignment::INACTIVE %>
+    <div class="btn-multi center-block">
+      <%= link_to 'javascript:', class: 'success action action-left' do %>
+        <div class="action-media">
+          <i class="fa fa-pause"></i>
+        </div>
+        <div class="action-body">
+          <div><%= distance_of_time_in_words(assignment.time_left_in_seconds) + " left" %></div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
 <% end %>
