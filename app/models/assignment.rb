@@ -33,4 +33,8 @@ class Assignment < ActiveRecord::Base
     last_activity_progress = active? ? Time.now - kid_activities.last.created_at : 0
     (time_limit - kid_activities.map(&:total_time).inject(:+) - last_activity_progress)
   end
+
+  def expired?
+    time_left_in_seconds <= 0
+  end
 end

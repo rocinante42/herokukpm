@@ -38,6 +38,8 @@ gem 'pry', group: :development
 gem 'pry-remote', group: :development
 gem 'pry-nav', group: :development
 
+gem 'whenever', :require => false
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

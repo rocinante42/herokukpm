@@ -41,7 +41,9 @@ class HomeController < ApplicationController
     @current_classroom.kids.each do |kid|
       bubble_group_assignments = {}
       BubbleGroup.all.find_each do |bg|
-        bubble_group_assignments[bg.id] = kid.assignments.where(bubble_group: bg).first_or_initialize
+        assignment = kid.assignments.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
+        assignment.status = Assignment::NONE if assignment.new_record?
+        bubble_group_assignments[bg.id] = assignment
       end
       @kid_assignments_hash[kid.id] = bubble_group_assignments
     end
