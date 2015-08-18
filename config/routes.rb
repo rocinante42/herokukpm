@@ -54,6 +54,8 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
+  resources :assignments
+
   get 'dashboard' => 'home#dashboard'
   get 'activities' => 'home#activities'
   get 'report' => 'home#report'
