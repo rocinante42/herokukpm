@@ -54,4 +54,38 @@ class HomeController < ApplicationController
     @time_options = [['None', nil], ['2 Hours', 2.hours], ['1 Day', 1.days], ['2 Days', 2.days], ['5 Days', 5.days]]
   end
 
+  def dashboard
+    @classrooms = current_user.teacher? ? Classroom.where(school: current_school, user: current_user) : Classroom.all
+    if params.has_key? :classroom
+      @current_classroom = Classroom.find(params[:classroom])
+    else
+      @current_classroom = @classrooms.sample
+    end
+
+    @time_intervals_and_kids = []
+    kids = @current_classroom.kids.includes(:kid_activities)
+    if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id)}).any?
+      kids_time = kids.map{|kid| kid.kid_activities.where(updated_at:[7.days.ago..Time.now]).map(&:total_time).inject(:+)}
+      max_time = kids_time.max{|a,b| a <=> b }
+      step = max_time / 5
+      steps = (0..max_time).step(step).to_a
+      time_intervals_in_seconds = steps.map.with_index{|el, index| [el, steps[index+1]]}[0...-1]
+      time_intervals_in_minutes = time_intervals_in_seconds.map{|step| [(step[0]/60).round, (step[1]/60).round]}
+      time_intervals_in_minutes.each_with_index do |ti, index|
+        selected_kids = kids.select{|kid| (ti[0]..ti[1]).include? (kid.kid_activities.where(updated_at:[7.days.ago..Time.now]).map(&:total_time).inject(:+)/60).round}
+        @time_intervals_and_kids[index] = {}
+        @time_intervals_and_kids[index][:time_interval] = ti
+        @time_intervals_and_kids[index][:kids] = selected_kids
+      end
+      @kids_count_per_timegroup = @time_intervals_and_kids.map{|item| item[:kids].count}
+    else
+      @kids_count_per_timegroup = Array.new(5,0)
+      @time_intervals_and_kids = Array.new(5,{})
+      @time_intervals_and_kids.each_with_index do |item, index|
+        item[:time_interval] = [24 * index ,24 * (index + 1)]
+        item[:kids] = []
+      end
+    end
+  end
+
 end
