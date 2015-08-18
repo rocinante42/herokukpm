@@ -45,12 +45,8 @@ class HomeController < ApplicationController
       end
       @kid_assignments_hash[kid.id] = bubble_group_assignments
     end
-    puts "wtf!!! #{@kid_assignments_hash.inspect}"
 
     @time_options = [['None', nil], ['2 Hours', 2.hours], ['1 Day', 1.days], ['2 Days', 2.days], ['5 Days', 5.days]]
-    #@current_classroom.kids.each do |kid|
-    #  kid.assignments
-    #end
   end
 
 end

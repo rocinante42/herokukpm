@@ -41,51 +41,54 @@
 
 <div class="container kmSection">
   <div class="row">
-    <table class="table inline solid fit">
-      <tbody>
-        <tr class="col-pad">
-          <td>
-            <h4>Choose Categories:</h4>
-          </td>
-          <td>
-            <h4>Choose Classroom:</h4>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            <div class="dropdown simple medium select">
-              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value">Kindergarten</span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li class="hidden"><a href="javascript:">Kindergarten</a></li>
-                <li><a href="javascript:">Grade 1</a></li>
-              </ul>
-              <input type="hidden" value="Kindergarten">
-            </div>
-          </td>
-          <td>
-            <div class="dropdown simple medium select">
-              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value">Classroom 1</span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <li class="hidden"><a href="javascript:">Classroom 1</a></li>
-                <li><a href="javascript:">Classroom 2</a></li>
-                <li><a href="javascript:">Classroom 3</a></li>
-              </ul>
-              <input type="hidden" value="Classroom 1">
-            </div>
-          </td>
-          <td>
-            <%= link_to 'Set', 'javascript:;', class: 'btn btn-warning btn-simple' %>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <%= form_tag activities_path, method: :get do %>
+      <table class="table inline solid fit">
+        <tbody>
+          <tr class="col-pad">
+            <td>
+              <h4>Choose Classroom Type:</h4>
+            </td>
+            <td>
+              <h4>Choose Classroom:</h4>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="dropdown simple medium select classroomType">
+                <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value"><%= @current_classroom_type.type_name %></span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <% @classroom_types.each do |ct| %>
+                    <li><a href="javascript:" data-id="<%= ct.id %>"><%= ct.type_name %></a></li>
+                  <% end %>
+                </ul>
+                <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
+              </div>
+            </td>
+            <td>
+              <div class="dropdown simple medium select classroom">
+                <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value"><%= @current_classroom.name %></span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <% @classroom_hash[@current_classroom_type.id].each do |cr| %>
+                    <li><a href="javascript:" data-id="<%= cr[0] %>"><%= cr[1] %></a></li>
+                  <% end %>
+                </ul>
+                <%= hidden_field_tag :classroom, @current_classroom.id %>
+              </div>
+            </td>
+            <td>
+              <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    <% end %>
   </div>
 </div>
 
@@ -177,7 +180,7 @@
       <tbody>
       <% @current_classroom.kids.each do |kid| %>
         <tr class="text-center v-middle">
-          <td class="text-left">
+          <td class="text-center">
             <span class="text-main font-large"><%= kid.full_name %></span>
           </td>
           <% BubbleGroup.all.find_each do |bg| %>
@@ -240,7 +243,7 @@
                             <i class="fa fa-pause"></i>
                           </div>
                           <div class="action-body">
-                            <div><%= time_ago_in_words(assignment.time_left) + " left" %></div>
+                            <div><%= distance_of_time_in_words(assignment.time_left_in_seconds) + " left" %></div>
                           </div>
                         <% end %>
                       </div>
@@ -267,5 +270,7 @@
     $('.action-media').click(function(){
       $(this).closest('form').submit();
     });
+
+    initDropdownSelect(<%= @classroom_hash.to_json.html_safe %>);
   });
 </script>
