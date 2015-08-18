@@ -61,7 +61,7 @@ class Assignment < ActiveRecord::Base
 
   def create_sub_assignments
     classroom.kids.each do |kid|
-      assignment = Assignment.where(bubble_group: bubble_group, kid:kid).first_or_initialize
+      assignment = sub_assignments.where(bubble_group: bubble_group, kid:kid).first_or_initialize
       if assignment.new_record?
         assignment.status = ACTIVE
         assignment.time_limit = time_limit
