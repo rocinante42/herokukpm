@@ -37,12 +37,13 @@
       <div class="pull-right">
         <div class="dropdown simple">
           <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span>Classroom 1</span>
+            <span><%= @current_classroom.name %></span>
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
-            <li><a href="#">Classroom 2</a></li>
-            <li><a href="#">Classroom 3</a></li>
+            <% @classrooms.each do |cr| %>
+              <li><%= link_to cr.name, dashboard_path(classroom:cr) %></li>
+            <% end %>
           </ul>
         </div>
       </div>
@@ -52,30 +53,15 @@
 
 <div class="container kmSection">
   <div class="row text-center apt-head">
-    <div class="col-md-2 col-md-offset-1">
-      <h1>8 kids</h1>
-      <p>0-24 minutes</p>
-    </div>
-    <div class="col-md-2">
-      <h1>3 kids</h1>
-      <p>24-48 minutes</p>
-    </div>
-    <div class="col-md-2">
-      <h1>2 kids</h1>
-      <p>48-72 minutes</p>
-    </div>
-    <div class="col-md-2">
-      <h1>3 kids</h1>
-      <p>72-96 minutes</p>
-    </div>
-    <div class="col-md-2">
-      <h1>5 kids</h1>
-      <p>96-120 minutes</p>
-    </div>
+    <% @time_intervals_and_kids.each_with_index do |item, index| %>
+      <div class="col-md-2 <%= index != 0 ? '' : 'col-md-offset-1'%>">
+        <h1><%= item[:kids].count %> kids</h1>
+        <p><%= item[:time_interval].join('-') %> minutes</p>
+      </div>
+    <% end %>
   </div>
 
-  <% max_kid_count = 9 %>
-  <% kids_count_per_timegroup = [8, 3, 2, 3, 5] %>
+  <% max_kid_count = @kids_count_per_timegroup.max{|a,b| a <=> b } %>
   <%# one row has a height of 40px %>
   <% row_height = 40 %>
   <% total_grid_height = max_kid_count * row_height %>
@@ -85,10 +71,10 @@
         <div><%= item %></div>
       <% end %>
     </div>
-    <% 5.times do |index| %>
+    <% @time_intervals_and_kids.each_with_index do |item, index| %>
       <div class="col-md-2 apt-col">
         <div class="grid" style="height: <%= total_grid_height %>px;">
-          <% current_row_height = kids_count_per_timegroup[index] * row_height %>
+          <% current_row_height = @kids_count_per_timegroup[index] * row_height %>
           <% if current_row_height * 2 > total_grid_height %>
             <% tooltip_position = 'bottom' %>
             <% tooltip_anchor = "top: #{total_grid_height - current_row_height + row_height}px;" %>
@@ -101,9 +87,9 @@
             <div class="apt-tip-content text-center">
               <h4>Kids</h4>
               <ul class="list-unstyled">
-                <% kids_count_per_timegroup[index].times do |i| %>
+                <% item[:kids].each do |kid| %>
                   <li>
-                    <%= link_to "First Last#{i}", 'javascript:;' %>
+                    <%= link_to kid.full_name, kid %>
                   </li>
                 <% end %>
               </ul>
@@ -111,7 +97,7 @@
           </div>
         </div>
         <div class="apt-x-axis text-center font-xxlarge">
-          <%= "#{24 * index} - #{24 * (index + 1)} minutes" %>
+          <%= "#{item[:time_interval].join('-')} minutes" %>
         </div>
       </div>
     <% end %>

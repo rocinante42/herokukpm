@@ -28,7 +28,11 @@ class Assignment < ActiveRecord::Base
   end
 
   def active?
-  	status == ACTIVE
+    status == ACTIVE
+  end
+
+  def passed?
+    status == PASSED
   end
 
   def track_activity
@@ -37,7 +41,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def single_track_activity
-    kid_activities.last.touch if inactive? && kid_activities.any?
+    kid_activities.last.touch if (inactive? || passed?) && kid_activities.any?
     kid_activities.create if active?
   end
 
