@@ -19,6 +19,11 @@
     <%= f.label :description %><br>
     <%= f.text_field :description %>
   </div>
+  <h3>Select from existing classroom types</h3>
+  <div class="field">
+    <%= f.label :classroom_type_ids, "Classroom Types" %><br>
+    <%= f.collection_select :classroom_type_ids, ClassroomType.all, :id, :type_name, {}, {multiple: true} %>
+  </div>
 
   <h3>Select from existing posets</h3>
   <div class="field">

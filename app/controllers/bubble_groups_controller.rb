@@ -110,6 +110,6 @@ class BubbleGroupsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bubble_group_params
-      params.require(:bubble_group).permit(:name, :description, :full_poset_id, :forward_poset_id, :backward_poset_id)
+      params.require(:bubble_group).permit(:name, :description, :full_poset_id, :forward_poset_id, :backward_poset_id, classroom_type_ids:[])
     end
 end
