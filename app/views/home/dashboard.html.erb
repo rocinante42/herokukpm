@@ -114,6 +114,7 @@
   </div>
 </div>
 
+<!-------------
 <div class="container kmSection">
   <div class="row">
     <div class="col-md-8 col-md-offset-2">
@@ -230,4 +231,59 @@
   </div>
 </div>
 
-<div class="container kmSection"></div>
+---->
+<!---------------------------------------------->
+
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <ul class="nav nav-pills simple bordered nav-justified font-xlarge">
+        <% @total_hash.keys.each_with_index do |ct_name, index| %>
+          <li role="presentation" class="<%= index == 0 ? 'active' : '' %>"><a href="#<%= ct_name.downcase.tr(' ', '_') %>" data-toggle="pill"><%= ct_name%></a></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row kmSection text-center">
+    <div class="dropdown simple">
+      <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span>Classroom 1</span>
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li><a href="#">Classroom 2</a></li>
+        <li><a href="#">Classroom 3</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="tab-content">
+    <% @total_hash.each do |ct_name, ct_item| %>
+      <div class="tab-pane <%= ct_name.downcase.start_with?('kinder') ? 'active' : '' %>" id="<%= ct_name.downcase.tr(' ', '_') %>" role="tabpanel">
+        <% ct_item[:classrooms].each do |cr_id, cr_item| %>
+          <div class="kmClassroomSection" id="classroom<%= cr_id %>">
+            <div class="row kmSection">
+              <ul class="nav nav-pills simple nav-justified nowrap">
+                <% cr_item[:bubble_groups].keys.each_with_index do |bg_name, index| %>
+                  <li role="presentation" class="<%= index == 0 ? 'active' : '' %>"><a href="#<%= 'classroom' + cr_id.to_s + '_' + bg_name.downcase.tr(' ', '_') %>" data-toggle="pill"><%= bg_name %></a></li>
+                <% end %>
+              </ul>
+            </div>
+
+            <div class="tab-content">
+              <% cr_item[:bubble_groups].keys.each_with_index do |bg_name, index| %>
+                <div class="tab-pane <%= index == 0 ? 'active' : '' %>" id="<%= 'classroom' + cr_id.to_s + '_' + bg_name.downcase.tr(' ', '_') %>" role="tabpanel">
+                  <%= render 'bar_chart', values: cr_item[:bubble_groups][bg_name][:categories].values.map{|info| info[:passed]}, titles:  cr_item[:bubble_groups][bg_name][:categories].keys %>
+                </div>
+              <% end %>
+            </div>
+
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

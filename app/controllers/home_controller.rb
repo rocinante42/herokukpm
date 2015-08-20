@@ -55,6 +55,7 @@ class HomeController < ApplicationController
   end
 
   def dashboard
+    @classroom_types = ClassroomType.all
     @classrooms = current_user.teacher? ? Classroom.where(school: current_school, user: current_user) : Classroom.all
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
@@ -85,6 +86,68 @@ class HomeController < ApplicationController
         item[:time_interval] = [24 * index ,24 * (index + 1)]
         item[:kids] = []
       end
+    end
+
+=begin
+    @current_classroom_hash = {}
+
+    @bottom_current_classroom_type = @classroom_types.sample
+    if params.has_key? :current_ct
+      @bottom_current_classroom_type = ClassroomType.find(params[:current_ct])
+      @bottom_current_classroom = @bottom_current_classroom_type.classrooms.sample
+    end
+    if params.has_key? :current_cr
+      @bottom_current_classroom = Classroom.find(:current_cr)
+    end
+    @bottom_current_classroom = Classroom.first
+    @current_classroom_hash[:bubble_groups] = {}
+    @bottom_current_classroom_type.bubble_groups.each do |bg|
+      @current_classroom_hash[:bubble_groups][bg.name] = {
+        categories: {}
+      }
+      bg.bubble_categories.each do |category|
+        @current_classroom_hash[:bubble_groups][bg.name][:categories][category.name] = {}
+        passed_kids_count = @bottom_current_classroom.kids.joins(bubble_statuses: :bubble).where(bubble_statuses:{passed: true}, bubbles: {bubble_category_id: category.id}).count.to_f
+        @current_classroom_hash[:bubble_groups][bg.name][:categories][category.name] = {
+          passed: (passed_kids_count / @bottom_current_classroom.kids.count) * 100
+        }
+      end
+    end
+    #puts "total_hash #{@current_classroom_hash.inspect}"
+=end
+    @bottom_current_classroom_type = @classroom_types.first
+    @bottom_current_classroom = @bottom_current_classroom_type.classrooms.first
+    @total_hash = {}
+    puts "groups!!! #{@classrooms.group_by(&:classroom_type_id).inspect}"
+    @classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
+      ct = ClassroomType.find(ct_id)
+      ct_name = ct.type_name
+      @total_hash[ct_name] = {
+        #bubble_groups: ct.bubble_groups.pluck(:name)
+      }
+      @total_hash[ct_name][:classrooms] = {}
+      classrooms.each do |cr|
+        #@total_hash[ct_name][:classrooms][dr.id]
+        @total_hash[ct_name][:classrooms][cr.id] = {}
+        @total_hash[ct_name][:classrooms][cr.id][:classroom] = cr
+        @total_hash[ct_name][:classrooms][cr.id][:bubble_groups] = {}
+        ct.bubble_groups.each do |bg|
+          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
+          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
+          bg.bubble_categories.each do |category|
+            passed_kids_count = cr.kids.joins(bubble_statuses: :bubble).where(bubble_statuses:{passed: true}, bubbles: {bubble_category_id: category.id}).count.to_f
+            @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
+              passed: (passed_kids_count / cr.kids.count) * 100
+            }
+          end
+        end
+      end
+    end
+    puts "total_hash #{@total_hash.inspect}"
+
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 

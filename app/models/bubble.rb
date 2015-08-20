@@ -7,6 +7,7 @@ class Bubble < ActiveRecord::Base
   has_many :bubble_games, dependent: :destroy
   has_many :games, through: :bubble_games
   has_many :triggers, dependent: :destroy
+  has_many :bubble_statuses
 
   default_scope ->{ order(:bubble_group_id) }
 
