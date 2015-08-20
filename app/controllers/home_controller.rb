@@ -92,7 +92,7 @@ class HomeController < ApplicationController
       @bottom_current_classroom = Classroom.find(params[:current_cr])
       @bottom_current_classroom_type = @bottom_current_classroom.classroom_type
     else
-      @bottom_current_classroom_type = @classroom_types.first
+      @bottom_current_classroom_type = @classroom_types.joins(:classrooms).merge(@classrooms).first
       @bottom_current_classroom = @bottom_current_classroom_type.classrooms.first
     end
     @total_hash = {}
