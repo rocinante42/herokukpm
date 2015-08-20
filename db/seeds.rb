@@ -211,5 +211,6 @@ backward_poset = Poset.create_from_csv(backward_poset_file, bubbles, {name: "#{g
 @bubble_group.full_poset = full_poset if full_poset
 @bubble_group.forward_poset = forward_poset if forward_poset
 @bubble_group.backward_poset = backward_poset if backward_poset
+@bubble_group.classroom_types << [type_1, type_2]
 
 @bubble_group.save

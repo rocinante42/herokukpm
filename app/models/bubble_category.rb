@@ -1,5 +1,6 @@
 class BubbleCategory < ActiveRecord::Base
   has_many :bubbles, dependent: :nullify
+  has_many :bubble_groups, through: :bubbles
 
   def self.create_from_csv csv_file, options = {}
     bubble_categories = []

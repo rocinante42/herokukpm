@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150818111948) do
+ActiveRecord::Schema.define(version: 20150819154029) do
 
   create_table "assignments", force: true do |t|
     t.integer  "kid_id"
@@ -64,6 +64,14 @@ ActiveRecord::Schema.define(version: 20150818111948) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "bubble_groups_classroom_types", id: false, force: true do |t|
+    t.integer "bubble_group_id"
+    t.integer "classroom_type_id"
+  end
+
+  add_index "bubble_groups_classroom_types", ["bubble_group_id"], name: "index_bubble_groups_classroom_types_on_bubble_group_id"
+  add_index "bubble_groups_classroom_types", ["classroom_type_id"], name: "index_bubble_groups_classroom_types_on_classroom_type_id"
 
   create_table "bubble_statuses", force: true do |t|
     t.integer  "bubble_group_status_id"

@@ -55,6 +55,7 @@ class HomeController < ApplicationController
   end
 
   def dashboard
+    @classroom_types = ClassroomType.all
     @classrooms = current_user.teacher? ? Classroom.where(school: current_school, user: current_user) : Classroom.all
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
@@ -85,6 +86,42 @@ class HomeController < ApplicationController
         item[:time_interval] = [24 * index ,24 * (index + 1)]
         item[:kids] = []
       end
+    end
+
+    if params.has_key? :current_cr
+      @bottom_current_classroom = Classroom.find(params[:current_cr])
+      @bottom_current_classroom_type = @bottom_current_classroom.classroom_type
+    else
+      @bottom_current_classroom_type = @classroom_types.joins(:classrooms).merge(@classrooms).first
+      @bottom_current_classroom = @bottom_current_classroom_type.classrooms.first
+    end
+    @total_hash = {}
+    @classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
+      ct = ClassroomType.find(ct_id)
+      ct_name = ct.type_name
+      @total_hash[ct_name] = {
+        classrooms: {}
+      }
+      classrooms.each do |cr|
+        @total_hash[ct_name][:classrooms][cr.id] = {}
+        @total_hash[ct_name][:classrooms][cr.id][:classroom] = cr
+        @total_hash[ct_name][:classrooms][cr.id][:bubble_groups] = {}
+        ct.bubble_groups.each do |bg|
+          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
+          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
+          bg.bubble_categories.each do |category|
+            passed_kids_count = cr.kids.joins(bubble_statuses: :bubble).where(bubble_statuses:{passed: true}, bubbles: {bubble_category_id: category.id}).count.to_f
+            @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
+              passed: (passed_kids_count / cr.kids.count) * 100
+            }
+          end
+        end
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
