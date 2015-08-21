@@ -6,26 +6,10 @@ class ClassroomsController < ApplicationController
   # GET /classrooms.json
   def index
     if current_user.teacher?
-      classrooms = Classroom.where(school: current_school, user: current_user)
-      @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
+      @classrooms = Classroom.where(school: current_school, user: current_user)
     else
-      classrooms = Classroom.all
-      @classroom_types = ClassroomType.all
+      @classrooms = Classroom.all
     end
-
-    if params.has_key? :classroom
-      @current_classroom = Classroom.find(params[:classroom])
-      @current_classroom_type = @current_classroom.classroom_type
-    else
-      @current_classroom = classrooms.sample
-      @current_classroom_type = @current_classroom.classroom_type
-    end
-
-    @classroom_hash = {}
-    @classroom_types.each do |ct|
-      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, user: current_user) : ct.classrooms
-      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
-    end 
   end
 
   # GET /classrooms/1

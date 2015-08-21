@@ -1,10 +1,11 @@
 <%
   menu = {
           'Dashboard' => dashboard_path,
-          'Classrooms' => classrooms_path,
+          'Classrooms' => dashboard_classroom_path,
           'Activities'=> activities_path,
           'Teacher Mode'=> teacher_mode_path
          }
+  menu['Admin Panel'] = dashboard_admin_path if current_user.admin?
 %>
 <div class="container-fluid kmSection">
   <div class="row content-tabs">

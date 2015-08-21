@@ -1,0 +1,177 @@
+<%= render 'shared/menu' %>
+
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Classrooms</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="row">
+    <%= form_tag dashboard_classroom_path, method: :get do %>
+      <table class="table inline solid fit">
+        <tbody>
+        <tr class="col-pad">
+          <td>
+            <h4>Choose Classroom Type:</h4>
+          </td>
+          <td>
+            <h4>Choose Classroom:</h4>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="dropdown simple medium select classroomType">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @current_classroom_type.type_name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @classroom_types.each do |ct| %>
+                  <li><a href="javascript:" data-id="<%= ct.id %>"><%= ct.type_name %></a></li>
+                <% end %>
+              </ul>
+              <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown simple medium select classroom">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @current_classroom.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @classroom_hash[@current_classroom_type.id].each do |cr| %>
+                  <li><a href="javascript:" data-id="<%= cr[0] %>"><%= cr[1] %></a></li>
+                <% end %>
+              </ul>
+              <%= hidden_field_tag :classroom, @current_classroom.id %>
+            </div>
+          </td>
+          <td>
+            <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="row">
+    <h4>Current Classroom:</h4>
+    <table class="table fit">
+      <thead>
+      <tr>
+        <th class="text-center">Classroom</th>
+        <th class="text-center">Total Students</th>
+        <th class="text-center"></th>
+        <th class="text-center minimal">Add Student</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="text-center v-middle">
+        <td class="text-left minimal">
+          <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
+        </td>
+
+        <td class="equal">
+          <span class="text-main font-large"><%= @current_classroom.kids.count %></span>
+        </td>
+
+        <td class="equal"></td>
+
+        <td>
+          <%= link_to new_kid_path, class: 'btn btn-info btn-simple btn-large btn-wide' do %>
+            <i class="fa fa-plus"></i>
+            <span>Add New Student</span>
+          <% end %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <table class="table fit">
+      <thead>
+      <tr class="no-border-top">
+        <th class="text-center">Avatar</th>
+        <th class="text-center">Students</th>
+        <th class="text-center">Download Report</th>
+        <% if @current_classroom.kindergarten? %>
+          <th class="text-center">Download Report</th>
+        <% end %>
+        <th colspan="2"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @current_classroom.kids.each do |kid| %>
+        <tr class="text-center v-middle">
+          <td class="minimal">
+            <%= link_to kid do %>
+              <% avatar = kid.male? ? 'boy_avatar.png' : 'girl_avatar.jpg' %>
+              <%= image_tag avatar %>
+            <% end %>
+          </td>
+
+          <td>
+            <span class="text-main font-large"><%= kid.full_name %></span>
+          </td>
+          <% if kid.kindergarten? %>
+            <td>
+              <%= link_to 'Kindergarten Report', 'javascript:', class: 'btn btn-info btn-simple btn-wide' %>
+            </td>
+
+            <td>
+              <%= link_to 'Full Report', reports_kid_path(kid), class: 'btn btn-info btn-simple btn-wide' %>
+            </td>
+          <% else %>
+            <td>
+              <%= link_to 'First Grade Report', reports_kid_path(kid), class: 'btn btn-info btn-simple btn-wide' %>
+            </td>
+          <% end %>
+
+          <td class="minimal">
+            <%= link_to 'Edit', edit_kid_path(kid), class: 'btn btn-warning btn-simple btn-extended' %>
+          </td>
+
+          <td class="minimal">
+            <%= link_to 'Delete', kid, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-extended' %>
+          </td>
+
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    var classroom_hash = <%= @classroom_hash.to_json.html_safe %>;
+    $('.dropdown.select.classroomType ul > li > a').click(function(){
+      var id = $(this).data('id');
+      var classrooms = classroom_hash[id];
+      $('.dropdown.select.classroom ul').html('');
+      if(classrooms.length)
+      {
+        $('.dropdown.select.classroom span.value').text(classrooms[0][1]);
+        $('.dropdown.select.classroom input[type="hidden"]').val(classrooms[0][0]);
+      }
+      else
+      {
+        $('.dropdown.select.classroom span.value').text('');
+      }
+      classrooms.forEach(function(el){
+        $('.dropdown.select.classroom ul').append('<li><a href="javascript:" data-id="' + el[0] + '">' + el[1] + '</a></li>');
+      });
+    });
+  });
+</script>
