@@ -130,4 +130,50 @@ class HomeController < ApplicationController
   def teacher_mode
   end
 
+  def dashboard_admin
+    @menu_options = {
+                      'Person Management'=>
+                      {
+                        'View Kids' => kids_path,
+                        'View Classrooms' => classrooms_path,
+                        'View Schools' => schools_path
+                      },
+                      'Game Management' =>
+                      {
+                        'View Bubble Groups' => bubble_groups_path,
+                        'View Bubble Group Statuses' => bubble_group_statuses_path,
+                        'View Posets' => posets_path,
+                        'View Games' => games_path,
+                        'View Bubbles' => bubbles_path,
+                        'View Bubble Games' => bubble_games_path,
+                        'View Bubble Categories' => bubble_categories_path,
+                        'View Triggers' => triggers_path
+                      }
+                    }
+  end
+
+  def dashboard_classroom
+    if current_user.teacher?
+      classrooms = Classroom.where(school: current_school, user: current_user)
+      @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
+    else
+      classrooms = Classroom.all
+      @classroom_types = ClassroomType.all
+    end
+
+    if params.has_key? :classroom
+      @current_classroom = Classroom.find(params[:classroom])
+      @current_classroom_type = @current_classroom.classroom_type
+    else
+      @current_classroom = classrooms.sample
+      @current_classroom_type = @current_classroom.classroom_type
+    end
+
+    @classroom_hash = {}
+    @classroom_types.each do |ct|
+      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, user: current_user) : ct.classrooms
+      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
+    end
+  end
+
 end
