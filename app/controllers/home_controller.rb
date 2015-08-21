@@ -1,10 +1,10 @@
 class HomeController < ApplicationController
   def index
     unless user_signed_in?
-  		redirect_to new_user_session_path
+      redirect_to new_user_session_path
     else
       redirect_to dashboard_path
-  	end
+    end
   end
 
   def choose_school
