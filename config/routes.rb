@@ -1,8 +1,5 @@
 Rails.application.routes.draw do
 
-  authenticated :user do
-    root :to => 'home#dashboard', as: :authenticated_root
-  end
   root to: 'home#index'
   get 'home/index'
 
