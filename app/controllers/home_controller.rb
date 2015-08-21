@@ -125,4 +125,7 @@ class HomeController < ApplicationController
     end
   end
 
+  def teacher_mode
+  end
+
 end

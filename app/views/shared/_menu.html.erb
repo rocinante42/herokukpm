@@ -1,0 +1,25 @@
+<%
+  menu = {
+          'Dashboard' => dashboard_path,
+          'Classrooms' => classrooms_path,
+          'Activities'=> activities_path,
+          'Teacher Mode'=> teacher_mode_path
+         }
+%>
+<div class="container-fluid kmSection">
+  <div class="row content-tabs">
+    <div class="container">
+      <ul class="nav nav-tabs nav-justified">
+        <% menu.each do |title, path| %>
+          <li role="presentation" class="<%= path == request.path ? 'active' : '' %>">
+            <%= link_to path do %>
+              <%= title %>
+              <span class="caret"></span>
+            <% end %>
+          </li>
+        <% end %>
+        
+      </ul>
+    </div>
+  </div>
+</div>
