@@ -61,4 +61,5 @@ Rails.application.routes.draw do
   get 'report' => 'home#report'
   get 'choose_school' => 'home#choose_school'
   get 'set_school' => 'home#set_school'
+  get 'teacher_mode' => 'home#teacher_mode'
 end
