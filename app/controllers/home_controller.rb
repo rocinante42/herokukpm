@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+  class HomeController < ApplicationController
   def index
     unless user_signed_in?
       redirect_to new_user_session_path
@@ -40,6 +40,7 @@ class HomeController < ApplicationController
     
     @total_assignments_hash = {}
     BubbleGroup.all.find_each do |bg|
+      next unless @current_classroom_type.bubble_groups.include? bg
       assignment = @current_classroom.assignments.general.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
       assignment.status = Assignment::NONE if assignment.new_record?
       @total_assignments_hash[bg.id] = {}
