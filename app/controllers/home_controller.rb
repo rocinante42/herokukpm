@@ -112,7 +112,7 @@ class HomeController < ApplicationController
           @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
           @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
           bg.bubble_categories.each do |category|
-            passed_kids_count = cr.kids.joins(bubble_statuses: :bubble).where(bubble_statuses:{passed: true}, bubbles: {bubble_category_id: category.id}).count.to_f
+            passed_kids_count = cr.kids.joins(bubble_statuses: :bubble).where(bubble_statuses:{passed: true}, bubbles: {bubble_category_id: category.id}).uniq.count.to_f
             @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
               passed: (passed_kids_count / cr.kids.count) * 100
             }
