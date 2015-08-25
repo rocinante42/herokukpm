@@ -1,0 +1,7 @@
+bubble group,bubble,destination
+CountAll,"AddToResultCov_(8,10)-(3,3)",Count On
+CountAll,"TakeFromResultCov_(8,10)-(3,3)",Count On
+CountAll,"PutTogetherTotalCov_8,10",Count On
+CountAll,"AddToResultCov_(8,10)-(3,3)",Comparison
+CountAll,"TakeFromResultCov_(8,10)-(3,3)",Comparison
+CountAll,"PutTogetherTotalCov_8,10",Comparison
