@@ -52,7 +52,7 @@ class Assignment < ActiveRecord::Base
 
   def single_time_left_in_seconds
     last_activity_progress = active? ? Time.now - kid_activities.last.created_at : 0
-    (time_limit - kid_activities.map(&:total_time).inject(:+) - last_activity_progress)
+    ((time_limit || 2.hours) - kid_activities.map(&:total_time).inject(:+) - last_activity_progress)
   end
 
   def expired?

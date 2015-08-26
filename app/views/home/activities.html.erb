@@ -105,6 +105,7 @@
               <span class="text-main font-large"><%= kid.full_name %></span>
             </td>
             <% BubbleGroup.all.find_each do |bg| %>
+              <% next unless @current_classroom_type.bubble_groups.include? bg %>
               <% assignment = @total_assignments_hash[bg.id][:kid_assignments][kid.id] %>
                 <td>
                   <%= render 'assignments/form', assignment: assignment, kid: kid, bg:bg %>
