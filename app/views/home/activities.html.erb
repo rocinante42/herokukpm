@@ -68,10 +68,10 @@
     <h4>Choose Activities</h4>
     <table class="table fit">
       <thead>
-        <tr>
+        <tr class="v-middle">
           <th class="text-center">Classroom</th>
           <% @total_assignments_hash.each do |bg_id, info| %>
-            <th class="text-center"><%= info[:bubble_group].name %></th>
+            <th class="text-center"><%= bubble_group_two_lines_name info[:bubble_group].name %></th>
           <% end %>
         </tr>
       </thead>
