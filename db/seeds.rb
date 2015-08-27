@@ -217,9 +217,9 @@ Zip::File.open('./db/bubble_groups.zip') do |zip_file|
 end
 
 ##adding bubble groups to classroom types(Kindergarten, First Grade)
-common_groups = BubbleGroup.where(name: %w(Base10HowMany Base10Produce AdditionAndSubtractionCountAll CountingAndCardinalityTo20 NumberLineModel))
+common_groups = BubbleGroup.where(name: ['Base 10 How Many', 'Base 10 Produce', 'Addition and Subtraction Count All', 'Counting and Cardinality to 20', 'Number Line Model'])
 type_1.bubble_groups << common_groups
-type_2.bubble_groups << common_groups + BubbleGroup.where(name: %w(AdditionAndSubtractionComparison AdditionAndSubtractionCountOn))
+type_2.bubble_groups << common_groups + BubbleGroup.where(name: ['Addition and Subtraction Comparison', 'Addition and Subtraction Count On'])
 
 ##create triggers from csv file
 Trigger.create_from_csv File.open("./db/triggers.csv")
