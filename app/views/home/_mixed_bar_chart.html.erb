@@ -1,0 +1,46 @@
+<% rows_count = 20 %>
+<% row_height = 20 %>
+<% titles = ["1-5", "6-10", "11-15", "16-20"] %>
+<% totals = [20, 22, 10, 11] %>
+<% values = [10, 22, 8, 2] %>
+<% total_grid_height = rows_count * row_height %>
+
+
+<% if local_assigns[:title] %>
+  <div class="row apt-title text-center">
+    <div class="col-md-12">
+      <h3><%= title %></h3>
+    </div>
+  </div>
+<% end %>
+<div class="row apt-body mixed">
+  <div class="col-md-2 font-xxlarge text-right apt-y-axis">
+    <% (1..rows_count).to_a.reverse.each do |item| %>
+      <div class="font-large"><%= item * 5 %>%</div>
+    <% end %>
+  </div>
+  <div class="col-md-10">
+    <div class="row">
+      <% columns_count = values.length %>
+      <% columns_count.times do |index| %>
+        <div class="col-md-<%= 12 / columns_count %> apt-col">
+          <div class="grid" style="height: <%= total_grid_height %>px;">
+            <% percent = 1.0 * values[index] / totals[index] * 100 %>
+            <div class="apt-bar" style="height: <%= percent %>%;"></div>
+            <div class="apt-total-bar" style="height:<%= total_grid_height + 1 %>px;">
+              <div class="apt-label">
+                <span class="font-normal">
+                  <%= values[index] %><span class="font-small">/<%= totals[index] %></span>
+                </span>
+                <span class="font-normal">&nbsp;&nbsp;<%= percent.round(0) %>%</span>
+              </div>
+            </div>
+          </div>
+          <div class="apt-x-axis text-center font-large">
+            <%= titles[index] %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
