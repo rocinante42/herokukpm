@@ -113,9 +113,10 @@
           @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
           @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
           bg.bubble_categories.each do |category|
-            passed_kids_count = cr.kids.joins(bubble_statuses: :bubble).where(bubble_statuses:{passed: true}, bubbles: {bubble_category_id: category.id}).uniq.count.to_f
+            total_count = category.bubbles.count * cr.kids.count
+            passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:cr.kids.pluck(:id)}).uniq.count.to_f
             @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
-              passed: (passed_kids_count / cr.kids.count) * 100
+              passed: passed_count / total_count * 100
             }
           end
         end
