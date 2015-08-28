@@ -38,7 +38,7 @@
             <div class="row kmSection">
               <ul class="nav nav-pills simple nav-justified nowrap">
                 <% cr_item[:bubble_groups].keys.each_with_index do |bg_name, index| %>
-                  <li role="presentation" class="<%= index == 0 ? 'active' : '' %>"><a href="#<%= 'classroom' + cr_id.to_s + '_' + bg_name.downcase.tr(' ', '_') %>" data-toggle="pill"><%= bg_name %></a></li>
+                  <li role="presentation" class="<%= index == 0 ? 'active' : '' %>"><a href="#<%= 'classroom' + cr_id.to_s + '_' + bg_name.downcase.tr(' ', '_') %>" data-toggle="pill"><%= bubble_group_two_lines_name bg_name %></a></li>
                 <% end %>
               </ul>
             </div>
