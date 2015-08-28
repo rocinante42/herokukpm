@@ -31,4 +31,8 @@ class BubbleCategory < ActiveRecord::Base
     ## return unique categories
     return bubble_categories.uniq
   end
+
+  def name
+    read_attribute(:name).split('_').last
+  end
 end
