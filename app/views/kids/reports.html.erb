@@ -1,38 +1,9 @@
-<div class="container-fluid kmSection">
-  <div class="row content-tabs">
-    <div class="container">
-      <ul class="nav nav-tabs nav-justified">
-        <li role="presentation" class="active">
-          <%= link_to '#dashboard', data: {toggle: 'tab'} do%>
-            Dashboard
-            <span class="caret"></span>
-          <% end %>
-        </li>
-        <li role="presentation">
-          <%= link_to classrooms_path do%>
-            Classroom
-          <% end %>
-        </li>
-        <li role="presentation">
-          <%= link_to activities_path do%>
-            Activities
-          <% end %>
-        </li>
-        <li role="presentation">
-          <%= link_to '#teacher_mode', data: {toggle: 'tab'} do%>
-            Teacher Mode
-          <% end %>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
+<%= render 'shared/menu' %>
 <div class="container-fluid kmSection">
   <div class="row kmSectionTitle">
     <div class="container">
       <div class="pull-left">
-        <h4>Reports for Danielle Way</h4>
+        <h4>Reports for <%= @kid.full_name %></h4>
       </div>
       <div class="pull-right">
         <%= link_to 'javascript:', class: 'btn btn-info btn-large btn-simple' do %>
@@ -59,7 +30,7 @@
                   <%= image_tag 'student_avatar_medium.jpg', class: 'media-object' %>
                 </div>
                 <div class="media-body media-middle">
-                  <h3 class="text-main">Danielle Way</h3>
+                  <h3 class="text-main"><%= @kid.full_name %></h3>
                 </div>
               </div>
             </div>
@@ -69,7 +40,7 @@
             <div class="grid-col">
               <table class="table solid fit continual font-large">
                 <tbody>
-                <% data = {'Age' => '6 years', 'Language' => 'English', 'School' => 'East High School', 'Classroom' => 'Smart', 'Classroom Type' => 'First Grade'} %>
+                <% data = {'Age' => "#{@kid.age} years", 'Language' => @kid.primary_language, 'School' => @kid.classroom.school.name, 'Classroom' => @kid.classroom.name, 'Classroom Type' => @kid.classroom.classroom_type.type_name}%>
                 <% data.each do |k, v| %>
                   <tr>
                     <td>
@@ -92,37 +63,12 @@
 
     <div class="col-md-8">
       <% report_titles = ['Addition and Subtraction Count All', 'Base 10 How Many', 'Base 10 Produce', 'Counting and Cardinality to 20', 'Number Line Model', 'Addition and Subtraction Comparison', 'Addition and Subtraction Count On'] %>
-      <% report_titles.each do |title| %>
+      <% @reports.each do |title, categories| %>
         <div class="kmSection">
           <h4><%= title %></h4>
-          <%= render 'home/mixed_bar_chart' %>
+          <%= render 'home/mixed_bar_chart', categories: categories %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
-
-<!--
-<h2>Reports for <%= link_to @kid.full_name, @kid %></h2>
-
-<table>
-  <tr>
-    <th>Category</th>
-    <th>Passed</th>
-    <th>Active</th>
-    <th>Total</th>
-  </tr>
-  <% @reports.each do |category, stats| %>
-    <tr>
-      <td><%= link_to category.name, category %></td>
-      <td><%= stats[:passed] %></td>
-      <td><%= stats[:active] %></td>
-      <td><%= stats[:total] %></td>
-    </tr>
-  <% end %>
-</table>
-<br>
-
-<%= link_to 'Back', @kid %>
-
--->

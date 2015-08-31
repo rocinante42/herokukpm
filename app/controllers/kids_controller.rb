@@ -26,16 +26,22 @@ class KidsController < ApplicationController
   ## GET /kids/1/report
   def reports
     @reports = {}
-    BubbleCategory.all.each do |category|
-      ## fetch the statuses for this category
-      statuses = @kid.bubble_statuses.joins(:bubble).where(bubbles: {bubble_category_id: category.id})
-
-      ## store stats for those statuses
-      @reports[category] = {
-        passed: statuses.passed.count,
-        active: statuses.active.count,
-        total: statuses.count
-      }
+    if params.has_key? :full_report
+      @classroom_type = ClassroomType.find_by(type_name: "First grade")
+    else
+      @classroom_type = @kid.classroom.classroom_type
+    end
+    @classroom_type.bubble_groups.each do |bg|
+      @reports[bg.name] = {}
+      bg.bubble_categories.each do |category|
+        total_count = category.bubbles.count
+        passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:@kid.id}).uniq.count
+        @reports[bg.name][category.name] = {
+          passed: passed_count,
+          total: total_count,
+          percent: passed_count.to_f / total_count * 100
+        }
+      end
     end
   end
 
