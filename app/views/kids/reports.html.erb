@@ -6,7 +6,7 @@
         <h4>Reports for <%= @kid.full_name %></h4>
       </div>
       <div class="pull-right">
-        <%= link_to 'javascript:', class: 'btn btn-info btn-large btn-simple' do %>
+        <%= link_to download_report_kid_path(@kid), class: 'btn btn-info btn-large btn-simple' do %>
           <i class="fa fa-print"></i>
           <span> Print Report as PDF</span>
         <% end %>

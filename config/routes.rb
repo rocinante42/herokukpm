@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       get :play_game
       get :games
       post :result
+      get :download_report
     end
   end
 

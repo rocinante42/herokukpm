@@ -1,5 +1,6 @@
 class KidsController < ApplicationController
   before_action :authenticate_user!
+  before_action :prepare_reports_data, only: [:reports, :download_report]
   load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:result]
 
@@ -25,24 +26,28 @@ class KidsController < ApplicationController
 
   ## GET /kids/1/report
   def reports
-    @reports = {}
-    if params.has_key? :full_report
-      @classroom_type = ClassroomType.find_by(type_name: "First grade")
-    else
-      @classroom_type = @kid.classroom.classroom_type
-    end
-    @classroom_type.bubble_groups.each do |bg|
-      @reports[bg.name] = {}
-      bg.bubble_categories.each do |category|
-        total_count = category.bubbles.count
-        passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:@kid.id}).uniq.count
-        @reports[bg.name][category.name] = {
-          passed: passed_count,
-          total: total_count,
-          percent: passed_count.to_f / total_count * 100
-        }
+  end
+
+  def download_report
+    pdf = Prawn::Document.new
+    @reports.each do |bg_name, categories|
+      pdf.fill_color '000000'
+      pdf.text bg_name, align: :center
+      pdf.move_down(20)
+      categories.each do |category, stats|
+        pdf.fill_color '000000'
+        pdf.draw_text category, at: [100, pdf.y - 30]
+        pdf.fill_color "FFFFFF"
+        pdf.stroke_color "00007f"
+        full_width = 250
+        pdf.fill_and_stroke_rectangle [150, pdf.y - 15], full_width,25
+        pdf.fill_color "7589bd"
+        pdf.stroke_color "39507d"
+        pdf.fill_and_stroke_rectangle [150,pdf.y - 15], full_width * stats[:percent] / 100,25
+        pdf.move_down(40)
       end
     end
+    send_data pdf.render, :filename => "#{@kid.full_name} Report.pdf", :type => "application/pdf"#, :disposition => 'inline'
   end
 
   # POST /kids
@@ -223,5 +228,27 @@ class KidsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def kid_params
       params.require(:kid).permit(:login_id, :classroom_id, :school_id, :first_name, :last_name, :gender, :age, :primary_language)
+    end
+
+    def prepare_reports_data
+      set_kid
+      @reports = {}
+      if params.has_key? :full_report
+        @classroom_type = ClassroomType.find_by(type_name: "First grade")
+      else
+        @classroom_type = @kid.classroom.classroom_type
+      end
+      @classroom_type.bubble_groups.each do |bg|
+        @reports[bg.name] = {}
+        bg.bubble_categories.each do |category|
+          total_count = category.bubbles.count
+          passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:@kid.id}).uniq.count
+          @reports[bg.name][category.name] = {
+            passed: passed_count,
+            total: total_count,
+            percent: passed_count.to_f / total_count * 100
+          }
+        end
+      end
     end
 end
