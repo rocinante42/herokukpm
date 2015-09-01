@@ -13,16 +13,20 @@
 <div class="container kmSection">
   <div class="row">
     <%= form_tag activities_path, method: :get do %>
-      <table class="table inline solid fit">
+      <table class="table solid fit">
         <tbody>
           <tr class="col-pad">
-            <td>
+            <td class="minimal">
               <h4>Choose Classroom Type:</h4>
             </td>
-            <td>
+            <td class="minimal">
               <h4>Choose Classroom:</h4>
             </td>
+            <td class="minimal"></td>
             <td></td>
+            <td class="minimal">
+              <h4>Set Time:</h4>
+            </td>
           </tr>
           <tr>
             <td>
@@ -55,6 +59,21 @@
             </td>
             <td>
               <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+            </td>
+            <td></td>
+            <td>
+              <div class="dropdown simple medium select">
+                <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value">2 hours</span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <li><a href="javascript:">1 Day</a></li>
+                  <li><a href="javascript:">2 Days</a></li>
+                  <li><a href="javascript:">5 Days</a></li>
+                </ul>
+                <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -89,6 +108,38 @@
         <% end %>
 
       </tr>
+      <tr>
+        <td class="text-center">
+          <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
+        </td>
+        <% @total_assignments_hash.each do |bg_id, info| %>
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'info action action-center' do %>
+                <div class="action-media">
+                  <i class="fa fa-pause"></i>
+                </div>
+              <% end %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
+      <tr>
+        <td class="text-center">
+          <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
+        </td>
+        <% @total_assignments_hash.each do |bg_id, info| %>
+          <td>
+            <div class="btn-multi center-block">
+              <%= link_to 'javascript:', class: 'warning action action-center' do %>
+                <div class="action-media">
+                  <i class="fa fa-play"></i>
+                </div>
+              <% end %>
+            </div>
+          </td>
+        <% end %>
+      </tr>
       </tbody>
 
 
@@ -117,6 +168,12 @@
       </tbody>
     </table>
 
+  </div>
+
+  <div class="row actions text-right">
+    <%= link_to 'Submit', 'javascript:', class: 'btn btn-success btn-simple btn-large btn-wide' %>
+    <%= link_to 'Reset', 'javascript:', class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
+    <%= link_to 'Pause', 'javascript:', class: 'btn btn-info btn-simple btn-large btn-wide' %>
   </div>
 </div>
 
