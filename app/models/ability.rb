@@ -6,22 +6,18 @@ class Ability
       can :manage, :all
     elsif user.teacher?
       ##Ability with kid
-      can :read, Kid
       can :create, Kid
-      can :update, Kid do |kid|
-        kid.try(:user) == user
-      end
-      can :destroy, Kid do |kid|
-        kid.try(:user) == user
+      can :manage, Kid do |kid|
+        user.students.include? kid
       end
       ##Ability with classroom
-      can :read, Classroom
       can :create, Classroom
-      can :update, Classroom do |classroom|
-        classroom.try(:user) == user
+      can :manage, Classroom do |classroom|
+        classroom.try(:teacher) == user
       end
-      can :destroy, Classroom do |classroom|
-        classroom.try(:user) == user
+      can :create, User
+      can :manage, User do |u|
+        (user.students & u.kids).any?
       end
       ##Others ability with classroom
       can :read, BubbleCategory

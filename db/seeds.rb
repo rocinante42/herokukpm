@@ -1,36 +1,40 @@
 #/////////////////////Roles/////////////////////////
- "Creating Admin Role"
-role_1 = Role.find_or_create_by({
+p "Creating Admin Role"
+super_role = Role.find_or_create_by({
   name: "Admin",
   description: "Can perform any CRUD operation on any resource"
  })
 
 p "Creating Teacher  Role"
-role_2 = Role.find_or_create_by({
+teacher_role = Role.find_or_create_by({
   name: "Teacher",
   description: "Can look and choose classrooms,can CRUD operation with children, can create and read report  by to  each of children, can choose activities for classrooms and individuals"
+  })
+p "Creating Parent  Role"
+parent_role = Role.find_or_create_by({
+  name: "Parent",
+  description: "Has access to the kid’s reports only"
   })
 #/////////////////////Users//////////////////////////
 p "Creating Admin User"
 user_1 = User.create({
-  first_name: "Sem ",
+  first_name: "Sem",
   last_name:"Sem" ,
-  direct_phone:"123-123-1231" ,
+  direct_phone:"123-123-1231",
   email: "admin@test.com",
   password: "password",
   password_confirmation: "password",
-  role_id: role_1.id
+  role: super_role
   })
-
 p "Creating Teacher User"
 user_2 = User.create({
-  first_name: "Sue ",
+  first_name: "Sue",
   last_name:"Sue" ,
   direct_phone:"123-123-1232" ,
   email: "teacher@test.com",
   password: "password",
   password_confirmation: "password",
-  role_id: role_2.id
+  role: teacher_role
    })
 
 p "Creating Teacher User 1"
@@ -41,7 +45,54 @@ user_3 = User.create({
   email: "teacher1@test.com",
   password: "password",
   password_confirmation: "password",
-  role_id: role_2.id
+  role: teacher_role
+   })
+
+p "Creating Parent User"
+parent_carero = User.create({
+  first_name: "Victor",
+  last_name:"Carero" ,
+  direct_phone:"123-123-1233" ,
+  email: "carero@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: parent_role
+   })
+parent_ora = User.create({
+  first_name: "Mike",
+  last_name:"Ora" ,
+  direct_phone:"123-123-1233" ,
+  email: "ora@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: parent_role
+   })
+parent_lu = User.create({
+  first_name: "Jecky",
+  last_name:"Lu" ,
+  direct_phone:"123-123-1233" ,
+  email: "lu@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: parent_role
+   })
+parent_bregovich = User.create({
+  first_name: "Phillip",
+  last_name:"Bregovich" ,
+  direct_phone:"123-123-1233" ,
+  email: "bregovich@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: parent_role
+   })
+parent_gross = User.create({
+  first_name: "Steven",
+  last_name:"Grosshpilier" ,
+  direct_phone:"123-123-1233" ,
+  email: "gross@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: parent_role
    })
 #/////////////////////Class Type//////////////////////////
 p "Creating Class Type Kindergarten"
@@ -110,7 +161,7 @@ game_5 = Game.find_or_create_by({
 #/////////////////////Kid////////////////////
 p"Creating Kids"
 
-kid_1 = Kid.find_or_create_by({
+kid_ora = Kid.find_or_create_by({
   login_id: 1,
   classroom_id: classroom_1.id,
   age: 5,
@@ -120,7 +171,7 @@ kid_1 = Kid.find_or_create_by({
   primary_language: "ENG"
   })
 
-kid_2 = Kid.find_or_create_by({
+kid_lu = Kid.find_or_create_by({
   login_id: 2,
   classroom_id: classroom_2.id,
   age: 7,
@@ -130,7 +181,7 @@ kid_2 = Kid.find_or_create_by({
   primary_language: "ENG"
   })
 
-kid_3 = Kid.find_or_create_by({
+kid_carero = Kid.find_or_create_by({
   login_id: 3,
   classroom_id: classroom_1.id,
   age: 5,
@@ -140,7 +191,7 @@ kid_3 = Kid.find_or_create_by({
   primary_language: "ESP"
   })
 
-kid_4 = Kid.find_or_create_by({
+kid_bregovich = Kid.find_or_create_by({
   login_id: 4,
   classroom_id: classroom_2.id,
   age: 6,
@@ -150,7 +201,7 @@ kid_4 = Kid.find_or_create_by({
   primary_language: "ESP"
   })
 
-kid_5 = Kid.find_or_create_by({
+kid_gross = Kid.find_or_create_by({
   login_id: 5,
   classroom_id: classroom_2.id,
   age: 5,
@@ -159,6 +210,14 @@ kid_5 = Kid.find_or_create_by({
   gender: 1,
   primary_language: "ENG"
   })
+
+p "Creating family relationships between kids and parents"
+
+FamilyRelationship.create!(kid: kid_ora, parent: parent_ora)
+FamilyRelationship.create!(kid: kid_lu, parent: parent_lu)
+FamilyRelationship.create!(kid: kid_carero, parent: parent_carero)
+FamilyRelationship.create!(kid: kid_bregovich, parent: parent_bregovich)
+FamilyRelationship.create!(kid: kid_gross, parent: parent_gross)
 
 p"Creating Posets and Bubbles"
 require 'csv'

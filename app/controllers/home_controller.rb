@@ -17,7 +17,7 @@
 
   def activities
     if current_user.teacher?
-      classrooms = Classroom.where(school: current_school, user: current_user)
+      classrooms = Classroom.where(school: current_school, teacher: current_user)
       @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
     else
       classrooms = Classroom.all
@@ -34,7 +34,7 @@
 
     @classroom_hash = {}
     @classroom_types.each do |ct|
-      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, user: current_user) : ct.classrooms
+      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, teacher: current_user) : ct.classrooms
       @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
     end 
     
@@ -59,7 +59,7 @@
 
   def dashboard
     @classroom_types = ClassroomType.all
-    @classrooms = current_user.teacher? ? Classroom.where(school: current_school, user: current_user) : Classroom.all
+    @classrooms = current_user.teacher? ? Classroom.where(school: current_school, teacher: current_user) : Classroom.all
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
     else
@@ -156,7 +156,7 @@
 
   def dashboard_classroom
     if current_user.teacher?
-      classrooms = Classroom.where(school: current_school, user: current_user)
+      classrooms = Classroom.where(school: current_school, teacher: current_user)
       @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
     else
       classrooms = Classroom.all
@@ -173,7 +173,7 @@
 
     @classroom_hash = {}
     @classroom_types.each do |ct|
-      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, user: current_user) : ct.classrooms
+      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, teacher: current_user) : ct.classrooms
       @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
     end
   end

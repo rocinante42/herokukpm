@@ -6,6 +6,8 @@ class Kid < ActiveRecord::Base
   has_many :assignments
   has_many :bubble_groups, through: :assignments
   has_many :kid_activities, through: :assignments
+  has_many :family_relationships
+  has_many :parents, through: :family_relationships
 
   def full_name
     "#{self.first_name} #{self.last_name}"
