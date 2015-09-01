@@ -31,5 +31,7 @@ class User < ActiveRecord::Base
     self.role.name == "Teacher"
   end
 
-
+  def parent?
+    self.role.name == "Parent"
+  end
 end
