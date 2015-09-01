@@ -31,6 +31,19 @@ class Ability
       can [:reports, :download_report], Kid do |kid|
         kid.parents.include? user
       end
+    elsif user.teacher_admin?
+      can :manage, Classroom do |cr|
+        cr.school == user.school
+      end
+      can :create, Kid
+      can :manage, Kid do |kid|
+        kid.classroom.school == user.school
+      end
+      can :create, User
+      can :manage, User do |u|
+        u.classrooms.joins(:school).where(schools: {id: user.school.id}).any? if u.teacher?
+        (u.kids & user.school.students).any? if u.parent?
+      end
     end
   end
 end

@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :role
+  belongs_to :school
   has_many :classrooms
   has_many :students, through: :classrooms, source: :kids
   has_many :schools, -> { uniq }, through: :classrooms
@@ -33,5 +34,9 @@ class User < ActiveRecord::Base
 
   def parent?
     self.role.name == "Parent"
+  end
+
+  def teacher_admin?
+    self.role.name == "Teacher Admin"
   end
 end

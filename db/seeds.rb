@@ -5,6 +5,12 @@ super_role = Role.find_or_create_by({
   description: "Can perform any CRUD operation on any resource"
  })
 
+p "Creating Teacher Admin Role"
+teacher_admin_role = Role.find_or_create_by({
+  name: "Teacher Admin",
+  description: "Can create, edit, delete teachers, kids, and parents, and has access to all classrooms in the school"
+  })
+
 p "Creating Teacher  Role"
 teacher_role = Role.find_or_create_by({
   name: "Teacher",
@@ -112,6 +118,19 @@ p "Creating School"
 school_1 = School.find_or_create_by({
   name: "BestTeam"
   })
+
+p "Creating Teacher Administrator for School"
+
+User.create({
+  first_name: "Mark",
+  last_name:"Strong" ,
+  direct_phone:"123-123-1233" ,
+  email: "teacher_admin@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: teacher_admin_role,
+  school: school_1
+   })
 
 #////////////////////Classrooms///////////////////////////
 p "Creating Classroom_1"
