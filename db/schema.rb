@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150819154029) do
+ActiveRecord::Schema.define(version: 20150831165342) do
 
   create_table "assignments", force: true do |t|
     t.integer  "kid_id"
@@ -119,6 +119,16 @@ ActiveRecord::Schema.define(version: 20150819154029) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "family_relationships", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "kid_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "family_relationships", ["kid_id"], name: "index_family_relationships_on_kid_id"
+  add_index "family_relationships", ["user_id"], name: "index_family_relationships_on_user_id"
 
   create_table "games", force: true do |t|
     t.string   "name"
