@@ -27,6 +27,10 @@ class Ability
       can :read, BubbleStatus
       can :read, Bubble
       can :read, School
+    elsif user.parent?
+      can [:reports, :download_report], Kid do |kid|
+        kid.parents.include? user
+      end
     end
   end
 end
