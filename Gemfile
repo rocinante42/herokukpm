@@ -40,6 +40,7 @@ gem 'pry-nav', group: :development
 
 gem 'whenever', :require => false
 gem 'rubyzip'
+gem 'prawn'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
