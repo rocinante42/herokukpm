@@ -52,7 +52,12 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
-  resources :assignments
+  resources :assignments do
+    collection do
+      get 'bulk_update'
+      post 'bulk_submit'
+    end
+  end
 
   get 'dashboard' => 'home#dashboard'
   get 'activities' => 'home#activities'

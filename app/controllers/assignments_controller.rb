@@ -36,6 +36,24 @@ class AssignmentsController < ApplicationController
     respond_with(@assignment)
   end
 
+  def bulk_submit
+    classroom = Classroom.find(params[:classroom])
+    BubbleGroup.all.find_each do |bg|
+      next unless classroom.classroom_type.bubble_groups.include? bg
+      assignment = Assignment.where(bubble_group:bg, classroom:classroom).first_or_initialize
+      assignment.status = Assignment::ACTIVE
+      assignment.time_limit = params[:time_limit]
+      assignment.save!
+    end
+    redirect_to :back
+  end
+
+  def bulk_update
+    @classroom = Classroom.find(params[:classroom])
+    @classroom.assignments.update_all(status: params[:status])
+    redirect_to :back
+  end
+
   private
     def set_assignment
       @assignment = Assignment.find(params[:id])

@@ -7,13 +7,13 @@ class Assignment < ActiveRecord::Base
   has_many :kid_activities
 
   scope :general, -> {where(kid:nil)}
+  scope :none_status, -> {where(status:NONE)}
+  scope :inactive, -> {where(status:INACTIVE)}
+  scope :active, -> {where(status:ACTIVE)}
 
-  STATUSES = [
-    NONE = 0,
-    INACTIVE = 1,
-    ACTIVE = 2,
-    PASSED = 3
-  ]
+  NONE = 0
+  INACTIVE = 1
+  ACTIVE = 2
 
   after_save :track_activity
   after_create :create_sub_assignments, if: Proc.new{ |assignment| assignment.general? }
@@ -31,17 +31,13 @@ class Assignment < ActiveRecord::Base
     status == ACTIVE
   end
 
-  def passed?
-    status == PASSED
-  end
-
   def track_activity
     assignments = general? ? sub_assignments : [self]
     assignments.each(&:single_track_activity)
   end
 
   def single_track_activity
-    kid_activities.last.touch if (inactive? || passed?) && kid_activities.any?
+    kid_activities.last.touch if (inactive?) && kid_activities.any?
     kid_activities.create if active?
   end
 
@@ -65,7 +61,7 @@ class Assignment < ActiveRecord::Base
 
   def create_sub_assignments
     classroom.kids.each do |kid|
-      assignment = sub_assignments.where(bubble_group: bubble_group, kid:kid).first_or_initialize
+      assignment = sub_assignments.where(bubble_group: bubble_group, kid:kid, classroom: classroom).first_or_initialize
       if assignment.new_record?
         assignment.status = ACTIVE
         assignment.time_limit = time_limit
