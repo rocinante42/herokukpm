@@ -1,4 +1,6 @@
   class HomeController < ApplicationController
+
+  before_action :set_available_classrooms, only: [:activities, :dashboard_classroom]
   def index
     unless user_signed_in?
       redirect_to new_user_session_path
@@ -16,26 +18,15 @@
   end
 
   def activities
-    if current_user.teacher?
-      classrooms = Classroom.where(school: current_school, teacher: current_user)
-      @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
-    else
-      classrooms = Classroom.all
-      @classroom_types = ClassroomType.all
-    end
-
-    if params.has_key? :classroom
-      @current_classroom = Classroom.find(params[:classroom])
-      @current_classroom_type = @current_classroom.classroom_type
-    else
-      @current_classroom = classrooms.sample
-      @current_classroom_type = @current_classroom.classroom_type
-    end
-
     @classroom_hash = {}
     @classroom_types.each do |ct|
-      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, teacher: current_user) : ct.classrooms
-      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
+      current_classrooms = ct.classrooms
+      if current_user.teacher?
+        current_classrooms = current_classrooms.where(school: current_school, teacher: current_user)
+      elsif current_user.teacher_admin?
+        current_classrooms = current_classrooms.where(school: current_user.school)
+      end
+      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name)
     end 
     
     @total_assignments_hash = {}
@@ -59,7 +50,13 @@
 
   def dashboard
     @classroom_types = ClassroomType.all
-    @classrooms = current_user.teacher? ? Classroom.where(school: current_school, teacher: current_user) : Classroom.all
+    if current_user.admin?
+      @classrooms = Classroom.all
+    elsif current_user.teacher?
+      @classrooms = Classroom.where(school: current_school, teacher: current_user)
+    else
+      @classrooms = Classroom.where(school: current_user.school)
+    end
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
     else
@@ -155,26 +152,38 @@
   end
 
   def dashboard_classroom
-    if current_user.teacher?
-      classrooms = Classroom.where(school: current_school, teacher: current_user)
-      @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
-    else
+    @classroom_hash = {}
+    @classroom_types.each do |ct|
+      current_classrooms = ct.classrooms
+      if current_user.teacher?
+        current_classrooms = current_classrooms.where(school: current_school, teacher: current_user)
+      elsif current_user.teacher_admin?
+        current_classrooms = current_classrooms.where(school: current_user.school)
+      end
+      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name)
+    end
+  end
+
+  private
+
+  def set_available_classrooms
+    if current_user.admin?
       classrooms = Classroom.all
       @classroom_types = ClassroomType.all
+    else
+      if current_user.teacher?
+        classrooms = Classroom.where(school: current_school, teacher: current_user)
+      else
+        classrooms = Classroom.where(school: current_user.school)
+      end
+      @classroom_types = ClassroomType.joins(:classrooms).merge(classrooms).uniq
     end
-
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
       @current_classroom_type = @current_classroom.classroom_type
     else
       @current_classroom = classrooms.sample
       @current_classroom_type = @current_classroom.classroom_type
-    end
-
-    @classroom_hash = {}
-    @classroom_types.each do |ct|
-      current_classrooms = current_user.teacher? ? ct.classrooms.where(school: current_school, teacher: current_user) : ct.classrooms
-      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name) 
     end
   end
 
