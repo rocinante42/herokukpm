@@ -13,16 +13,20 @@
 <div class="container kmSection">
   <div class="row">
     <%= form_tag activities_path, method: :get do %>
-      <table class="table inline solid fit">
+      <table class="table solid fit">
         <tbody>
           <tr class="col-pad">
-            <td>
+            <td class="minimal">
               <h4>Choose Classroom Type:</h4>
             </td>
-            <td>
+            <td class="minimal">
               <h4>Choose Classroom:</h4>
             </td>
+            <td class="minimal"></td>
             <td></td>
+            <td class="minimal">
+              <h4>Set Time:</h4>
+            </td>
           </tr>
           <tr>
             <td>
@@ -56,6 +60,21 @@
             <td>
               <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
             </td>
+            <td></td>
+            <td>
+              <div class="dropdown simple medium select timeLimit">
+                <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value">2 hours</span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <% @time_options.each do |to| %>
+                    <li><a href="javascript:" data-time-limit="<%= to[1] %>"><%= to[0] %></a></li>
+                  <% end %>
+                </ul>
+                <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -84,7 +103,7 @@
           <% bg = info[:bubble_group] %>
           <% assignment = info[:global_assignment] %>
           <td>
-            <%= render 'assignments/form', assignment: assignment, kid: nil, bg:bg %>
+            <%= render 'assignments/new_form', assignment: assignment, kid: nil, bg:bg %>
           </td>
         <% end %>
 
@@ -108,15 +127,27 @@
               <% next unless @current_classroom_type.bubble_groups.include? bg %>
               <% assignment = @total_assignments_hash[bg.id][:kid_assignments][kid.id] %>
                 <td>
-                  <%= render 'assignments/form', assignment: assignment, kid: kid, bg:bg %>
+                  <%= render 'assignments/new_form', assignment: assignment, kid: kid, bg:bg %>
                 </td>
             <% end %>
-
           </tr>
         <% end %>
       </tbody>
     </table>
 
+  </div>
+
+  <div class="row actions text-right">
+    <% if @current_classroom.assignments.none_status.any? || @current_classroom.assignments.empty? %>
+      <%= form_tag bulk_submit_assignments_path, id: 'bulk_submit' do %>
+        <%= hidden_field_tag :classroom, @current_classroom.id %>
+        <%= hidden_field_tag :time_limit, 2.hours %>
+        <%= submit_tag 'Submit', class: 'btn btn-success btn-simple btn-large btn-wide' %>
+      <% end %>
+    <% else %>
+      <%= link_to 'Reset', bulk_update_assignments_path(classroom: @current_classroom, status: Assignment::NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
+      <%= link_to 'Pause', bulk_update_assignments_path(classroom: @current_classroom, status: Assignment::INACTIVE), class: 'btn btn-info btn-simple btn-large btn-wide' %>
+    <% end %>
   </div>
 </div>
 
@@ -127,5 +158,9 @@
     });
 
     initDropdownSelect(<%= @classroom_hash.to_json.html_safe %>);
+    $('.dropdown.select.timeLimit ul > li > a').click(function(){
+      var time_limit = $(this).data('time-limit');
+      $('#bulk_submit #time_limit').val(time_limit);
+    });
   });
 </script>
