@@ -30,6 +30,13 @@ class KidsController < ApplicationController
 
   def download_report
     pdf = Prawn::Document.new
+    pdf.text 'Information', align: :center
+    pdf.move_down(20)
+    @kid.full_info.each do |k,v|
+      pdf.draw_text "#{k}:", at: [150, pdf.y - 30]
+      pdf.draw_text "#{v}", at: [350, pdf.y - 30]
+      pdf.move_down(20)
+    end
     @reports.each do |bg_name, categories|
       pdf.fill_color '000000'
       pdf.text bg_name, align: :center
