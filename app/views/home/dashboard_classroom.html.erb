@@ -70,8 +70,11 @@
       <thead>
       <tr>
         <th class="text-center">Classroom</th>
+        <th></th>
+        <th class="text-center">Teacher</th>
+        <th></th>
         <th class="text-center">Total Students</th>
-        <th class="text-center"></th>
+        <th></th>
         <th class="text-center minimal">Add Student</th>
       </tr>
       </thead>
@@ -80,12 +83,38 @@
         <td class="text-left minimal">
           <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
         </td>
+        <td></td>
+        <td class="text-left minimal">
+          <div class="dropdown simple medium select classroom">
+            <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span class="value">Teacher Name</span>
+              <span class="caret"></span>
+            </a>
+            <div class="dropdown-wrap dropdown-menu-right">
+              <ul class="dropdown-menu">
+                <% 7.times do %>
+                  <li><a href="javascript:" >Teacher Name</a></li>
+                <% end %>
+              </ul>
+              <div class="dropdown-action">
+                <%= link_to 'javascript:', class:'btn' do %>
+                  <i class="fa fa-plus"></i>
+                  <span>Add Teacher</span>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </td>
 
-        <td class="equal">
+        <td class="minimal">
+          <%= link_to 'Edit', 'javascript:', class: 'btn btn-warning btn-simple' %>
+        </td>
+
+        <td>
           <span class="text-main font-large"><%= @current_classroom.kids.count %></span>
         </td>
 
-        <td class="equal"></td>
+        <td></td>
         <% if can? :create, Kid %>
           <td>
             <%= link_to new_kid_path, class: 'btn btn-info btn-simple btn-large btn-wide' do %>

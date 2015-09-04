@@ -110,6 +110,17 @@ table.table {width:100%;
   &.grid-pad > .grid-row > .grid-col {padding: $padding;}
 }
 
+.dropdown-wrap {position:absolute; min-width:100%;
+  .dropdown-menu {position:static; float:none; border-bottom-left-radius:0; border-bottom-right-radius:0;}
+  .dropdown-action {display:none; margin-top:-1px; border:1px solid rgba(0, 0, 0, 0.15); border-top-color: #cccccc; background:$color-inv;
+    > a {width:100%;}
+  }
+}
+.open > .dropdown-wrap {
+  > .dropdown-menu {display:block;}
+  > .dropdown-action {display:block;}
+}
+
 .btn.submenu{ margin:20px; width: 240px; padding: 8px 0;}
 
 .iFrameGames{display: inline-block; position: absolute; top: 300px;}
