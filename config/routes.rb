@@ -67,4 +67,5 @@ Rails.application.routes.draw do
   get 'teacher_mode' => 'home#teacher_mode'
   get 'dashboard_admin' => 'home#dashboard_admin'
   get 'dashboard_classroom' => 'home#dashboard_classroom'
+  get 'new_user' => 'home#new_user' #obviously this should be removed
 end

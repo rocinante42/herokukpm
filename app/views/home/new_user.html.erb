@@ -1,0 +1,175 @@
+<%= render 'shared/menu' %>
+
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Create New User</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <form class="form-horizontal form-classic form-vpad">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Login</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Login">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Classroom</label>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value">Choose classroom</span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="javascript:">Choose classroom</a></li>
+                <li><a href="javascript:">Classroom 1</a></li>
+                <li><a href="javascript:">Classroom 2</a></li>
+                <li><a href="javascript:">Classroom 3</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">First Name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="First Name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Last Name</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Last Name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Gender</label>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value">Choose gender</span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="javascript:">Choose gender</a></li>
+                <li><a href="javascript:">Male</a></li>
+                <li><a href="javascript:">Female</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Age</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" placeholder="Age">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Primary Language</label>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value">Choose language</span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="javascript:">Choose language</a></li>
+                <li><a href="javascript:">English</a></li>
+                <li><a href="javascript:">Russian</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div>Example of hardcoded field (like on new/edit teacher page)</div>
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Type of user</label>
+          <div class="col-sm-8">
+
+            <span class="form-control">Teacher</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-4 control-label text-main">Parents</label>
+          <div class="col-sm-8">
+            <div class="col-sm-12">
+
+              <div class="form-group" id="add_parent">
+                <div class="col-sm-12">
+                  <%= link_to 'javascript:;', class:'control-label add-template', data: {target: '#add_parent', location: 'before'} do %>
+                    Add Parent
+                  <% end %>
+
+                  <!--BEGIN template-->
+                  <div class="form-group hidden template-body">
+                    <input type="text" class="form-control" placeholder="Parent E-mail">
+                    <div class="off-field off-right">
+                      <div class="col-sm-12">
+                        <%= link_to 'javascript:;', class:'text-danger control-label remove-template' do %>
+                          Remove
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                  <!--END template-->
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="text-center">
+      new form actions
+      <div class="row text-center actions">
+        <div class="col-md-6 col-md-offset-3">
+          <%= link_to 'Cancel', 'javascript:', class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+          <input type="submit" class="btn btn-info btn-large btn-wide btn-simple" value="Create">
+        </div>
+      </div>
+
+      edit form actions
+      <div class="row text-center actions">
+        <div class="col-md-6 col-md-offset-3">
+          <%= link_to 'Cancel', 'javascript:', class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+          <%= link_to 'Delete', 'javascript:', class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+          <input type="submit" class="btn btn-info btn-large btn-wide btn-simple" value="Confirm">
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+
+<!-- BEGIN convert this to plugin and add to ujs.js when issue-52 is merged to master -->
+<script>
+  $(document).on('click', 'a.add-template', function(){
+    var el = $(this);
+    var data = el.data();
+    var template = el.next().clone().removeClass('hidden');
+    if (data.location == 'before') {
+      $(data.target).before(template);
+    }
+    else if (data.location == 'after') {
+      $(data.target).after(template);
+    }
+  });
+
+  $(document).on('click', 'a.remove-template', function() {
+    $(this).closest('.template-body').remove();
+  });
+</script>
+<!-- END convert this to plugin and add to ujs.js when issue-52 is merged to master -->
