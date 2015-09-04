@@ -28,4 +28,15 @@ class Kid < ActiveRecord::Base
   def female?
     gender == 2
   end
+
+  def full_info
+    {
+      'Name' => full_name,
+      'Age' => "#{age} years",
+      'Language' => primary_language,
+      'School' => classroom.school.name,
+      'Classroom' => classroom.name,
+      'Classroom Type' => classroom.classroom_type.type_name
+    }
+  end
 end

@@ -40,7 +40,7 @@
             <div class="grid-col">
               <table class="table solid fit continual font-large">
                 <tbody>
-                <% data = {'Age' => "#{@kid.age} years", 'Language' => @kid.primary_language, 'School' => @kid.classroom.school.name, 'Classroom' => @kid.classroom.name, 'Classroom Type' => @kid.classroom.classroom_type.type_name}%>
+                <% data = @kid.full_info.tap{|fi| fi.delete('Name')}%>
                 <% data.each do |k, v| %>
                   <tr>
                     <td>
