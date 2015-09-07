@@ -1,31 +1,113 @@
-<h1>Kids</h1>
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>View Kids</h4>
+      </div>
+    </div>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Classroom</th>
-      <th colspan="7"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @kids.each do |kid| %>
-      <tr>
-        <td><%= kid.full_name %></td>
-        <td><%= link_to kid.classroom.name, kid.classroom if kid.classroom %></td>
-        <td><%= link_to 'Play', play_kid_path(kid) %></td>
-        <td><%= link_to 'Play Games', play_game_kid_path(kid) %></td>
-        <td><%= link_to 'Show Games', games_kid_path(kid) %></td>
-        <td><%= link_to 'Reports', reports_kid_path(kid) %></td>
-        <td><%= link_to 'Show', kid %></td>
-        <td><%= link_to 'Edit', edit_kid_path(kid) %></td>
-        <td><%= link_to 'Destroy', kid, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="container kmSection">
+  <div class="row">
+    <%= form_tag kids_path, method: :get do %>
+      <table class="table inline solid fit">
+        <tbody>
+        <tr class="col-pad">
+          <td>
+            <h4>Choose School:</h4>
+          </td>
+          <td>
+            <h4>Choose Classroom:</h4>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="dropdown simple medium select classroomType">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @current_school.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @schools.find_each do |school| %>
+                  <li><a href="javascript:" data-id="<%= school.id %>"><%= school.name %></a></li>
+                <% end %>
+              </ul>
+              <%= hidden_field_tag :school, @current_school.id %>
+            </div>
+          </td>
+          <td>
+            <div class="dropdown simple medium select classroom">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @current_classroom.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @classroom_hash[@current_school.id].each do |cr| %>
+                  <li><a href="javascript:" data-id="<%= cr[0] %>"><%= cr[1] %></a></li>
+                <% end %>
+              </ul>
+              <%= hidden_field_tag :classroom, @current_classroom.id %>
+            </div>
+          </td>
+          <td>
+            <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
-<br>
+<div class="container kmSection">
+  <div class="row">
+    <table class="table fit">
+      <thead>
+      <tr class="no-border-top">
+        <th class="text-center">Avatar</th>
+        <th class="text-center">Name</th>
+        <th class="text-center">Classroom</th>
+        <th colspan="6"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @current_classroom.kids.each do |kid| %>
+        <tr class="text-center v-middle">
+          <td class="minimal">
+            <%= link_to kid do %>
+              <% avatar = kid.male? ? 'boy_avatar.png' : 'girl_avatar.jpg' %>
+              <%= image_tag avatar %>
+            <% end %>
+          </td>
+          <td><%= kid.full_name %></td>
+          <td><%= link_to kid.classroom.name, kid.classroom if kid.classroom %></td>
+          <td class="actions minimal">
+            <%= link_to 'Play', play_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow' if can? :play, kid %>
+            <%= link_to 'Show Games', games_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow' if can? :games, kid  %>
+            <%= link_to 'Game Reports', reports_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow' if can? :reports, kid  %>
+            <%= link_to 'View', kid, class: 'btn btn-info btn-simple btn-narrow' %>
+            <%= link_to 'Edit', edit_kid_path(kid), class: 'btn btn-warning btn-simple btn-narrow' if can? :edit, kid %>
+            <%= link_to 'Delete', kid, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' if can? :destroy, kid %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <%= will_paginate @kids, previous_label: "", next_label: "" %>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <%= link_to new_kid_path, class: 'btn btn-warning btn-simple btn-large btn-wide' do %>
+      <i class="fa fa-plus"></i>
+      <span>Add New Kid</span>
+    <% end %>
+  </div>
+</div>
 
-<%= link_to 'New Kid', new_kid_path %>
+<script>
+  $(document).ready(function(){
+    initDropdownSelect(<%= @classroom_hash.to_json.html_safe %>);
+  });
+</script>

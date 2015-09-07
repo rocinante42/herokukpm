@@ -7,7 +7,20 @@ class KidsController < ApplicationController
   # GET /kids
   # GET /kids.json
   def index
-    @kids = Kid.all
+    @classroom_hash = {}
+    @page = params[:page] || 1
+    @schools = School.all
+    if params.has_key? :classroom
+      @current_classroom = Classroom.find(params[:classroom])
+      @current_school = @current_classroom.school
+    else
+      @current_school = @schools.sample
+      @current_classroom = @current_school.classrooms.sample
+    end
+    @schools.each do |school|
+      @classroom_hash[school.id] = school.classrooms.pluck(:id, :name)
+    end
+    @kids = @current_classroom.kids.paginate(page: @page, per_page: 10)
   end
 
   # GET /kids/1
