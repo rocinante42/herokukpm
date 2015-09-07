@@ -1,23 +1,63 @@
-<h1>Listing users</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td><%= link_to 'Show', users_admin_path(user) %></td>
-        <td><%= link_to 'Edit', edit_users_admin_path(user) %></td>
-        <td><%= link_to 'Destroy', users_admin_path(user), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>View Users</h4>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container kmSection">
+  <div class="row">
+    <table class="table fit">
+      <thead>
+      <tr class="no-border-top">
+        <th class="text-center">Avatar</th>
+        <th class="text-center">Type</th>
+        <th class="text-center">User Name</th>
+        <th class="text-center">E-Mail</th>
+        <th class="text-center">Last Login</th>
+        <th colspan="3"></th>
       </tr>
+      </thead>
+      <tbody>
+      <% @users.each do |user| %>
+        <tr class="text-center v-middle">
+          <td class="minimal">
+            <%= link_to users_admin_path(user) do %>
+              <%= image_tag 'teacher_avatar.png' %>
+            <% end %>
+          </td>
+
+          <td>
+            <span class="text-main font-large"><%= user.role.name %></span>
+          </td>
+          <td>
+            <span class="text-main font-large"><%= user.full_name %></span>
+          </td>
+          <td>
+            <span class="text-main font-large"><%= user.email %></span>
+          </td>
+          <td>
+            <span class="text-main font-large"><%= user.last_sign_in_at %></span>
+          </td>
+          <td class="actions minimal">
+            <%= link_to 'View', users_admin_path(user), class: 'btn btn-info btn-simple btn-narrow' %>
+            <%= link_to 'Edit', edit_users_admin_path(user), class: 'btn btn-warning btn-simple btn-narrow' if can? :edit, user %>
+            <%= link_to 'Delete', users_admin_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' if can? :destroy, user %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+    <div class="pagination">
+      <%= will_paginate @users, previous_label: "", next_label: "" %>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <%= link_to new_users_admin_path, class: 'btn btn-warning btn-simple btn-large btn-wide' do %>
+      <i class="fa fa-plus"></i>
+      <span>Add New User</span>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New User', new_users_admin_path %>
+  </div>
+</div>
