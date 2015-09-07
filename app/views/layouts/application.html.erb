@@ -21,6 +21,9 @@
 </div>
 
 <%= render 'shared/header' %>
+<% unless current_user.parent? %>
+  <%= render 'shared/menu' %>
+<% end %>
 <%= yield %>
 <%= render 'shared/footer' %>
 

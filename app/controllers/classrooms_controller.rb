@@ -7,8 +7,16 @@ class ClassroomsController < ApplicationController
   def index
     if current_user.teacher?
       @classrooms = Classroom.where(school: current_school, user: current_user)
+      @schools = School.where(id: @current_school.id)
+      @current_school = current_school
     else
-      @classrooms = Classroom.all
+      @schools = School.all
+      @current_school = @schools.sample
+      @classrooms = @current_school.classrooms
+    end
+    if params.has_key? :school
+      @current_school = School.find(params[:school])
+      @classrooms = @current_school.classrooms
     end
   end
 
@@ -21,6 +29,7 @@ class ClassroomsController < ApplicationController
   # GET /classrooms/new
   def new
     @classroom = Classroom.new
+    @classroom.school = School.find(params[:school]) if params[:school]
   end
 
   # GET /classrooms/1/edit

@@ -1,32 +1,98 @@
-<h1>Classrooms</h1>
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Classrooms</h4>
+      </div>
+    </div>
+  </div>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>School</th>
-      <th>Type</th>
-      <th>Teacher</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @classrooms.each do |classroom| %>
-      <tr>
-        <td><%= link_to classroom.name, classroom %></td>
-        <td><%= link_to classroom.school.name, classroom.school if classroom.school %></td>
-        <td><%= classroom.class_type.type_name if classroom.class_type %></td>
-        <td><%= classroom.teacher.full_name if classroom.teacher %></td>
-        <td><%= link_to 'Show', classroom %></td>
-        <td><%= link_to 'Edit', edit_classroom_path(classroom) %></td>
-        <td><%= link_to 'Destroy', classroom, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+<div class="container kmSection">
+  <div class="row">
+    <%= form_tag classrooms_path, method: :get do %>
+      <table class="table inline solid fit">
+        <tbody>
+        <tr class="col-pad">
+          <td>
+            <h4>Choose School:</h4>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <div class="dropdown simple medium select classroomType">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @current_school.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @schools.find_each do |school| %>
+                  <li><a href="javascript:" data-id="<%= school.id %>"><%= school.name %></a></li>
+                <% end %>
+              </ul>
+              <%= hidden_field_tag :school, @current_school.id %>
+            </div>
+          </td>
+          <td>
+            <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     <% end %>
-  </tbody>
-</table>
+  </div>
+</div>
 
-<br>
+<div class="container kmSection">
+  <div class="row">
+    <table class="table fit schools">
+      <thead>
+        <tr>
+          <th class="text-center">Name</th>
+          <th class="text-center">Type</th>
+          <th class="text-center">Teacher</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-<%= link_to 'New Classroom', new_classroom_path %>
-<%= link_to 'Back', root_path %>
+      <tbody>
+        <% @classrooms.each do |classroom| %>
+          <tr class="text-center v-middle">
+            <td class="minimal">
+              <span class="text-main font-large">
+                <%= classroom.name %>
+              </span>
+            </td>
+            <td class="">
+              <span class="text-main font-large">
+                <%= classroom.classroom_type.type_name %>
+              </span>
+            </td>
+            <td class="">
+              <span class="text-main font-large">
+                <%= classroom.teacher.full_name %>
+              </span>
+            </td>
+            <td>
+            </td>
+            <td class="minimal"><%= link_to 'View', classroom, class: 'btn btn-info btn-simple btn-extended' %></td>
+            <% if can? :edit, classroom %>
+              <td class="minimal"><%= link_to 'Edit', edit_classroom_path(classroom), class: 'btn btn-warning btn-simple btn-extended' %></td>
+            <% end %>
+            <% if can? :destroy, classroom %>
+              <td class="minimal"><%= link_to 'Delete', classroom, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-extended' %></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <br>
+
+    <%= link_to new_classroom_path(school:@current_school), class: 'btn btn-warning btn-simple btn-large btn-wide righty' do %>
+      <i class="fa fa-plus"></i>
+      <span>Add New Classroom</span>
+    <% end %>
+  </div>
+</div>
