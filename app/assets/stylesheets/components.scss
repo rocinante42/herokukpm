@@ -80,6 +80,9 @@ table.table {width:100%;
     &.no-border-top > * {border-top:none;}
     > *.minimal {width:1px; white-space:nowrap;}
     > *.equal {width:50%;}
+    > *.actions {
+      .btn {margin-left:5px; margin-right:5px;}
+    }
   }
   &.fit > * > tr > * {
     &:first-child {padding-left:0;}
