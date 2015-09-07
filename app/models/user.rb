@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
   before_save :assign_role
+  after_create :welcome_email
+  after_save :welcome_email, :if => :email_changed?
 #when a user signs up, they need to be assigned a role. We can make this default to “Teacher”
   def assign_role
     self.role = Role.find_by name: "Teacher" if self.role.nil?
@@ -38,5 +40,9 @@ class User < ActiveRecord::Base
 
   def teacher_admin?
     self.role.name == "Teacher Admin"
+  end
+
+  def welcome_email
+    UserMailer.welcome_email(self).deliver
   end
 end

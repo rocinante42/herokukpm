@@ -21,7 +21,7 @@
 </div>
 
 <%= render 'shared/header' %>
-<% unless current_user.parent? %>
+<% if user_signed_in? && !current_user.parent? %>
   <%= render 'shared/menu' %>
 <% end %>
 <%= yield %>
