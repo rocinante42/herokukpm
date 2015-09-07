@@ -1,46 +1,130 @@
-<%= form_for(@kid) do |f| %>
-  <% if @kid.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@kid.errors.count, "error") %> prohibited this kid from being saved:</h2>
-
-      <ul>
-      <% @kid.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <% if @kid.new_record? %>
+          <h4>Create New Kid</h4>
+        <% else %>
+          <h4>Editing Kid</h4>
+        <% end %>
+      </div>
     </div>
-  <% end %>
+  </div>
+</div>
 
-  <div class="field">
-    <%= f.label :login_id %><br>
-    <%= f.number_field :login_id %>
-  </div>
-  <div class="field">
-    <%= f.label :classroom_id %><br>
-    <%= f.collection_select :classroom_id, Classroom.all, :id, :name, include_blank: false %>
-  </div>
-  <div class="field">
-    <%= f.label :first_name %><br>
-    <%= f.text_field :first_name %>
-  </div>
-  <div class="field">
-    <%= f.label :last_name %><br>
-    <%= f.text_field :last_name %>
-  </div>
-  <div class="field">
-    <%= f.label :gender %><br>
-    <%= f.number_field :gender %>
-  </div>
-  <div class="field">
-    <%= f.label :age %><br>
-    <%= f.number_field :age %>
-  </div>
-  <div class="field">
-    <%= f.label :primary_language %><br>
-    <%= f.text_field :primary_language %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
+<%= form_for @kid, html: {class: 'form-horizontal form-classic form-vpad'} do |f| %>
+  <%= render 'shared/error_messages', object: @kid %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <% if @kid.persisted? %>
+          <div class="form-group">
+            <%= f.label :login_id, "Login", class: "col-sm-4 control-label text-main" %>
+            <div class="col-sm-8">
+              <%= f.text_field :login_id, placeholder: 'Login', class: 'form-control' %>
+            </div>
+          </div>
+        <% end %>
+        <div class="form-group">
+          <%= f.hidden_field :classroom_id, id: 'classroom_id', value: nil %>
+          <label class="col-sm-4 control-label text-main">Classroom</label>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @classrooms[0][1] %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @classrooms.each do |cr| %>
+                  <li><a href="javascript:" data-id="<%= cr[0] %>"><%= cr[1] %></a></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :first_name, "First Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :first_name, placeholder: 'First Name', class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :last_name, "Last Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :last_name, placeholder: 'Last Name', class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.hidden_field :gender, id: 'gender', value: nil %>
+          <label class="col-sm-4 control-label text-main">Gender</label>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @genders.first[0] %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @genders.each do |k,v| %>
+                  <li><a href="javascript:" data-id="<%= v %>"><%= k %></a></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.label :age, "Age", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :age, placeholder: '10', class: 'form-control' %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= f.hidden_field :primary_language, id: 'primary_language', value: nil %>
+          <label class="col-sm-4 control-label text-main">Primary Language</label>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @languages.first[0] %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% @languages.each do |name, title| %>
+                  <li><a href="javascript:" data-id="<%= title %>"><%= name %></a></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <%= f.fields_for :family_relationships do |fr| %>
+          <div class="form-group">
+            <label class="col-sm-4 control-label text-main">Parent Email:</label>
+            <div class="col-sm-8">
+              <%= fr.fields_for :parent do |parent| %>
+                <%= parent.hidden_field :role_id, value: Role.find_by(name: 'Parent').id %>
+                <%= parent.text_field :email, placeholder: 'email@example.com', class: 'form-control' %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+        <div class="row text-center actions">
+          <div class="col-md-<%= @kid.persisted? ? '7' : '6' %> col-md-offset-3">
+            <%= link_to 'Cancel', kids_path, class: 'btn btn-large btn-warning btn-wide btn-simple' %>
+            <% if @kid.persisted? %>
+              <%= link_to 'Delete', @kid, method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+              <%= f.submit 'Confirm', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+            <% else %>
+              <%= f.submit 'Create Kid', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 <% end %>
+
+<script>
+  $(document).ready(function(){
+    $('.dropdown.select ul > li > a').click(function(){
+      var id = $(this).data('id');
+      $(this).closest('.form-group').find('input[type="hidden"]').val(id);
+    });
+  });
+</script>

@@ -23,7 +23,7 @@ parent_role = Role.find_or_create_by({
   })
 #/////////////////////Users//////////////////////////
 p "Creating Admin User"
-user_1 = User.create({
+user_1 = User.new({
   first_name: "Sem",
   last_name:"Sem" ,
   direct_phone:"123-123-1231",
@@ -32,8 +32,9 @@ user_1 = User.create({
   password_confirmation: "password",
   role: super_role
   })
+user_1.save(validate:false)
 p "Creating Teacher User"
-user_2 = User.create({
+user_2 = User.new({
   first_name: "Sue",
   last_name:"Sue" ,
   direct_phone:"123-123-1232" ,
@@ -42,9 +43,9 @@ user_2 = User.create({
   password_confirmation: "password",
   role: teacher_role
    })
-
+user_2.save(validate:false)
 p "Creating Teacher User 1"
-user_3 = User.create({
+user_3 = User.new({
   first_name: "Ogi",
   last_name:"Rock" ,
   direct_phone:"123-123-1233" ,
@@ -53,9 +54,9 @@ user_3 = User.create({
   password_confirmation: "password",
   role: teacher_role
    })
-
+user_3.save(validate:false)
 p "Creating Parent User"
-parent_carero = User.create({
+parent_carero = User.new({
   first_name: "Victor",
   last_name:"Carero" ,
   direct_phone:"123-123-1233" ,
@@ -64,7 +65,8 @@ parent_carero = User.create({
   password_confirmation: "password",
   role: parent_role
    })
-parent_ora = User.create({
+parent_carero.save(validate:false)
+parent_ora = User.new({
   first_name: "Mike",
   last_name:"Ora" ,
   direct_phone:"123-123-1233" ,
@@ -73,7 +75,8 @@ parent_ora = User.create({
   password_confirmation: "password",
   role: parent_role
    })
-parent_lu = User.create({
+parent_ora.save(validate:false)
+parent_lu = User.new({
   first_name: "Jecky",
   last_name:"Lu" ,
   direct_phone:"123-123-1233" ,
@@ -82,7 +85,8 @@ parent_lu = User.create({
   password_confirmation: "password",
   role: parent_role
    })
-parent_bregovich = User.create({
+parent_lu.save(validate:false)
+parent_bregovich = User.new({
   first_name: "Phillip",
   last_name:"Bregovich" ,
   direct_phone:"123-123-1233" ,
@@ -91,7 +95,8 @@ parent_bregovich = User.create({
   password_confirmation: "password",
   role: parent_role
    })
-parent_gross = User.create({
+parent_bregovich.save(validate:false)
+parent_gross = User.new({
   first_name: "Steven",
   last_name:"Grosshpilier" ,
   direct_phone:"123-123-1233" ,
@@ -100,6 +105,7 @@ parent_gross = User.create({
   password_confirmation: "password",
   role: parent_role
    })
+parent_gross.save(validate:false)
 #/////////////////////Class Type//////////////////////////
 p "Creating Class Type Kindergarten"
 type_1 = ClassroomType.find_or_create_by({
