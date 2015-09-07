@@ -83,9 +83,9 @@
           <td><%= kid.full_name %></td>
           <td><%= link_to kid.classroom.name, kid.classroom if kid.classroom %></td>
           <td class="actions minimal">
-            <%= link_to 'Play', play_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow'  %>
-            <%= link_to 'Show Games', games_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow'  %>
-            <%= link_to 'Game Reports', reports_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow'  %>
+            <%= link_to 'Play', play_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow' if can? :play, kid %>
+            <%= link_to 'Show Games', games_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow' if can? :games, kid  %>
+            <%= link_to 'Game Reports', reports_kid_path(kid), class: 'btn btn-info btn-simple btn-narrow' if can? :reports, kid  %>
             <%= link_to 'View', kid, class: 'btn btn-info btn-simple btn-narrow' %>
             <%= link_to 'Edit', edit_kid_path(kid), class: 'btn btn-warning btn-simple btn-narrow' if can? :edit, kid %>
             <%= link_to 'Delete', kid, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' if can? :destroy, kid %>
