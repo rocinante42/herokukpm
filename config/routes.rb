@@ -6,9 +6,6 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: "registrations" }
   resources :roles
 
-
-
-
   resources :bubble_categories
 
   resources :bubble_group_statuses do
@@ -51,6 +48,8 @@ Rails.application.routes.draw do
   resources :games
 
   resources :bubbles
+
+  resources :users_admin, controller: 'users'
 
   resources :assignments do
     collection do
