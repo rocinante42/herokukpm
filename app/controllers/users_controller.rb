@@ -26,13 +26,14 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-    @user.password = Devise.friendly_token.first(8)
+    token = Devise.friendly_token.first(8)
+    @user.password = token
     respond_to do |format|
       if @user.save
-        #RegistrationMailer.welcome(@user, generated_password).deliver
         format.html { redirect_to users_admin_path(@user), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        @user.build_role(name: 'Teacher')
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
