@@ -136,7 +136,7 @@
                         'View Kids' => kids_path,
                         'View Classrooms' => classrooms_path,
                         'View Schools' => schools_path,
-                        'View Users' => list_users_path
+                        'View Users' => users_admin_index_path
                       },
                       'Game Management' =>
                       {
