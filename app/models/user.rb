@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :schools, -> { uniq }, through: :classrooms
   has_many :family_relationships
   has_many :kids, through: :family_relationships
+  has_many :schools, through: :classrooms
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_presence_of :first_name, :last_name
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true

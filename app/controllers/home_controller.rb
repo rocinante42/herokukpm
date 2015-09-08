@@ -186,6 +186,6 @@
       @current_classroom = classrooms.sample
       @current_classroom_type = @current_classroom.classroom_type
     end
+    @teachers = User.teachers
   end
-
 end
