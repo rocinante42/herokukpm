@@ -59,7 +59,7 @@ class UsersController < ApplicationController
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_admin_index_path, notice: 'User was successfully destroyed.' }
-      format.js{ render inline: "$(.form-group.template-body#parent#{@user.id}).remove();"}
+      format.js
       format.json { head :no_content }
     end
   end
