@@ -8,22 +8,26 @@ class User < ActiveRecord::Base
   has_many :classrooms
   has_many :students, through: :classrooms, source: :kids
   has_many :schools, -> { uniq }, through: :classrooms
-  has_many :family_relationships
+  has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
-  validates_presence_of :first_name, :last_name
+  #validates_presence_of :first_name, :last_name
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
   before_save :assign_role
   after_create :welcome_email
   after_save :welcome_email, :if => :email_changed?
+
+  before_validation on: :create do
+    self.password = self.password_confirmation = Devise.friendly_token.first(8)
+  end
 #when a user signs up, they need to be assigned a role. We can make this default to “Teacher”
   def assign_role
     self.role = Role.find_by name: "Teacher" if self.role.nil?
   end
 
   def full_name
-    first_name + " " + last_name
+    (first_name || '') + " " + (last_name || '')
   end
   
   def admin?

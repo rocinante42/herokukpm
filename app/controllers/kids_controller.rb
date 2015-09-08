@@ -1,6 +1,8 @@
 class KidsController < ApplicationController
   before_action :authenticate_user!
   before_action :prepare_reports_data, only: [:reports, :download_report]
+  before_action :set_available_values_for_kid, only: [:new, :edit]
+  before_action :clear_empty_parents, only: [:create, :update]
   load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:result]
 
@@ -31,10 +33,12 @@ class KidsController < ApplicationController
   # GET /kids/new
   def new
     @kid = Kid.new
+    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
   end
 
   # GET /kids/1/edit
   def edit
+    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
   end
 
   ## GET /kids/1/report
@@ -80,6 +84,8 @@ class KidsController < ApplicationController
         format.html { redirect_to @kid, notice: 'Kid was successfully created.' }
         format.json { render :show, status: :created, location: @kid }
       else
+        set_available_values_for_kid
+        (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
         format.html { render :new }
         format.json { render json: @kid.errors, status: :unprocessable_entity }
       end
@@ -94,6 +100,8 @@ class KidsController < ApplicationController
         format.html { redirect_to @kid, notice: 'Kid was successfully updated.' }
         format.json { render :show, status: :ok, location: @kid }
       else
+        set_available_values_for_kid
+        (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
         format.html { render :edit }
         format.json { render json: @kid.errors, status: :unprocessable_entity }
       end
@@ -247,7 +255,7 @@ class KidsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def kid_params
-      params.require(:kid).permit(:login_id, :classroom_id, :school_id, :first_name, :last_name, :gender, :age, :primary_language)
+      params.require(:kid).permit(:login_id, :classroom_id, :school_id, :first_name, :last_name, :gender, :age, :primary_language, family_relationships_attributes:[:id, parent_attributes:[:id, :email, :password, :role_id]])
     end
 
     def prepare_reports_data
@@ -270,5 +278,33 @@ class KidsController < ApplicationController
           }
         end
       end
+    end
+
+    def set_available_values_for_kid
+      @genders = {
+                   'Choose gender' => nil,
+                   'Male'=> 1,
+                   'Female'=>2
+                 }
+      @languages = 
+                 {
+                    'Choose language' => nil,
+                    'English' => 'English',
+                    'Spanish' => 'Spanish',
+                    'Portuguese' => 'Portuguese'
+                 }
+      if current_user.admin?
+        classrooms = Classroom.all
+      elsif current_user.teacher?
+        classrooms = Classroom.where(school: current_school, teacher: current_user)
+      else
+        classrooms = Classroom.where(school: current_user.school)
+      end
+      @classrooms = classrooms.pluck(:id, :name)
+      @classrooms.unshift([nil, 'Choose Classroom'])
+    end
+
+    def clear_empty_parents
+      params[:kid][:family_relationships_attributes].delete_if{|index, fr| fr[:parent_attributes][:email].blank?} if params[:kid][:family_relationships_attributes]
     end
 end
