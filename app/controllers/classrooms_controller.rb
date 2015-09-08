@@ -58,6 +58,7 @@ class ClassroomsController < ApplicationController
     respond_to do |format|
       if @classroom.update(classroom_params)
         format.html { redirect_to @classroom, notice: 'Classroom was successfully updated.' }
+        format.js{render nothing: true}
         format.json { render :show, status: :ok, location: @classroom }
       else
         format.html { render :edit }
