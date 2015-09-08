@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_many :classrooms
   has_many :students, through: :classrooms, source: :kids
   has_many :schools, -> { uniq }, through: :classrooms
-  has_many :family_relationships
+  has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   #validates_presence_of :first_name, :last_name
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
   after_save :welcome_email, :if => :email_changed?
 
   before_validation on: :create do
-    self.password = Devise.friendly_token.first(8)
+    self.password = self.password_confirmation = Devise.friendly_token.first(8)
   end
 #when a user signs up, they need to be assigned a role. We can make this default to “Teacher”
   def assign_role

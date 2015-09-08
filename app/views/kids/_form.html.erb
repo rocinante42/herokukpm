@@ -93,17 +93,16 @@
             </div>
           </div>
         </div>
-        <%= f.fields_for :family_relationships do |fr| %>
-          <div class="form-group">
-            <label class="col-sm-4 control-label text-main">Parent Email:</label>
-            <div class="col-sm-8">
-              <%= fr.fields_for :parent do |parent| %>
-                <%= parent.hidden_field :role_id, value: Role.find_by(name: 'Parent').id %>
-                <%= parent.text_field :email, placeholder: 'email@example.com', class: 'form-control' %>
-              <% end %>
+        <div class="form-group" id="add_parent">
+          <div class="col-sm-12">
+            <div id="parents">
+              <%= render 'parents', f:f %>
             </div>
+            <%= link_to 'javascript:;', class:'control-label add-template', data: {target: '#add_parent', location: 'before'} do %>
+              Add Parent
+            <% end %>
           </div>
-        <% end %>
+        </div>
         <div class="row text-center actions">
           <div class="col-md-<%= @kid.persisted? ? '7' : '6' %> col-md-offset-3">
             <%= link_to 'Cancel', kids_path, class: 'btn btn-large btn-warning btn-wide btn-simple' %>
@@ -125,6 +124,17 @@
     $('.dropdown.select ul > li > a').click(function(){
       var id = $(this).data('id');
       $(this).closest('.form-group').find('input[type="hidden"]').val(id);
+    });
+
+    var location = parseInt(<%= @first_new_parent %>);
+    $(document).on('click', 'a.add-template', function(){
+      var el = $(this);
+      $('#parents .form-group.template-body').eq(location).removeClass('hidden');
+      location++;
+    });
+
+    $(document).on('click', 'a.remove-template', function() {
+      $(this).closest('.template-body').remove();
     });
   });
 </script>

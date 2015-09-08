@@ -1,3 +1,9 @@
+class HasClassroomValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    record.errors[:base] << "Kid must have a classroom" if record.classroom.blank?
+  end
+end
+
 class Kid < ActiveRecord::Base
   belongs_to :classroom
 
@@ -6,9 +12,12 @@ class Kid < ActiveRecord::Base
   has_many :assignments
   has_many :bubble_groups, through: :assignments
   has_many :kid_activities, through: :assignments
-  has_many :family_relationships
+  has_many :family_relationships, dependent: :destroy
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
+
+  validates_presence_of :first_name, :last_name, :gender, :age, :primary_language
+  validates :classroom, has_classroom: true
 
   def full_name
     "#{self.first_name} #{self.last_name}"

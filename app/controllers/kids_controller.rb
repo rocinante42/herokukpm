@@ -33,11 +33,12 @@ class KidsController < ApplicationController
   # GET /kids/new
   def new
     @kid = Kid.new
-    2.times{@kid.family_relationships.build.build_parent}
+    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
   end
 
   # GET /kids/1/edit
   def edit
+    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
   end
 
   ## GET /kids/1/report
@@ -84,6 +85,7 @@ class KidsController < ApplicationController
         format.json { render :show, status: :created, location: @kid }
       else
         set_available_values_for_kid
+        (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
         format.html { render :new }
         format.json { render json: @kid.errors, status: :unprocessable_entity }
       end
@@ -98,6 +100,8 @@ class KidsController < ApplicationController
         format.html { redirect_to @kid, notice: 'Kid was successfully updated.' }
         format.json { render :show, status: :ok, location: @kid }
       else
+        set_available_values_for_kid
+        (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
         format.html { render :edit }
         format.json { render json: @kid.errors, status: :unprocessable_entity }
       end
