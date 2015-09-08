@@ -98,12 +98,14 @@
                   </div>
                 <% end %>
               </ul>
-              <div class="dropdown-action">
-                <%= link_to new_users_admin_path, class:'btn' do %>
-                  <i class="fa fa-plus"></i>
-                  <span>Add Teacher</span>
-                <% end %>
-              </div>
+              <% unless current_user.teacher? %>
+                <div class="dropdown-action">
+                  <%= link_to new_users_admin_path, class:'btn' do %>
+                    <i class="fa fa-plus"></i>
+                    <span>Add Teacher</span>
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           </div>
         </td>

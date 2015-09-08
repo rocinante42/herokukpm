@@ -168,12 +168,14 @@
   private
 
   def set_available_classrooms
+    @teachers = User.teachers
     if current_user.admin?
       classrooms = Classroom.all
       @classroom_types = ClassroomType.all
     else
       if current_user.teacher?
         classrooms = Classroom.where(school: current_school, teacher: current_user)
+        @teachers = User.where(id: current_user.id)
       else
         classrooms = Classroom.where(school: current_user.school)
       end
@@ -186,6 +188,5 @@
       @current_classroom = classrooms.sample
       @current_classroom_type = @current_classroom.classroom_type
     end
-    @teachers = User.teachers
   end
 end
