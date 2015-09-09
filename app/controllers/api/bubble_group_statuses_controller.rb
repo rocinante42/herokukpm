@@ -1,4 +1,5 @@
 class Api::BubbleGroupStatusesController < Api::ApiController
+  before_action :authenticate
 
   def index
     @bubble_group_statuses = BubbleGroupStatus.all

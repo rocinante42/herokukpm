@@ -1,4 +1,6 @@
 class Api::PosetsController < ApplicationController
+  before_action :authenticate
+
   def index
     @posets = Poset.all
   end

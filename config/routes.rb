@@ -74,7 +74,17 @@ Rails.application.routes.draw do
   get 'dashboard_classroom' => 'users#dashboard_classroom'
 
   namespace :api do
-    resources :kids
+    resources :kids do
+      member do
+        get :play
+        get :play_game
+        get :games
+        post :result
+      end
+      collection do
+        post :sign_in
+      end
+    end
     resources :posets
     resources :bubble_groups
     resources :bubble_games

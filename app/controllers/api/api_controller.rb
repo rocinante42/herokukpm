@@ -1,5 +1,4 @@
 class Api::ApiController < ApplicationController
-  before_action :authenticate
 
   def authenticate
     access_token = params[:access_token]

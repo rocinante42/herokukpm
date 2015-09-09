@@ -1,4 +1,6 @@
 class Api::KidsController < Api::ApiController
+  before_action :authenticate, except: [:sign_in]
+  skip_before_filter :verify_authenticity_token, :only => [:result, :sign_in]
 
   def show
     @kid = Kid.find(params[:id])
@@ -103,5 +105,12 @@ class Api::KidsController < Api::ApiController
     end
 
     render json: {success: success}
+  end
+
+  def sign_in
+    kid = Kid.where(access_token: params[:access_token]).first
+    render json: {status: :unathorized} and return false unless kid
+    kid.update_column(:token_expiration_time, DateTime.now + 5.minutes)
+    render json: {kid: {id: kid.id}}
   end
 end

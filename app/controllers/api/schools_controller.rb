@@ -1,4 +1,6 @@
 class Api::SchoolsController < Api::ApiController
+  before_action :authenticate
+
   def index
     @schools = School.all
   end
