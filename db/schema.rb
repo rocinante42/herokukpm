@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150901132342) do
+ActiveRecord::Schema.define(version: 20150908152442) do
 
   create_table "assignments", force: true do |t|
     t.integer  "kid_id"
@@ -155,6 +155,7 @@ ActiveRecord::Schema.define(version: 20150901132342) do
     t.string   "last_name"
     t.integer  "gender"
     t.string   "primary_language"
+    t.string   "access_token"
   end
 
   create_table "posets", force: true do |t|
