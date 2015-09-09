@@ -156,10 +156,7 @@ ActiveRecord::Schema.define(version: 20150909090338) do
     t.integer  "gender"
     t.string   "primary_language"
     t.string   "access_token"
-<<<<<<< HEAD
-=======
     t.datetime "token_expiration_time"
->>>>>>> #67 :: part of API
   end
 
   create_table "posets", force: true do |t|
