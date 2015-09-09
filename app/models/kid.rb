@@ -16,7 +16,7 @@ class Kid < ActiveRecord::Base
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
 
-  validates_presence_of :first_name, :last_name, :gender, :age, :primary_language, :access_token
+  validates_presence_of :first_name, :last_name, :gender, :age, :primary_language
   validates :classroom, has_classroom: true
   validates :access_token, uniqueness: true
 
