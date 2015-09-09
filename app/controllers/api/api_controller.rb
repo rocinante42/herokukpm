@@ -10,7 +10,7 @@ class Api::ApiController < ApplicationController
       kid.update_column(:token_expiration_time, DateTime.now + 5.minutes)
       render json: {status: :unathorized} and return false
     else
-      kid.update_column(:token_expiration_time, DateTime.now)
+      kid.update_column(:token_expiration_time, DateTime.now + 5.minutes)
     end
   end
 end
