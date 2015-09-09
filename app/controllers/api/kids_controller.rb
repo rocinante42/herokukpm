@@ -1,9 +1,9 @@
 class Api::KidsController < Api::ApiController
-  before_action :authenticate, except: [:sign_in]
+  before_action :authenticate, except:[:sign_in]
+  before_action :set_kid, except:[:sign_in]
   skip_before_filter :verify_authenticity_token, :only => [:result, :sign_in]
 
   def show
-    @kid = Kid.find(params[:id])
   end
   
   def play_game
@@ -112,5 +112,9 @@ class Api::KidsController < Api::ApiController
     render json: {status: :unathorized} and return false unless kid
     kid.update_column(:token_expiration_time, DateTime.now + 5.minutes)
     render json: {kid: {id: kid.id}}
+  end
+
+  def set_kid
+    @kid = Kid.find(params[:id])
   end
 end
