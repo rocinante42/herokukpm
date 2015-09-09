@@ -72,4 +72,17 @@ Rails.application.routes.draw do
   get 'teacher_mode' => 'users#teacher_mode'
   get 'dashboard_admin' => 'users#dashboard_admin'
   get 'dashboard_classroom' => 'users#dashboard_classroom'
+
+  namespace :api do
+    resources :kids
+    resources :posets
+    resources :bubble_groups
+    resources :bubble_games
+    resources :games
+    resources :bubbles
+    resources :bubble_statuses
+    resources :schools
+    resources :classrooms
+  end
+>>>>>>> #67 :: part of API
 end

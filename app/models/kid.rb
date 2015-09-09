@@ -21,6 +21,8 @@ class Kid < ActiveRecord::Base
 
   before_create :generate_access_token
 
+  before_create :set_token_expiration_time
+
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
@@ -52,6 +54,10 @@ class Kid < ActiveRecord::Base
     end
   end
 
+  def has_expired_token?
+    DateTime.now >= self.token_expiration_time
+  end
+
   def full_info
     {
       'Name' => full_name,
@@ -69,5 +75,9 @@ class Kid < ActiveRecord::Base
     begin
       self.access_token = classroom.school.name.split.join + rand(100..999).to_s
     end while self.class.exists?(access_token: access_token)
+  end
+
+  def set_token_expiration_time
+    self.token_expiration_time = DateTime.now + 5.minutes
   end
 end
