@@ -4,6 +4,6 @@ class Api::BubblesController < ApplicationController
   end
 
   def show
-  	@bubble = Bubble.find(params[:id])
+    @bubble = Bubble.find(params[:id])
   end
 end

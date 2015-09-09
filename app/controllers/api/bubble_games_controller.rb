@@ -5,6 +5,6 @@ class Api::BubbleGamesController < Api::ApiController
   end
 
   def show
-  	@bubble_game = BubbleGame.find(params[:id])
+    @bubble_game = BubbleGame.find(params[:id])
   end
 end

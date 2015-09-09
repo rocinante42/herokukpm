@@ -4,6 +4,6 @@ class Api::BubbleStatusesController < Api::ApiController
   end
 
   def show
-  	@bubble_status = BubbleStatus.find(params[:id])
+    @bubble_status = BubbleStatus.find(params[:id])
   end
 end

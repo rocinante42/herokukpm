@@ -4,6 +4,6 @@ class Api::PosetsController < ApplicationController
   end
 
   def show
-  	@poset = Poset.find(params[:id])
+    @poset = Poset.find(params[:id])
   end
 end

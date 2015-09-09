@@ -5,6 +5,6 @@ class Api::BubbleGroupStatusesController < Api::ApiController
   end
 
   def show
-  	@bubble_group_status = BubbleGroupStatus.find(params[:id])
+    @bubble_group_status = BubbleGroupStatus.find(params[:id])
   end
 end

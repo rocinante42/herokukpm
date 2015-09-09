@@ -4,6 +4,6 @@ class Api::SchoolsController < Api::ApiController
   end
 
   def show
-  	@school = School.find(params[:id])
+    @school = School.find(params[:id])
   end
 end
