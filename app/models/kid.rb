@@ -18,6 +18,9 @@ class Kid < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :gender, :age, :primary_language
   validates :classroom, has_classroom: true
+  validates :access_token, uniqueness: true
+
+  before_create :generate_access_token
 
   def full_name
     "#{self.first_name} #{self.last_name}"
@@ -39,6 +42,17 @@ class Kid < ActiveRecord::Base
     gender == 2
   end
 
+  def humanize_gender
+    case gender
+      when 1
+        'Male'
+      when 2
+        'Female'
+      else
+        ''
+    end
+  end
+
   def full_info
     {
       'Name' => full_name,
@@ -48,5 +62,13 @@ class Kid < ActiveRecord::Base
       'Classroom' => classroom.name,
       'Classroom Type' => classroom.classroom_type.type_name
     }
+  end
+
+  private
+
+  def generate_access_token
+    begin
+      self.access_token = classroom.school.name.split.join + rand(100..999).to_s
+    end while self.class.exists?(access_token: access_token)
   end
 end
