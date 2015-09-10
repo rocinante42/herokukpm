@@ -133,6 +133,7 @@ table.table {width:100%;
 
 .row.actions {
   .btn-simple + .btn-simple {margin-left:15px;}
+  &.multi-row .btn {margin-bottom:10px;}
 }
 
 #bulk_submit{display:inline;}
