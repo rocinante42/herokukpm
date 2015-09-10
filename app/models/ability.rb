@@ -37,7 +37,7 @@ class Ability
       end
       can :create, Kid
       can :manage, Kid do |kid|
-        kid.classroom.school == user.school
+        kid.classroom.try(:school) == user.school
       end
       can :create, User
       can :manage, User do |u|
