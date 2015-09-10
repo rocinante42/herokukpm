@@ -1,53 +1,46 @@
-<p>
-  <strong>Login:</strong>
-  <%= @kid.login_id %>
-</p>
+<%= render 'shared/section_title', title: 'View Kid' %>
 
-<p>
-  <strong>Classroom:</strong>
-  <%= link_to @kid.classroom.name, @kid.classroom if @kid.classroom %>
-</p>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-sm-2">
+      <%= image_tag "student_avatar_medium.jpg", class: 'img-responsive center-block' %>
+    </div>
+    <div class="col-sm-2">
+      <% items = {'Login:' => "#{@kid.login_id}", 'Classroom:' => "#{@kid.classroom ? (link_to @kid.classroom.name, @kid.classroom) : "None"}", 'First Name:' => "#{@kid.first_name}", 'Last Name:' => "#{@kid.last_name}" } %>
+      <% items.each do |title, value| %>
+        <span><%= title %></span>
+        <p class="font-xlarge text-main"><%= raw value %></p>
+      <% end %>
+    </div>
+    <div class="col-sm-3">
+      <% items = {'Gender:' => "#{@kid.gender ? 'Male' : 'Female'}", 'Age:' => "#{@kid.age}", 'Primary Language:' => "#{@kid.primary_language}", 'Access Token:' => "#{@kid.access_token}" } %>
+      <% items.each do |title, value| %>
+        <span><%= title %></span>
+        <p class="font-xlarge text-main"><%= raw value %></p>
+      <% end %>
+    </div>
+    <div class="col-sm-5">
+      <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
+        <span>Status:</span>
+        <p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p>
+        <span>Bubble Group:</span>
+        <p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p>
+        <span>Actions:</span>
+        <p class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></p>
+      <% end %>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>First Name:</strong>
-  <%= @kid.first_name %>
-</p>
-<p>
-  <strong>Last Name:</strong>
-  <%= @kid.last_name %>
-</p>
-<p>
-  <strong>Gender:</strong>
-  <%= @kid.gender %>
-</p>
-<p>
-  <strong>Age:</strong>
-  <%= @kid.age %>
-</p>
-<p>
-  <strong>Primary Language:</strong>
-  <%= @kid.primary_language %>
-</p>
-
-<table>
-  <tr>
-    <th>Status</th>
-    <th>Bubble Group</th>
-    <th>Actions</th>
-  </tr>
-  <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
-    <tr>
-      <td><%= link_to "Status", bubble_group_status %></td>
-      <td><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></td>
-      <td><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></td>
-    </tr>
-  <% end %>
-</table>
-<br>
-
-<%= link_to 'Play', play_kid_path(@kid) %> |
-<%= link_to 'Play Games', play_game_kid_path(@kid) %> |
-<%= link_to 'Show Games', games_kid_path(@kid) %> |
-<%= link_to 'Reports', reports_kid_path(@kid) %> |
-<%= link_to 'Edit', edit_kid_path(@kid) %> |
-<%= link_to 'Back', kids_path %>
+<div class="container kmSection">
+  <div class="row actions multi-row text-center">
+    <div class="col-md-12">
+      <%= link_to 'Play', play_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
+      <%= link_to 'Play Games', play_game_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
+      <%= link_to 'Show Games', games_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
+      <%= link_to 'Reports', reports_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
+      <%= link_to 'Edit', edit_kid_path(@kid), class: 'btn btn-warning btn-simple btn-wide' %>
+      <%= link_to 'Back', kids_path, class: 'btn btn-warning btn-simple btn-wide' %>
+    </div>
+  </div>
+</div>
