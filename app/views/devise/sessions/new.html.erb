@@ -1,13 +1,15 @@
 <div id="kmLoginPage">
-
+  <!--
   <div class="container-fluid">
     <div class="row content-tabs">
       <ul class="nav nav-tabs nav-justified">
+
         <li role="presentation" class="active"><a data-toggle="tab" href="#login_form">Login</a></li>
         <li role="presentation"><%= link_to 'Register', new_user_registration_path %> </li>
       </ul>
     </div>
   </div>
+  !-->
   <div class="tab-content container">
     <div class="tab-pane fade in active" id="login_form">
       <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class:'form-horizontal'}) do |f| %>
