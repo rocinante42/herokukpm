@@ -1,32 +1,39 @@
-<p>
-  <strong>Name:</strong>
-  <%= @game.name %>
-</p>
+<%= render 'shared/section_title', title: 'Show Game' %>
 
-<p>
-  <strong>Description:</strong>
-  <%= @game.description %>
-</p>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center minimal">Bubble Game</th>
+          <th class="text-center">Bubble</th>
+          <th class="text-center">Params</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<table>
-  <tr>
-    <th>Bubble Game</th>
-    <th>Bubble</th>
-    <th>Params</th>
-    <th colspan="3"></th>
-  </tr>
-  <% @game.bubble_games.each do |bubble_game| %>
-    <tr>
-      <td><%= link_to bubble_game.name, bubble_game %></td>
-      <td><%= link_to bubble_game.bubble.name, bubble_game.bubble %></td>
-      <td><%= bubble_game.game_params %></td>
-      <td><%= link_to 'Show', bubble_game %></td>
-      <td><%= link_to 'Edit', edit_bubble_game_path(bubble_game) %></td>
-      <td><%= link_to 'Destroy', bubble_game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-  <% end %>
-</table>
-<br>
-
-<%= link_to 'Edit', edit_game_path(@game) %> |
-<%= link_to 'Back', games_path %>
+        <tbody>
+        <% @game.bubble_games.each do |bubble_game| %>
+          <tr>
+            <td class="text-center minimal text-main"><%= link_to bubble_game.name, bubble_game %></td>
+            <td class="text-center text-main"><%= link_to bubble_game.bubble.name, bubble_game.bubble %></td>
+            <td class="text-center text-main"><%= bubble_game.game_params %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble_game, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_game_path(bubble_game), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble_game, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', games_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_game_path(@game), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
+</div>
