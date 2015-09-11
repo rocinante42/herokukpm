@@ -1,23 +1,34 @@
-<p>
-  <strong>Name:</strong>
-  <%= @poset.name %>
-</p>
+<%= render 'shared/section_title', title: 'Show Posets' %>
 
-<h3>Edges</h3>
-<table>
-  <thead>
-    <tr>
-      <th>Source</th>
-      <th>Destination</th>
-    </tr>
-  </thead>
-  <% @poset.edges.each do |edge| %>
-    <tr>
-      <td><%= link_to edge.try(:source).try(:name), edge.source %></td>
-      <td><%= link_to edge.try(:destination).try(:name), edge.destination %></td>
-    </tr>
-  <% end %>
-</table>
+<div class="container kmSection">
+  <span class="font-large">Name:</span>
+  <h4 class="text-main"><%= @poset.name %></h4>
+</div>
 
-<%= link_to 'Edit', edit_poset_path(@poset) %> |
-<%= link_to 'Back', posets_path %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center">Source</th>
+          <th class="text-center">Destination</th>
+        </tr>
+        </thead>
+        <% @poset.edges.each do |edge| %>
+          <tr>
+            <td class="text-center"><%= link_to edge.try(:source).try(:name), edge.source %></td>
+            <td class="text-center"><%= link_to edge.try(:destination).try(:name), edge.destination %></td>
+          </tr>
+        <% end %>
+      </table>
+
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', posets_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_poset_path(@poset), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
+</div>
