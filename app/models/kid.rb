@@ -18,7 +18,6 @@ class Kid < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name, :gender, :age, :primary_language
   validates :classroom, has_classroom: true
-  validates :access_token, uniqueness: true
 
   before_create :generate_access_token
 
