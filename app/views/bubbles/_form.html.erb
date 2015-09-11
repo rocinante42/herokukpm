@@ -1,33 +1,72 @@
-<%= form_for(@bubble) do |f| %>
-  <% if @bubble.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@bubble.errors.count, "error") %> prohibited this bubble from being saved:</h2>
+<%= render 'shared/section_title', title: @bubble.new_record? ? 'Create New Bubble' : 'Editing Bubble' %>
 
-      <ul>
-      <% @bubble.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+<div class="container kmSection">
+  <%= form_for(@bubble, html: {class: 'form-horizontal form-classic form-vpad'}) do |f| %>
+    <%= render 'shared/error_messages', object: @bubble %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+          <%= f.label :name, "Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :name, placeholder: 'Name', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :description, "Description", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_area :description, placeholder: 'Description', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :bubble_group_id, "Bubble Group", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% bubble_groups = BubbleGroup.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble.bubble_group ? @bubble.bubble_group.name : bubble_groups.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% bubble_groups.each do |group| %>
+                  <li><a href="javascript:" data-id="<%= group.id %>"><%= group.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :bubble_group_id, value: @bubble.bubble_group ? @bubble.bubble_group.id : bubble_groups.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :bubble_category_id, "Bubble Category", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% bubble_categories = BubbleCategory.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble.bubble_category ? @bubble.bubble_category.name : bubble_categories.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% bubble_categories.each do |category| %>
+                  <li><a href="javascript:" data-id="<%= category.id %>"><%= category.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :bubble_category_id, value: @bubble.bubble_category ? @bubble.bubble_category.id : bubble_categories.first.id %>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row text-center actions">
+      <%= link_to 'Back', bubbles_path, class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <% if @bubble.new_record? %>
+        <%= f.submit 'Create Bubble', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= link_to 'Show', @bubble, class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Update Bubble', class: 'btn btn-info btn-large btn-wide btn-simple' %>
       <% end %>
-      </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-  <div class="field">
-    <%= f.label :bubble_group_id %><br>
-    <%= f.collection_select :bubble_group_id, BubbleGroup.all, :id, :name %>
-  </div>
-  <div class="field">
-    <%= f.label :bubble_category_id %><br>
-    <%= f.collection_select :bubble_category_id, BubbleCategory.all, :id, :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>
