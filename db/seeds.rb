@@ -127,7 +127,7 @@ school_1 = School.find_or_create_by({
 
 p "Creating Teacher Administrator for School"
 
-User.create({
+User.new({
   first_name: "Mark",
   last_name:"Strong" ,
   direct_phone:"123-123-1233" ,
@@ -136,7 +136,7 @@ User.create({
   password_confirmation: "password",
   role: teacher_admin_role,
   school: school_1
-   })
+   }).save(validate:false)
 
 #////////////////////Classrooms///////////////////////////
 p "Creating Classroom_1"
