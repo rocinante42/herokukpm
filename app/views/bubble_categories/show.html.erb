@@ -1,25 +1,50 @@
-<p>
-  <strong>Name:</strong>
-  <%= @bubble_category.name %>
-</p>
+<%= render 'shared/section_title', title: 'Show Bubble Category' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Name:</span>
+            <h4 class="text-main"><%= @bubble_category.name %></h4>
+          </td>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
 <% grouped_bubbles = @bubble_category.bubbles.group_by(&:bubble_group) %>
 
-<table>
-  <tr>
-    <th>Bubble Group</th>
-    <th>Bubble</th>
-  </tr>
-  <% grouped_bubbles.each do |group, bubbles| %>
-    <% bubbles.each do |bubble| %>
-      <tr>
-        <td><%= link_to group.name, group %></td>
-        <td><%= link_to bubble.name, bubble %></td>
-      </tr>
-    <% end %>
-  <% end %>
-</table>
-<br>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center">Bubble Group</th>
+          <th class="text-center">Bubble</th>
+        </tr>
+        </thead>
 
-<%= link_to 'Edit', edit_bubble_category_path(@bubble_category) %> |
-<%= link_to 'Back', bubble_categories_path %>
+        <tbody>
+        <% grouped_bubbles.each do |group, bubbles| %>
+          <% bubbles.each do |bubble| %>
+            <tr>
+              <td class="text-center"><%= link_to group.name, group %></td>
+              <td class="text-center"><%= link_to bubble.name, bubble %></td>
+            </tr>
+          <% end %>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', bubble_categories_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_bubble_category_path(@bubble_category), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
+</div>
