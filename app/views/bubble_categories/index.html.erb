@@ -1,25 +1,37 @@
-<h1>Bubble Categories</h1>
+<%= render 'shared/section_title', title: 'Bubble Categories' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+        <tbody>
+        <% @bubble_categories.each do |bubble_category| %>
+          <tr>
+            <td><%= bubble_category.name %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble_category, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_category_path(bubble_category), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble_category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <tbody>
-    <% @bubble_categories.each do |bubble_category| %>
-      <tr>
-        <td><%= bubble_category.name %></td>
-        <td><%= link_to 'Show', bubble_category %></td>
-        <td><%= link_to 'Edit', edit_bubble_category_path(bubble_category) %></td>
-        <td><%= link_to 'Destroy', bubble_category, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Bubble category', new_bubble_category_path %>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to new_bubble_path, class: 'btn btn-warning btn-simple btn-large' do %>
+        <i class="fa fa-plus"></i>
+        <span>New Bubble Category</span>
+      <% end %>
+    </div>
+  </div>
+</div>
