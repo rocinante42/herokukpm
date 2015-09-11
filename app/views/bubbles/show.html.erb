@@ -1,43 +1,74 @@
-<p>
-  <strong>Name:</strong>
-  <%= @bubble.name %>
-</p>
+<%= render 'shared/section_title', title: 'Show Bubble' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Name:</span>
+            <h4 class="text-main"><%= @bubble.name %></h4>
+          </td>
+          <td>
+            <span class="font-large">Bubble Group:</span>
+            <h4><%= link_to @bubble.bubble_group.name, @bubble.bubble_group %></h4>
+          </td>
+          <td>
+            <span class="font-large">Bubble Category:</span>
+            <h4><%= link_to @bubble.bubble_category.name, @bubble.bubble_category if @bubble.bubble_category %></h4>
+          </td>
+        </tr>
+        <tr class="no-border-top">
+          <td colspan="999">
+            <span class="font-large">Description:</span>
+            <h4 class="text-main"><%= @bubble.description %></h4>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @bubble.description %>
-</p>
 
-<p>
-  <strong>Bubble Group:</strong>
-  <%= link_to @bubble.bubble_group.name, @bubble.bubble_group %>
-</p>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center minimal">Bubble Game</th>
+          <th class="text-center">Game</th>
+          <th class="text-center">Params</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<p>
-  <strong>Bubble Category:</strong>
-  <%= link_to @bubble.bubble_category.name, @bubble.bubble_category if @bubble.bubble_category %>
-</p>
-
-<table>
-  <tr>
-    <th>Bubble Game</th>
-    <th>Game</th>
-    <th>Params</th>
-    <th colspan="3"></th>
-  </tr>
-  <% @bubble.bubble_games.each do |bubble_game| %>
-    <tr>
-      <td><%= link_to bubble_game.name, bubble_game %></td>
-      <td><%= link_to bubble_game.game.name, bubble_game.game %></td>
-      <td><%= bubble_game.game_params %></td>
-      <td><%= link_to 'Show', bubble_game %></td>
-      <td><%= link_to 'Edit', edit_bubble_game_path(bubble_game) %></td>
-      <td><%= link_to 'Destroy', bubble_game, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-  <% end %>
-</table>
-<br>
-
-<%= link_to 'Add Game', new_bubble_game_path(bubble_id: @bubble) %> |
-<%= link_to 'Edit', edit_bubble_path(@bubble) %> |
-<%= link_to 'Back', bubbles_path %>
+        <tbody>
+        <% @bubble.bubble_games.each do |bubble_game| %>
+          <tr>
+            <td class="text-center minimal"><%= link_to bubble_game.name, bubble_game %></td>
+            <td class="text-center"><%= link_to bubble_game.game.name, bubble_game.game %></td>
+            <td class="text-center text-main"><%= bubble_game.game_params %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble_game, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_game_path(bubble_game), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble_game, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', bubbles_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_bubble_path(@bubble), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to new_bubble_game_path(bubble_id: @bubble), class: 'btn btn-warning btn-simple btn-large btn-narrow' do %>
+        <i class="fa fa-plus"></i>
+        <span>Add Game</span>
+      <% end %>
+    </div>
+  </div>
+</div>

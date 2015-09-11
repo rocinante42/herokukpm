@@ -1,27 +1,39 @@
-<h1>Bubbles</h1>
+<%= render 'shared/section_title', title: 'Bubbles' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center minimal">Name</th>
+          <th class="text-center">Bubble group</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Bubble group</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+        <tbody>
+        <% @bubbles.each do |bubble| %>
+          <tr>
+            <td class="text-center minimal"><%= link_to bubble.name, bubble %></td>
+            <td class="text-center"><%= link_to bubble.bubble_group.name, bubble.bubble_group %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_path(bubble), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <tbody>
-    <% @bubbles.each do |bubble| %>
-      <tr>
-        <td><%= link_to bubble.name, bubble %></td>
-        <td><%= link_to bubble.bubble_group.name, bubble.bubble_group %></td>
-        <td><%= link_to 'Show', bubble %></td>
-        <td><%= link_to 'Edit', edit_bubble_path(bubble) %></td>
-        <td><%= link_to 'Destroy', bubble, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Bubble', new_bubble_path %>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to new_bubble_path, class: 'btn btn-warning btn-simple btn-large' do %>
+        <i class="fa fa-plus"></i>
+        <span>New Bubble</span>
+      <% end %>
+    </div>
+  </div>
+</div>
