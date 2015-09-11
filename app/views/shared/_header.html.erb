@@ -28,6 +28,21 @@
                     </ul>
                   </div>
                 </div>
+              <% elsif current_user.parent? && defined? @kid %>
+                <div class="font-large">
+                  <span>Kid:</span>
+                  <div class="dropdown select">
+                    <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span class="value"><%= @kid.full_name %></span>
+                      <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                      <% current_user.kids.each do |kid| %>
+                        <li><%= link_to kid.full_name, reports_kid_path(kid) %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
               <% end %>
             </div>
             <div class="media-left media-right media-middle">
