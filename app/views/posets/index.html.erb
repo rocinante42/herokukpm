@@ -1,27 +1,35 @@
-<h1>Posets</h1>
+<%= render 'shared/section_title', title: 'Posets' %>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Bubbles</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @posets.each do |poset| %>
+<div class="container kmSection">
+  <div class="row">
+    <table class="table fit">
+      <thead>
       <tr>
-        <td><%= poset.name %></td>
-        <td><%= poset.bubbles.count %></td>
-        <td><%= link_to 'Show', poset %></td>
-        <td><%= link_to 'Edit', edit_poset_path(poset) %></td>
-        <td><%= link_to 'Destroy', poset, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <th class="text-center">Name</th>
+        <th class="text-center">Bubbles</th>
+        <th></th>
       </tr>
+      </thead>
+
+      <tbody>
+      <% @posets.each do |poset| %>
+        <tr>
+          <td class="text-center text-main minimal"><%= poset.name %></td>
+          <td class="text-center text-main"><%= poset.bubbles.count %></td>
+          <td class="actions minimal">
+            <%= link_to 'Show', poset, class: 'btn btn-info btn-simple btn-narrow' %>
+            <%= link_to 'Edit', edit_poset_path(poset), class: 'btn btn-warning btn-simple btn-narrow' %>
+            <%= link_to 'Destroy', poset, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+  <div class="row actions text-right">
+    <%= link_to new_poset_path, class: 'btn btn-warning btn-simple btn-large btn-wide' do %>
+      <i class="fa fa-plus"></i>
+      <span>New Posset</span>
     <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Poset', new_poset_path %>
+  </div>
+</div>
