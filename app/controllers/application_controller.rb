@@ -40,8 +40,8 @@ class ApplicationController < ActionController::Base
   def redirect_parent_to_kid_report
     if user_signed_in? && current_user.parent?
       kids_reports_paths = current_user.kids.map{|kid| [reports_kid_path(kid), download_report_kid_path(kid)]}.flatten
-      available_paths = kids_reports_paths << destroy_user_session_path
-      unless kids_reports_paths.include? request.path
+      available_paths = kids_reports_paths  + [destroy_user_session_path, edit_user_registration_path, user_registration_path]
+      unless available_paths.include? request.path
         redirect_to kids_reports_paths.first if kids_reports_paths.any?
       end
     end
