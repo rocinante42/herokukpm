@@ -7,8 +7,8 @@ class ApplicationController < ActionController::Base
   helper_method :current_school
 
   rescue_from CanCan::AccessDenied do |exception|
-  flash[:error] = "Access denied!"
-  redirect_to root_url
+    flash[:error] = "Access denied!"
+    redirect_to root_url
   end
 
   def current_school=(school_id)

@@ -49,7 +49,13 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
-  resources :users_admin, controller: 'users'
+  resources :users_admin, controller: 'users' do
+    collection do
+     # get :dashboard
+     # get :dashboard_admin
+    end
+  end
+
 
   resources :assignments do
     collection do
@@ -58,14 +64,12 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'dashboard' => 'home#dashboard'
-  get 'activities' => 'home#activities'
+  get 'dashboard' => 'users#dashboard'
+  get 'activities' => 'users#activities'
   get 'report' => 'home#report'
   get 'choose_school' => 'home#choose_school'
   get 'set_school' => 'home#set_school'
-  get 'teacher_mode' => 'home#teacher_mode'
-  get 'dashboard_admin' => 'home#dashboard_admin'
-  get 'dashboard_classroom' => 'home#dashboard_classroom'
-  get 'new_user' => 'home#new_user' #obviously this should be removed
-  get 'list_users' => 'home#list_users' #obviously this should be removed
+  get 'teacher_mode' => 'users#teacher_mode'
+  get 'dashboard_admin' => 'users#dashboard_admin'
+  get 'dashboard_classroom' => 'users#dashboard_classroom'
 end
