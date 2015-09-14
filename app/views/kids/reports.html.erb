@@ -64,7 +64,7 @@
       <% @reports.each do |title, categories| %>
         <div class="kmSection">
           <h4><%= title %></h4>
-          <%= render 'home/mixed_bar_chart', categories: categories %>
+          <%= render 'shared/mixed_bar_chart', categories: categories %>
         </div>
       <% end %>
     </div>
