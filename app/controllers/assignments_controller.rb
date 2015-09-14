@@ -38,7 +38,7 @@ class AssignmentsController < ApplicationController
   end
 
   def bulk_submit
-    classroom = Classroom.find(params[:classroom])
+    classroom = Classroom.find(params[:classroom_id])
     BubbleGroup.all.find_each do |bg|
       next unless classroom.classroom_type.bubble_groups.include? bg
       assignment = Assignment.where(bubble_group:bg, classroom:classroom).first_or_initialize
@@ -50,8 +50,10 @@ class AssignmentsController < ApplicationController
   end
 
   def bulk_update
-    @classroom = Classroom.find(params[:classroom])
-    @classroom.assignments.update_all(status: params[:status])
+    @classroom = Classroom.find(params[:classroom_id])
+    @classroom.assignments.each do |assignment|
+      assignment.update(status:params[:status])
+    end
     redirect_to :back
   end
 
