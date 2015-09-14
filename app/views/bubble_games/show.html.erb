@@ -1,27 +1,55 @@
-<p>
-  <strong>Bubble:</strong>
-  <%= link_to @bubble_game.bubble.name, @bubble_game.bubble %>
-</p>
+<%= render 'shared/section_title', title: 'Show Bubble Game' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Bubble:</span>
+            <h4><%= link_to @bubble_game.bubble.name, @bubble_game.bubble %></h4>
+          </td>
+          <td>
+            <span class="font-large">Game:</span>
+            <h4><%= link_to @bubble_game.game.name, @bubble_game.game %></h4>
+          </td>
+          <td>
+            <span class="font-large">Skin:</span>
+            <h4 class="text-main"><%= @bubble_game.skin %></h4>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Game:</strong>
-  <%= link_to @bubble_game.game.name, @bubble_game.game %>
-</p>
+<div class="container kmSection">
 
-<p>
-  <strong>Skin:</strong>
-  <%= @bubble_game.skin %>
-</p>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Game params:</span>
+            <h4 class="text-main"><%= @bubble_game.game_params %></h4>
+          </td>
+          <td>
+            <span class="font-large">Scoring params:</span>
+            <h4 class="text-main"><%= @bubble_game.scoring_params %></h4>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<p>
-  <strong>Game params:</strong>
-  <%= @bubble_game.game_params %>
-</p>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', bubble_games_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_bubble_game_path(@bubble_game), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
 
-<p>
-  <strong>Scoring params:</strong>
-  <%= @bubble_game.scoring_params %>
-</p>
-
-<%= link_to 'Edit', edit_bubble_game_path(@bubble_game) %> |
-<%= link_to 'Back', bubble_games_path %>
+</div>
