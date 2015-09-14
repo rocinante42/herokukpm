@@ -138,13 +138,13 @@
   <div class="row actions text-right">
     <% if @current_classroom.assignments.none_status.any? || @current_classroom.assignments.empty? %>
       <%= form_tag bulk_submit_assignments_path, id: 'bulk_submit' do %>
-        <%= hidden_field_tag :classroom, @current_classroom.id %>
+        <%= hidden_field_tag :classroom_id, @current_classroom.id %>
         <%= hidden_field_tag :time_limit, 2.hours %>
         <%= submit_tag 'Submit', class: 'btn btn-success btn-simple btn-large btn-wide' %>
       <% end %>
     <% else %>
-      <%= link_to 'Reset', bulk_update_assignments_path(classroom: @current_classroom, status: Assignment::NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
-      <%= link_to 'Pause', bulk_update_assignments_path(classroom: @current_classroom, status: Assignment::INACTIVE), class: 'btn btn-info btn-simple btn-large btn-wide' %>
+      <%= link_to 'Reset', bulk_update_assignments_path(classroom_id: @current_classroom, status: Assignment::NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
+      <%= link_to 'Pause', bulk_update_assignments_path(classroom_id: @current_classroom, status: Assignment::INACTIVE), class: 'btn btn-info btn-simple btn-large btn-wide' %>
     <% end %>
   </div>
 </div>
