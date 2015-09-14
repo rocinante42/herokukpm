@@ -1,37 +1,83 @@
-<%= form_for(@bubble_game) do |f| %>
-  <% if @bubble_game.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@bubble_game.errors.count, "error") %> prohibited this bubble_game from being saved:</h2>
+<%= render 'shared/section_title', title: @bubble_game.new_record? ? 'Create New Bubble Game' : 'Editing Bubble Game' %>
 
-      <ul>
-      <% @bubble_game.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+
+<div class="container kmSection">
+  <%= form_for(@bubble_game, html: {class: 'form-horizontal form-classic form-vpad'}) do |f| %>
+    <%= render 'shared/error_messages', object: @bubble_game %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+
+        <div class="form-group">
+          <%= f.label :bubble_id, "Bubble", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% bubbles = Bubble.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble_game.bubble ? @bubble_game.bubble.name : bubbles.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% bubbles.each do |bubble| %>
+                  <li><a href="javascript:" data-id="<%= bubble.id %>"><%= bubble.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :bubble_id, value: @bubble_game.bubble ? @bubble_game.bubble.id : bubbles.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :game_id, "Game", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% games = Game.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble_game.game ? @bubble_game.game.name : games.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% games.each do |game| %>
+                  <li><a href="javascript:" data-id="<%= game.id %>"><%= game.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :game_id, value: @bubble_game.game ? @bubble_game.game.id : games.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :skin, "Skin", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :skin, placeholder: 'Skin', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :game_params, "Game Params", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :game_params, placeholder: 'Game Params', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :scoring_params, "Scoring Params", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :scoring_params, placeholder: 'Scoring Params', class: 'form-control' %>
+          </div>
+        </div>
+
+      </div>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :bubble_id %><br>
-    <%= f.collection_select :bubble_id, Bubble.all, :id, :name, include_blank: false %>
-  </div>
-  <div class="field">
-    <%= f.label :game_id %><br>
-    <%= f.collection_select :game_id, Game.all, :id, :name, include_blank: false %>
-  </div>
-  <div class="field">
-    <%= f.label :skin %><br>
-    <%= f.text_field :skin %>
-  </div>
-  <div class="field">
-    <%= f.label :game_params %><br>
-    <%= f.text_field :game_params %>
-  </div>
-  <div class="field">
-    <%= f.label :scoring_params %><br>
-    <%= f.text_field :scoring_params %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="row text-center actions">
+      <%= link_to 'Back', bubble_games_path, class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <% if @bubble_game.new_record? %>
+        <%= f.submit 'Create Bubble Game', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= link_to 'Show', @bubble_game, class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Update Bubble Game', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% end %>
+    </div>
+
 <% end %>
+</div>
