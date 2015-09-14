@@ -68,8 +68,10 @@
       <tr>
         <th class="text-center">Classroom</th>
         <th></th>
-        <th class="text-center">Teacher</th>
-        <th></th>
+        <% unless current_user.teacher? %>
+          <th class="text-center">Teacher</th>
+          <th></th>
+        <% end %>
         <th class="text-center">Total Students</th>
         <th></th>
         <th class="text-center minimal">Add Student</th>
@@ -81,39 +83,39 @@
           <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
         </td>
         <td></td>
-        <td class="text-left minimal">
-          <div class="dropdown simple medium select">
-            <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-              <span class="value"><%= @current_classroom.teacher.full_name %></span>
-              <span class="caret"></span>
-            </a>
-            <div class="dropdown-wrap dropdown-menu-right">
-              <ul class="dropdown-menu">
-                <% @teachers.each do |teacher| %>
-                  <div>
-                    <li><%= link_to teacher.full_name, 'javascript:', class: 'changeTeacher' %></li>
-                      <%= form_for @current_classroom, remote: true do |f| %>
-                        <%= f.hidden_field :user_id, value: teacher.id %>
-                      <% end %>
-                  </div>
-                <% end %>
-              </ul>
-              <% unless current_user.teacher? %>
-                <div class="dropdown-action">
-                  <%= link_to new_users_admin_path, class:'btn' do %>
-                    <i class="fa fa-plus"></i>
-                    <span>Add Teacher</span>
+        <% unless current_user.teacher? %>
+          <td class="text-left minimal">
+            <div class="dropdown simple medium select">
+              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @current_classroom.teacher.full_name %></span>
+                <span class="caret"></span>
+              </a>
+              <div class="dropdown-wrap dropdown-menu-right">
+                <ul class="dropdown-menu">
+                  <% @teachers.each do |teacher| %>
+                    <div>
+                      <li><%= link_to teacher.full_name, 'javascript:', class: 'changeTeacher' %></li>
+                        <%= form_for @current_classroom, remote: true do |f| %>
+                          <%= f.hidden_field :user_id, value: teacher.id %>
+                        <% end %>
+                    </div>
                   <% end %>
-                </div>
-              <% end %>
+                </ul>
+                  <div class="dropdown-action">
+                    <%= link_to new_users_admin_path, class:'btn' do %>
+                      <i class="fa fa-plus"></i>
+                      <span>Add Teacher</span>
+                    <% end %>
+                  </div>
+              </div>
             </div>
-          </div>
-        </td>
-
-        <td class="minimal">
-          <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher), class: 'btn btn-warning btn-simple' %>
-        </td>
-
+          </td>
+          <% if can? :edit, @current_classroom.teacher %>
+            <td class="minimal">
+              <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher), class: 'btn btn-warning btn-simple' %>
+            </td>
+          <% end %>
+        <% end %>
         <td>
           <span class="text-main font-large"><%= @current_classroom.kids.count %></span>
         </td>
