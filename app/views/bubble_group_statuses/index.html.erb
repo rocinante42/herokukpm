@@ -1,31 +1,38 @@
-<h1>Bubble Group Statuses</h1>
+<%= render 'shared/section_title', title: 'Bubble Group Statuses' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center minimal">Kid</th>
+          <th class="text-center">Bubble group</th>
+          <th class="text-center">Current Poset</th>
+          <th class="text-center">Pass counter</th>
+          <th class="text-center">Fail counter</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Kid</th>
-      <th>Bubble group</th>
-      <th>Current Poset</th>
-      <th>Pass counter</th>
-      <th>Fail counter</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
+        <tbody>
+        <% @bubble_group_statuses.each do |bubble_group_status| %>
+          <tr>
+            <td class="text-center minimal"><%= link_to bubble_group_status.kid.try(:full_name), bubble_group_status.kid %></td>
+            <td class="text-center"><%= link_to bubble_group_status.bubble_group.try(:name), bubble_group_status.bubble_group %></td>
+            <td class="text-center"><%= link_to bubble_group_status.poset.try(:name), bubble_group_status.poset %></td>
+            <td class="text-center text-main"><%= bubble_group_status.pass_counter %></td>
+            <td class="text-center text-main"><%= bubble_group_status.fail_counter %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble_group_status, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_group_status_path(bubble_group_status), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Reset', reset_bubble_group_status_path(bubble_group_status), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble_group_status, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <tbody>
-    <% @bubble_group_statuses.each do |bubble_group_status| %>
-      <tr>
-        <td><%= link_to bubble_group_status.kid.try(:full_name), bubble_group_status.kid %></td>
-        <td><%= link_to bubble_group_status.bubble_group.try(:name), bubble_group_status.bubble_group %></td>
-        <td><%= link_to bubble_group_status.poset.try(:name), bubble_group_status.poset %></td>
-        <td><%= bubble_group_status.pass_counter %></td>
-        <td><%= bubble_group_status.fail_counter %></td>
-        <td><%= link_to 'Show', bubble_group_status %></td>
-        <td><%= link_to 'Edit', edit_bubble_group_status_path(bubble_group_status) %></td>
-        <td><%= link_to 'Reset', reset_bubble_group_status_path(bubble_group_status) %></td>
-        <td><%= link_to 'Destroy', bubble_group_status, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
+</div>

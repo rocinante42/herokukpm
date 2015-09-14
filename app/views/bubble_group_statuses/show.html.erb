@@ -1,34 +1,45 @@
-<p>
-  <strong>Kid:</strong>
-  <%= link_to @bubble_group_status.kid.full_name, @bubble_group_status.kid %>
-</p>
+<%= render 'shared/section_title', title: 'Show Bubble Group Status' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-4">
+      <span class="font-large">Kid:</span>
+      <h4><%= link_to @bubble_group_status.kid.full_name, @bubble_group_status.kid %></h4>
+    </div>
+    <div class="col-md-4">
+      <span class="font-large">Bubble Group:</span>
+      <h4><%= link_to @bubble_group_status.bubble_group.name, @bubble_group_status.bubble_group %></h4>
+    </div>
+    <div class="col-md-4">
+      <span class="font-large">Poset:</span>
+      <h4><%= link_to @bubble_group_status.poset.name, @bubble_group_status.poset %></h4>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Bubble group:</strong>
-  <%= link_to @bubble_group_status.bubble_group.name, @bubble_group_status.bubble_group %>
-</p>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-4">
+      <span class="font-large">Active:</span>
+      <h4 class="text-main"><%= @bubble_group_status.human_active_string %></h4>
+    </div>
+    <div class="col-md-4">
+      <span class="font-large">Pass counter:</span>
+      <h4 class="text-main"><%= @bubble_group_status.pass_counter %></h4>
+    </div>
+    <div class="col-md-4">
+      <span class="font-large">Fail counter:</span>
+      <h4 class="text-main"><%= @bubble_group_status.fail_counter %></h4>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Poset:</strong>
-  <%= link_to @bubble_group_status.poset.name, @bubble_group_status.poset %>
-</p>
-
-<p>
-  <strong>Active:</strong>
-  <%= @bubble_group_status.human_active_string %>
-</p>
-
-<p>
-  <strong>Pass counter:</strong>
-  <%= @bubble_group_status.pass_counter %>
-</p>
-
-<p>
-  <strong>Fail counter:</strong>
-  <%= @bubble_group_status.fail_counter %>
-</p>
-
-<%= link_to 'Play', play_kid_path(@bubble_group_status.kid, bubble_group_id: @bubble_group_status.bubble_group.id) %> |
-<%= link_to 'Edit', edit_bubble_group_status_path(@bubble_group_status) %> |
-<%= link_to 'Reset', reset_bubble_group_status_path(@bubble_group_status) %> |
-<%= link_to 'Back', bubble_group_statuses_path %>
+<div class="container kmSection">
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', bubble_group_statuses_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_bubble_group_status_path(@bubble_group_status), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Reset', reset_bubble_group_status_path(@bubble_group_status), class: 'btn btn-danger btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Play', play_kid_path(@bubble_group_status.kid, bubble_group_id: @bubble_group_status.bubble_group.id), class: 'btn btn-info btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
+</div>
