@@ -59,5 +59,8 @@ class Ability
       cannot :index, School
       cannot :index, Kid
     end
+    unless user.parent?
+      can [:bulk_submit, :bulk_update], Assignment
+    end
   end
 end
