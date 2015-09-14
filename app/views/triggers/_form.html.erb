@@ -1,33 +1,72 @@
-<%= form_for(@trigger) do |f| %>
-  <% if @trigger.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@trigger.errors.count, "error") %> prohibited this trigger from being saved:</h2>
+<%= render 'shared/section_title', title: @trigger.new_record? ? 'Create New Trigger' : 'Editing Trigger' %>
 
-      <ul>
-      <% @trigger.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+<div class="container kmSection">
+  <%= form_for(@trigger, html: {class: 'form-horizontal form-classic form-vpad'}) do |f| %>
+    <%= render 'shared/error_messages', object: @trigger %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+
+        <div class="form-group">
+          <%= f.label :bubble_id, "Bubble", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% bubbles = Bubble.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @trigger.bubble ? @trigger.bubble.name : bubbles.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% bubbles.each do |bubble| %>
+                  <li><a href="javascript:" data-id="<%= bubble.id %>"><%= bubble.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :bubble_id, value: @trigger.bubble ? @trigger.bubble.id : bubbles.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :bubble_group_id, "Bubble Group", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% bubble_groups = BubbleGroup.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @trigger.bubble_group ? @trigger.bubble_group.name : bubble_groups.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% bubble_groups.each do |group| %>
+                  <li><a href="javascript:" data-id="<%= group.id %>"><%= group.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :bubble_group_id, value: @trigger.bubble_group ? @trigger.bubble_group.id : bubble_groups.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <% if @trigger.new_record? %>
+          <div class="kmSection">
+            <h4>Create from CSV</h4>
+            <div class="form-group">
+              <%= f.label :trigger_csv_file, "Trigger CSV:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :trigger_csv_file %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+
+        </div>
+    </div>
+    <div class="row text-center actions">
+      <%= link_to 'Back', triggers_path, class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <% if @trigger.new_record? %>
+        <%= f.submit 'Create Trigger', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= link_to 'Show', @trigger, class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Update Trigger', class: 'btn btn-info btn-large btn-wide btn-simple' %>
       <% end %>
-      </ul>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :bubble_id %><br>
-    <%= f.collection_select :bubble_id, Bubble.all, :id, :name, include_blank: false %>
-  </div>
-  <div class="field">
-    <%= f.label :bubble_group_id, "Bubble Group" %><br>
-    <%= f.collection_select :bubble_group_id, BubbleGroup.all, :id, :name, include_blank: false %>
-  </div>
-
-  <% if @trigger.new_record? %>
-    <h3>Create from CSV</h3>
-    <div class="field">
-      Trigger CSV: <%= f.file_field :trigger_csv_file %>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

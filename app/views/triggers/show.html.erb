@@ -1,12 +1,30 @@
-<p>
-  <strong>Bubble:</strong>
-  <%= link_to @trigger.bubble.try(:name), @trigger.bubble %>
-</p>
+<%= render 'shared/section_title', title: 'Show Bubble' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Bubble:</span>
+            <h4 class="text-main"><%= link_to @trigger.bubble.try(:name), @trigger.bubble %></h4>
+          </td>
+          <td>
+            <span class="font-large">Bubble Group:</span>
+            <h4><%= link_to @trigger.bubble_group.try(:name), @trigger.bubble_group %></h4>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Bubble Group:</strong>
-  <%= link_to @trigger.bubble_group.try(:name), @trigger.bubble_group %>
-</p>
-
-<%= link_to 'Edit', edit_trigger_path(@trigger) %> |
-<%= link_to 'Back', triggers_path %>
+<div class="container kmSection">
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', triggers_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_trigger_path(@trigger), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
+</div>
