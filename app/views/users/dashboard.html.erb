@@ -5,13 +5,26 @@
         <h4>Average Play Time per Kid</h4>
       </div>
       <div class="pull-right">
+        <% if current_user.admin? %>
+          <div class="dropdown simple">
+            <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              <span><%= @current_school.name %></span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <% School.all.find_each do |sc| %>
+                <li><%= link_to sc.name, dashboard_path(school:sc) %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
         <div class="dropdown simple">
           <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <span><%= @current_classroom.name %></span>
             <span class="caret"></span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
-            <% @classrooms.each do |cr| %>
+            <% @current_school.classrooms.each do |cr| %>
               <li><%= link_to cr.name, dashboard_path(classroom:cr) %></li>
             <% end %>
           </ul>

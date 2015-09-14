@@ -14,6 +14,11 @@
       <table class="table inline solid fit">
         <tbody>
         <tr class="col-pad">
+          <% if current_user.admin? %>
+            <td>
+              <h4>Choose School:</h4>
+            </td>
+          <% end %>
           <td>
             <h4>Choose Classroom Type:</h4>
           </td>
@@ -23,34 +28,7 @@
           <td></td>
         </tr>
         <tr>
-          <td>
-            <div class="dropdown simple medium select classroomType">
-              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @current_classroom_type.type_name %></span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <% @classroom_types.each do |ct| %>
-                  <li><a href="javascript:" data-id="<%= ct.id %>"><%= ct.type_name %></a></li>
-                <% end %>
-              </ul>
-              <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
-            </div>
-          </td>
-          <td>
-            <div class="dropdown simple medium select classroom">
-              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @current_classroom.name %></span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <% @classroom_hash[@current_classroom_type.id].each do |cr| %>
-                  <li><a href="javascript:" data-id="<%= cr[0] %>"><%= cr[1] %></a></li>
-                <% end %>
-              </ul>
-              <%= hidden_field_tag :classroom, @current_classroom.id %>
-            </div>
-          </td>
+          <%= render 'dropdown_filter' %>
           <td>
             <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
           </td>
@@ -193,7 +171,9 @@
 
 <script>
   $(document).ready(function(){
-    initDropdownSelect(<%= @classroom_hash.to_json.html_safe %>);
+    var schools = <%= @school_hash.to_json.html_safe %>;
+    var classrooms = schools[<%= @current_school.id %>]['classrooms'];
+    initDropdownSelect(classrooms);
     $('.changeTeacher').click(function(){
       $(this).closest('.dropdown').find('a span.value').text($(this).text());
       $(this).closest('div').find('form').submit();

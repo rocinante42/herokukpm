@@ -67,16 +67,6 @@ class UsersController < ApplicationController
   end
 
   def activities
-    @classroom_hash = {}
-    @classroom_types.each do |ct|
-      current_classrooms = ct.classrooms
-      if current_user.teacher?
-        current_classrooms = current_classrooms.where(school: current_school, teacher: current_user)
-      elsif current_user.teacher_admin?
-        current_classrooms = current_classrooms.where(school: current_user.school)
-      end
-      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name)
-    end
     @total_assignments_hash = {}
     BubbleGroup.all.find_each do |bg|
       next unless @current_classroom_type.bubble_groups.include? bg
@@ -96,19 +86,27 @@ class UsersController < ApplicationController
     @time_options = [['2 Hours', 2.hours], ['1 Day', 1.days], ['2 Days', 2.days], ['5 Days', 5.days]]
   end
 
+  def dashboard_classroom
+  end
+
   def dashboard
     @classroom_types = ClassroomType.all
     if current_user.admin?
-      @classrooms = Classroom.all
+      @current_school = School.all.sample
     elsif current_user.teacher?
-      @classrooms = Classroom.where(school: current_school, teacher: current_user)
+      @current_school = current_school
     else
-      @classrooms = Classroom.where(school: current_user.school)
+      @current_school = current_user.school
     end
     if params.has_key? :classroom
       @current_classroom = Classroom.find(params[:classroom])
+      @current_school = @current_classroom.school
     else
-      @current_classroom = @classrooms.sample
+      @current_classroom = @current_school.classrooms.sample
+    end
+    if params.has_key? :school
+      @current_school = School.find(params[:school])
+      @current_classroom = @current_school.classrooms.sample
     end
 
     @time_intervals_and_kids = []
@@ -140,11 +138,11 @@ class UsersController < ApplicationController
       @bottom_current_classroom = Classroom.find(params[:current_cr])
       @bottom_current_classroom_type = @bottom_current_classroom.classroom_type
     else
-      @bottom_current_classroom_type = @classroom_types.joins(:classrooms).merge(@classrooms).first
-      @bottom_current_classroom = @bottom_current_classroom_type.classrooms.first
+      @bottom_current_classroom_type = @current_classroom.classroom_type
+      @bottom_current_classroom = @current_classroom
     end
     @total_hash = {}
-    @classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
+    @current_school.classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
       ct = ClassroomType.find(ct_id)
       ct_name = ct.type_name
       @total_hash[ct_name] = {
@@ -200,19 +198,6 @@ class UsersController < ApplicationController
                     }
   end
 
-  def dashboard_classroom
-    @classroom_hash = {}
-    @classroom_types.each do |ct|
-      current_classrooms = ct.classrooms
-      if current_user.teacher?
-        current_classrooms = current_classrooms.where(school: current_school, teacher: current_user)
-      elsif current_user.teacher_admin?
-        current_classrooms = current_classrooms.where(school: current_user.school)
-      end
-      @classroom_hash[ct.id] = current_classrooms.pluck(:id, :name)
-    end
-  end
-
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -226,6 +211,17 @@ class UsersController < ApplicationController
 
     def set_available_classrooms
       @teachers = User.teachers
+      @school_hash = {}
+      School.all.find_each do |school|
+        @school_hash[school.id] = {
+          name: school.name,
+          classrooms: {}
+        }
+        school.classrooms.to_a.group_by(&:classroom_type_id).each do |ct, classrooms|
+          classroom_type = ClassroomType.find(ct)
+          @school_hash[school.id][:classrooms][classroom_type.id] = classrooms.map{|cr| [cr.id, cr.name, cr.user_id]}
+        end
+      end
       if current_user.admin?
         classrooms = Classroom.all
         @classroom_types = ClassroomType.all
@@ -240,10 +236,23 @@ class UsersController < ApplicationController
       end
       if params.has_key? :classroom
         @current_classroom = Classroom.find(params[:classroom])
-        @current_classroom_type = @current_classroom.classroom_type
       else
         @current_classroom = classrooms.sample
-        @current_classroom_type = @current_classroom.classroom_type
+      end
+      @current_school = @current_classroom.school
+      if params.has_key? :school
+        @current_school = School.find(params[:school])
+        @current_classroom = @current_school.classrooms.sample
+      end
+      @current_classroom_type = @current_classroom.classroom_type
+
+      @classroom_hash = {}
+      @school_hash[@current_school.id][:classrooms].each do |ct_id, classrooms|
+        current_classrooms = classrooms
+        if current_user.teacher?
+          current_classrooms = current_classrooms.select{|cr| cr[2] == current_user.id}
+        end
+        @classroom_hash[ct_id] = current_classrooms
       end
     end
 end

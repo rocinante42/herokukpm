@@ -22,17 +22,17 @@ function initDropdownSelect(classroom_hash)
     var id = $(this).data('id');
     var classrooms = classroom_hash[id];
     $('.dropdown.select.classroom ul').html('');
-    if(classrooms.length)
+    if(typeof classrooms !== 'undefined' && classrooms.length)
     {
       $('.dropdown.select.classroom span.value').text(classrooms[0][1]);
       $('.dropdown.select.classroom input[type="hidden"]').val(classrooms[0][0]);
+      classrooms.forEach(function(el){
+        $('.dropdown.select.classroom ul').append('<li><a href="javascript:" data-id="' + el[0] + '">' + el[1] + '</a></li>');
+      });
     }
     else
     {
       $('.dropdown.select.classroom span.value').text('');
     }
-    classrooms.forEach(function(el){
-      $('.dropdown.select.classroom ul').append('<li><a href="javascript:" data-id="' + el[0] + '">' + el[1] + '</a></li>');
-    });
   });
 }
