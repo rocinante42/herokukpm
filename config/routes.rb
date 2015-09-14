@@ -94,5 +94,4 @@ Rails.application.routes.draw do
     resources :schools
     resources :classrooms
   end
->>>>>>> #67 :: part of API
 end
