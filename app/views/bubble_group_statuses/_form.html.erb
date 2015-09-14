@@ -1,41 +1,113 @@
-<%= form_for(@bubble_group_status) do |f| %>
-  <% if @bubble_group_status.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@bubble_group_status.errors.count, "error") %> prohibited this bubble_group_status from being saved:</h2>
+<%= render 'shared/section_title', title: @bubble_group_status.new_record? ? 'Create New Bubble Group Status' : 'Editing Bubble Group Status' %>
 
-      <ul>
-      <% @bubble_group_status.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="container kmSection">
+  <%= form_for(@bubble_group_status, html: {class: 'form-horizontal form-classic form-vpad'}) do |f| %>
+    <%= render 'shared/error_messages', object: @bubble_group_status %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+
+        <div class="form-group">
+          <%= f.label :kid_id, "Kid", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% kids = Kid.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble_group_status.kid ? @bubble_group_status.kid.full_name : kids.first.full_name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% kids.each do |kid| %>
+                  <li><a href="javascript:" data-id="<%= kid.id %>"><%= kid.full_name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :kid_id, value: @bubble_group_status.kid ? @bubble_group_status.kid.id : kids.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :bubble_group_id, "Bubble Group", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% bubble_groups = BubbleGroup.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble_group_status.bubble_group ? @bubble_group_status.bubble_group.name : bubble_groups.first.full_name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% bubble_groups.each do |group| %>
+                  <li><a href="javascript:" data-id="<%= group.id %>"><%= group.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :bubble_group_id, value: @bubble_group_status.bubble_group ? @bubble_group_status.bubble_group.id : bubble_groups.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :poset_id, "Poset", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% posets = Poset.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble_group_status.poset ? @bubble_group_status.poset.name : posets.first.full_name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% posets.each do |poset| %>
+                  <li><a href="javascript:" data-id="<%= poset.id %>"><%= poset.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :poset_id, value: @bubble_group_status.poset ? @bubble_group_status.poset.id : posets.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :active, "Active", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% statuses = BubbleGroupStatus::ACTIVE_SELECT_OPTIONS %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @bubble_group_status.active != nil ? @bubble_group_status.human_active_string : statuses.first[0] %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% statuses.each do |status, id| %>
+                  <li><a href="javascript:" data-id="<%= id %>"><%= status %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :active, value: @bubble_group_status.active != nil ? @bubble_group_status.active : statuses.first[1] %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :pass_counter, "Pass Counter", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :pass_counter, placeholder: 'Pass Counter', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :fail_counter, "Fail Counter", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :fail_counter, placeholder: 'Fail Counter', class: 'form-control' %>
+          </div>
+        </div>
+
+      </div>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :kid_id %><br>
-    <%= f.collection_select :kid_id, Kid.all, :id, :full_name, include_blank: true %>
-  </div>
-  <div class="field">
-    <%= f.label :bubble_group_id %><br>
-    <%= f.collection_select :bubble_group_id, BubbleGroup.all, :id, :name, include_blank: true %>
-  </div>
-  <div class="field">
-    <%= f.label :poset_id %><br>
-    <%= f.collection_select :poset_id, Poset.all, :id, :name, include_blank: true %>
-  </div>
-  <div class="field">
-    <%= f.label :active %>
-    <%= f.select :active, BubbleGroupStatus::ACTIVE_SELECT_OPTIONS, include_blank: false %>
-  </div>
-  <div class="field">
-    <%= f.label :pass_counter %><br>
-    <%= f.number_field :pass_counter %>
-  </div>
-  <div class="field">
-    <%= f.label :fail_counter %><br>
-    <%= f.number_field :fail_counter %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <div class="row text-center actions">
+      <%= link_to 'Back', bubble_group_statuses_path, class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <% if @bubble_group_status.new_record? %>
+        <%= f.submit 'Create Bubble Group Status', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= link_to 'Show', @bubble_group_status, class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Update Bubble Group Status', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% end %>
+    </div>
+
+  <% end %>
+</div>
