@@ -69,6 +69,10 @@ class Kid < ActiveRecord::Base
     }
   end
 
+  def recent_play_time
+    kid_activities.where(updated_at:[7.days.ago..Time.now]).map(&:total_time).inject(:+) || 0
+  end
+
   private
 
   def generate_access_token
