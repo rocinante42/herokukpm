@@ -27,6 +27,7 @@ class Ability
       can :read, BubbleStatus
       can :read, Bubble
       can :read, School
+      can :manage, Assignment
     elsif user.parent?
       can [:reports, :download_report], Kid do |kid|
         kid.parents.include? user
@@ -46,6 +47,7 @@ class Ability
       can :manage, User, User.teachers do |u|
         u.schools.where(id: user.school.id).any?
       end
+      can :manage, Assignment
     end
     unless user.parent?
       can [:dashboard, :dashboard_classroom, :activities], User
@@ -60,9 +62,6 @@ class Ability
       cannot :index, Bubble
       cannot :index, School
       cannot :index, Kid
-    end
-    unless user.parent?
-      can [:bulk_submit, :bulk_update], Assignment
     end
   end
 end
