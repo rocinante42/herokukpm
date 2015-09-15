@@ -72,6 +72,10 @@ class Kid < ActiveRecord::Base
   def recent_play_time
     kid_activities.where(updated_at:[7.days.ago..Time.now]).map(&:total_time).inject(:+) || 0
   end
+  
+  def available_bubble_groups
+    assignments.active.any? ? BubbleGroup.joins(:assignments).merge(assignments.active).uniq : classroom.bubble_groups
+  end
 
   private
 

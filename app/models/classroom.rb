@@ -6,6 +6,7 @@ class Classroom < ActiveRecord::Base
 
   has_many :kids, dependent: :destroy
   has_many :assignments
+  has_many :bubble_groups, through: :classroom_type
 
   def class_type
     classroom_type
