@@ -9,7 +9,7 @@
           <i class="fa fa-print"></i>
           <span> Print Report as PDF</span>
         <% end %>
-        <%= link_to 'Back to Classroom','javascript:', class: 'btn btn-warning btn-large btn-simple' unless current_user.parent? %>
+        <%= link_to 'Back to Classroom', dashboard_classroom_path(classroom:@kid.classroom.id), class: 'btn btn-warning btn-large btn-simple' unless current_user.parent? %>
       </div>
     </div>
   </div>
