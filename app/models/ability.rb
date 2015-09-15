@@ -41,8 +41,10 @@ class Ability
       end
       can :create, User
       can :manage, User do |u|
-        u.classrooms.joins(:school).where(schools: {id: user.school.id}).any? if u.teacher?
         (u.kids & user.school.students).any? if u.parent?
+      end
+      can :manage, User, User.teachers do |u|
+        u.schools.where(id: user.school.id).any?
       end
     end
     unless user.parent?
