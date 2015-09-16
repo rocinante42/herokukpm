@@ -210,7 +210,8 @@ class UsersController < ApplicationController
     end
 
     def set_available_classrooms
-      @teachers = User.teachers
+      @teachers = User.teachers.to_a
+      @teachers.unshift(OpenStruct.new(id: nil, full_name: 'Choose Teacher'))
       @school_hash = {}
       School.all.find_each do |school|
         @school_hash[school.id] = {
