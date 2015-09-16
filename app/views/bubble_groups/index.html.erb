@@ -1,27 +1,39 @@
-<h1>Bubble Groups</h1>
+<%= render 'shared/section_title', title: 'Bubble Groups' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center minimal">Name</th>
+          <th class="text-center">Description</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+        <tbody>
+        <% @bubble_groups.each do |bubble_group| %>
+          <tr>
+            <td class="text-center minimal text-main"><%= bubble_group.name %></td>
+            <td class="text-center text-main"><%= bubble_group.description %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble_group, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_group_path(bubble_group), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble_group, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <tbody>
-    <% @bubble_groups.each do |bubble_group| %>
-      <tr>
-        <td><%= bubble_group.name %></td>
-        <td><%= bubble_group.description %></td>
-        <td><%= link_to 'Show', bubble_group %></td>
-        <td><%= link_to 'Edit', edit_bubble_group_path(bubble_group) %></td>
-        <td><%= link_to 'Destroy', bubble_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Bubble Group', new_bubble_group_path %>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to new_bubble_group_path, class: 'btn btn-warning btn-simple btn-large' do %>
+        <i class="fa fa-plus"></i>
+        <span>New Bubble Group</span>
+      <% end %>
+    </div>
+  </div>
+</div>
