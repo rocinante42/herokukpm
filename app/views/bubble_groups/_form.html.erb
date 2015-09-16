@@ -1,72 +1,164 @@
-<%= form_for(@bubble_group) do |f| %>
-  <% if @bubble_group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@bubble_group.errors.count, "error") %> prohibited this bubble_group from being saved:</h2>
+<%= render 'shared/section_title', title: @bubble_group.new_record? ? 'Create New Bubble Group' : 'Editing Bubble Group' %>
 
-      <ul>
-      <% @bubble_group.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="container kmSection">
+  <%= form_for(@bubble_group, html: {class: 'form-horizontal form-classic form-vpad'}) do |f| %>
+    <%= render 'shared/error_messages', object: @bubble_group %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+          <%= f.label :name, "Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :name, placeholder: 'Name', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :description, "Description", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_area :description, placeholder: 'Description', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="kmSection">
+          <h3>Select from existing classroom types</h3>
+          <div class="form-group">
+            <%= f.label :classroom_type_ids, "Full Poset", class: "col-sm-4 control-label text-main" %>
+            <div class="col-sm-8">
+              <%= f.collection_select :classroom_type_ids, ClassroomType.all, :id, :type_name, {}, {multiple: true, class: 'form-control'} %>
+            </div>
+          </div>
+        </div>
+
+        <div class="kmSection">
+          <h3>Select from existing posets</h3>
+          <div class="form-group">
+            <%= f.label :full_poset_id, "Full Poset", class: "col-sm-4 control-label text-main" %>
+            <div class="col-sm-8">
+              <div class="dropdown select">
+                <% posets = Poset.all %>
+                <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value"><%= @bubble_group.full_poset ? @bubble_group.full_poset.name : posets.first.name %></span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <% posets.each do |poset| %>
+                    <li><a href="javascript:" data-id="<%= poset.id %>"><%= poset.name %></a></li>
+                  <% end %>
+                </ul>
+                <%= f.hidden_field :full_poset_id, value: @bubble_group.full_poset ? @bubble_group.full_poset.id : posets.first.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :forward_poset_id, "Forward Poset", class: "col-sm-4 control-label text-main" %>
+            <div class="col-sm-8">
+              <div class="dropdown select">
+                <% posets = Poset.all %>
+                <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value"><%= @bubble_group.forward_poset ? @bubble_group.forward_poset.name : posets.first.name %></span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <% posets.each do |poset| %>
+                    <li><a href="javascript:" data-id="<%= poset.id %>"><%= poset.name %></a></li>
+                  <% end %>
+                </ul>
+                <%= f.hidden_field :forward_poset_id, value: @bubble_group.forward_poset ? @bubble_group.forward_poset.id : posets.first.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :backward_poset_id, "Backward Poset", class: "col-sm-4 control-label text-main" %>
+            <div class="col-sm-8">
+              <div class="dropdown select">
+                <% posets = Poset.all %>
+                <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value"><%= @bubble_group.backward_poset ? @bubble_group.backward_poset.name : posets.first.name %></span>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right">
+                  <% posets.each do |poset| %>
+                    <li><a href="javascript:" data-id="<%= poset.id %>"><%= poset.name %></a></li>
+                  <% end %>
+                </ul>
+                <%= f.hidden_field :backward_poset_id, value: @bubble_group.backward_poset ? @bubble_group.backward_poset.id : posets.first.id %>
+              </div>
+            </div>
+          </div>
+
+          <div class="kmSection">
+            <h3>Upload New Information</h3>
+            <div class="form-group">
+              <%= f.label :bubble_file, "Upload Bubbles:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :bubble_game_file %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :full_poset_file, "Full Poset:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :full_poset_file %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :forward_poset_file, "Forward Poset:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :forward_poset_file %>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <%= f.label :backward_poset_file, "Backward Poset:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :backward_poset_file %>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="kmSection">
+            <h3>Upload Bubble Games</h3>
+            <div class="form-group">
+              <%= f.label :bubble_game_file, "Bubble Games:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :bubble_game_file %>
+              </div>
+            </div>
+          </div>
+
+          <div class="kmSection">
+            <h3>Upload Bubble Categories</h3>
+            <div class="form-group">
+              <%= f.label :bubble_category_file, "Bubble Categories:", class: "col-sm-4 control-label text-main" %>
+              <div class="col-sm-8">
+                <span class="form-alias"></span>
+                <%= f.file_field :bubble_category_file %>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
+
+    <div class="row text-center actions">
+      <%= link_to 'Back', bubble_groups_path, class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <% if @bubble_group.new_record? %>
+        <%= f.submit 'Create Bubble Group', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= link_to 'Show', @bubble_group, class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Update Bubble Group', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% end %>
+    </div>
+
   <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br>
-    <%= f.text_field :description %>
-  </div>
-  <h3>Select from existing classroom types</h3>
-  <div class="field">
-    <%= f.label :classroom_type_ids, "Classroom Types" %><br>
-    <%= f.collection_select :classroom_type_ids, ClassroomType.all, :id, :type_name, {}, {multiple: true} %>
-  </div>
-
-  <h3>Select from existing posets</h3>
-  <div class="field">
-    <%= f.label :full_poset_id %><br>
-    <%= f.collection_select :full_poset_id, Poset.all, :id, :name, include_blank: true %>
-  </div>
-  <div class="field">
-    <%= f.label :forward_poset_id %><br>
-    <%= f.collection_select :forward_poset_id, Poset.all, :id, :name, include_blank: true %>
-  </div>
-  <div class="field">
-    <%= f.label :backward_poset_id %><br>
-    <%= f.collection_select :backward_poset_id, Poset.all, :id, :name, include_blank: true %>
-  </div>
-
-  <h3>Upload New Information</h3>
-  <div class="field">
-    Upload Bubbles: <%= f.file_field :bubble_file %>
-  </div>
-
-  <div class="field">
-    Full Poset: <%= f.file_field :full_poset_file %>
-  </div>
-
-  <div class="field">
-    Forward Poset: <%= f.file_field :forward_poset_file %>
-  </div>
-
-  <div class="field">
-    Backward Poset: <%= f.file_field :backward_poset_file %>
-  </div>
-
-  <h3>Upload Bubble Games</h3>
-  <div class="field">
-    Bubble Games: <%= f.file_field :bubble_game_file %>
-  </div>
-
-  <h3>Upload Bubble Categories</h3>
-  <div class="field">
-    Bubble Categories: <%= f.file_field :bubble_category_file %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+</div>

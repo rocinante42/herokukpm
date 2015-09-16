@@ -1,49 +1,88 @@
-<p>
-  <strong>Name:</strong>
-  <%= @bubble_group.name %>
-</p>
+<%= render 'shared/section_title', title: 'Show Bubble Group' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Name:</span>
+            <h4 class="text-main"><%= @bubble_group.name %></h4>
+          </td>
+          <td>
+            <span class="font-large">Description:</span>
+            <h4><%= @bubble_group.description %></h4>
+          </td>
+        </tr>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Full poset:</span>
+            <h4>
+              <% if @bubble_group.full_poset %>
+                <%= link_to @bubble_group.full_poset.name, @bubble_group.full_poset %>
+              <% end %>
+            </h4>
+          </td>
+          <td>
+            <span class="font-large">Forward poset:</span>
+            <h4>
+              <% if @bubble_group.forward_poset %>
+                <%= link_to @bubble_group.forward_poset.name, @bubble_group.forward_poset %>
+              <% end %>
+            </h4>
+          </td>
+        </tr>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Backward poset:</span>
+            <h4>
+              <% if @bubble_group.backward_poset %>
+                <%= link_to @bubble_group.backward_poset.name, @bubble_group.backward_poset %>
+              <% end %>
+            </h4>
+          </td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<p>
-  <strong>Description:</strong>
-  <%= @bubble_group.description %>
-</p>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+        <tr>
+          <th class="text-center">Bubbles</th>
+          <th></th>
+        </tr>
+        </thead>
 
-<p>
-  <strong>Full poset:</strong>
-  <% if @bubble_group.full_poset %>
-    <%= link_to @bubble_group.full_poset.name, @bubble_group.full_poset %>
-  <% end %>
-</p>
-
-<p>
-  <strong>Forward poset:</strong>
-  <% if @bubble_group.forward_poset %>
-    <%= link_to @bubble_group.forward_poset.name, @bubble_group.forward_poset %>
-  <% end %>
-</p>
-
-<p>
-  <strong>Backward poset:</strong>
-  <% if @bubble_group.backward_poset %>
-    <%= link_to @bubble_group.backward_poset.name, @bubble_group.backward_poset %>
-  <% end %>
-</p>
-
-<table>
-  <tr>
-    <th>Bubbles</th>
-    <th colspan="3"></th>
-  </tr>
-  <% @bubble_group.bubbles.each do |bubble| %>
-    <tr>
-      <td><%= link_to bubble.name, bubble %></td>
-      <td><%= link_to 'Show', bubble %></td>
-      <td><%= link_to 'Edit', edit_bubble_path(bubble) %></td>
-      <td><%= link_to 'Destroy', bubble, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-    </tr>
-  <% end %>
-</table>
-
-<%= link_to 'Add Bubble', new_bubble_path(bubble_group_id: @bubble_group) %> |
-<%= link_to 'Edit', edit_bubble_group_path(@bubble_group) %> |
-<%= link_to 'Back', bubble_groups_path %>
+        <tbody>
+        <% @bubble_group.bubbles.each do |bubble| %>
+          <tr>
+            <td class="text-center"><%= link_to bubble.name, bubble %></td>
+            <td class="actions minimal">
+              <%= link_to 'View', bubble, class: 'btn btn-info btn-simple btn-narrow' %>
+              <%= link_to 'Edit', edit_bubble_path(bubble), class: 'btn btn-warning btn-simple btn-narrow' %>
+              <%= link_to 'Delete', bubble, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', bubble_groups_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_bubble_group_path(@bubble_group), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to new_bubble_path(bubble_group_id: @bubble_group), class: 'btn btn-warning btn-simple btn-large btn-narrow' do %>
+        <i class="fa fa-plus"></i>
+        <span>Add Bubble</span>
+      <% end %>
+    </div>
+  </div>
+</div>
