@@ -12,7 +12,6 @@ class User < ActiveRecord::Base
   has_many :kids, through: :family_relationships
   has_many :schools, through: :classrooms
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
-  #validates_presence_of :first_name, :last_name
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
   before_save :assign_role
@@ -32,19 +31,19 @@ class User < ActiveRecord::Base
   end
   
   def admin?
-    self.role.name == "Admin"
+    self.role.try(:name) == "Admin"
   end
 
   def teacher?
-    self.role.name == "Teacher"
+    self.role.try(:name) == "Teacher"
   end
 
   def parent?
-    self.role.name == "Parent"
+    self.role.try(:name) == "Parent"
   end
 
   def teacher_admin?
-    self.role.name == "Teacher Admin"
+    self.role.try(:name) == "Teacher Admin"
   end
 
   def welcome_email
