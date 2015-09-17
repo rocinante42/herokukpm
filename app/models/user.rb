@@ -8,15 +8,13 @@ class User < ActiveRecord::Base
   belongs_to :school
   has_one :classroom
   has_many :students, through: :classroom, source: :kids
-  has_many :schools, -> { uniq }, through: :classrooms
   has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
-  #has_many :schools, through: :classrooms
 
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
-  before_save :assign_role
+  before_save :assign_role, :set_school
   after_create :welcome_email
   after_save :welcome_email, :if => :email_changed?
 
@@ -50,5 +48,9 @@ class User < ActiveRecord::Base
 
   def welcome_email
     UserMailer.welcome_email(self).deliver
+  end
+
+  def set_school
+    self.school = self.classroom.try(:school)
   end
 end
