@@ -97,8 +97,6 @@ class UsersController < ApplicationController
     @classroom_types = ClassroomType.all
     if current_user.admin?
       @current_school = School.all.sample
-    elsif current_user.teacher?
-      @current_school = current_school
     else
       @current_school = current_user.school
     end
@@ -232,7 +230,7 @@ class UsersController < ApplicationController
         @classroom_types = ClassroomType.all
       else
         if current_user.teacher?
-          classrooms = Classroom.where(school: current_school, teacher: current_user)
+          classrooms = Classroom.where(school: current_user.school, teacher: current_user)
           @teachers = User.where(id: current_user.id)
         else
           classrooms = Classroom.where(school: current_user.school)

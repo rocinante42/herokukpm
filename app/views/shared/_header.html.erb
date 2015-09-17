@@ -13,22 +13,7 @@
           <div class="media">
             <div class="media-body media-left media-middle text-right">
               <h1>Welcome, <%= current_user.first_name %></h1>
-              <% if current_user.teacher? && action_name != "choose_school" %>
-                <div class="font-large">
-                  <span>School:</span>
-                  <div class="dropdown select">
-                    <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <span class="value"><%= current_school.name %></span>
-                      <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                      <% current_user.schools.each do |school| %>
-                        <li><%= link_to school.name, set_school_path(school_id: school.id) %></li>
-                      <% end %>
-                    </ul>
-                  </div>
-                </div>
-              <% elsif current_user.parent? && defined? @kid %>
+              <% if current_user.parent? && defined? @kid %>
                 <div class="font-large">
                   <span>Kid:</span>
                   <div class="dropdown select">

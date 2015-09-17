@@ -21,6 +21,11 @@ parent_role = Role.find_or_create_by({
   name: "Parent",
   description: "Has access to the kid’s reports only"
   })
+#////////////////////School///////////////////////////
+p "Creating School"
+school_1 = School.find_or_create_by({
+  name: "BestTeam"
+  })
 #/////////////////////Users//////////////////////////
 p "Creating Admin User"
 user_1 = User.new({
@@ -41,7 +46,8 @@ user_2 = User.new({
   email: "teacher@test.com",
   password: "password",
   password_confirmation: "password",
-  role: teacher_role
+  role: teacher_role,
+  school: school_1
    })
 user_2.save(validate:false)
 p "Creating Teacher User 1"
@@ -52,7 +58,8 @@ user_3 = User.new({
   email: "teacher1@test.com",
   password: "password",
   password_confirmation: "password",
-  role: teacher_role
+  role: teacher_role,
+  school: school_1
    })
 user_3.save(validate:false)
 p "Creating Parent User"
@@ -117,12 +124,6 @@ p "Creating Class Type First grade"
 type_2 = ClassroomType.find_or_create_by({
   type_name: "First grade",
   type_description:"Children with age from 6  to 8 years old"
-  })
-
-#////////////////////School///////////////////////////
-p "Creating School"
-school_1 = School.find_or_create_by({
-  name: "BestTeam"
   })
 
 p "Creating Teacher Administrator for School"
