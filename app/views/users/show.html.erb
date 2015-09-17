@@ -1,4 +1,67 @@
-<p id="notice"><%= notice %></p>
+<%= render 'shared/section_title', title: 'Show User' %>
 
-<%= link_to 'Edit', edit_users_admin_path(@user) %> |
-<%= link_to 'Back', users_admin_index_path %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3 form-classic form-horizontal">
+      <div class="form-group">
+        <%= label_tag :first_name, "First Name", class: "col-sm-4 control-label text-main" %>
+        <div class="col-sm-8">
+          <span class="form-control form-control-static"><%= @user.first_name %></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :name, "Last Name", class: "col-sm-4 control-label text-main" %>
+        <div class="col-sm-8">
+          <span class="form-control form-control-static"><%= @user.last_name %></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :name, "Direct Phone", class: "col-sm-4 control-label text-main" %>
+        <div class="col-sm-8">
+          <span class="form-control form-control-static"><%= @user.direct_phone %></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :name, "E-Mail", class: "col-sm-4 control-label text-main" %>
+        <div class="col-sm-8">
+          <span class="form-control form-control-static"><%= @user.email %></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag :name, "Type of User", class: "col-sm-4 control-label text-main" %>
+        <div class="col-sm-8">
+          <span class="form-control form-control-static"><%= @user.role.name %></span>
+        </div>
+      </div>
+
+      <% if @user.teacher? %>
+        <div class="form-group">
+          <%= label_tag :name, "Classroom", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <span class="form-control form-control-static"><%= @user.classroom.name %></span>
+          </div>
+        </div>
+      <% elsif @user.teacher_admin? %>
+        <div class="form-group">
+          <%= label_tag :name, "School", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <span class="form-control form-control-static"><%= @user.classroom.school.name %></span>
+          </div>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+
+  <div class="row actions text-center">
+    <div class="col-md-12">
+      <%= link_to 'Back', users_admin_index_path, class: 'btn btn-warning btn-simple btn-large btn-wide' %>
+      <%= link_to 'Edit', edit_users_admin_path(@user), class: 'btn btn-info btn-simple btn-large btn-wide' %>
+    </div>
+  </div>
+
+</div>

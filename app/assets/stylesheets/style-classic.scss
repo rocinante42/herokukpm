@@ -1,5 +1,7 @@
 .form-classic {
-  .form-control {border-radius:10px; border:solid 2px #c8c8c8; font-size:16px;}
+  .form-control {border-radius:10px; border:solid 2px #c8c8c8; font-size:16px;
+    &.form-control-static {border-top-color:transparent; border-right-color:transparent; border-left-color:transparent; border-radius:0; box-shadow:none;}
+  }
   label.control-label {padding-top:3px; font-size:20px; font-weight:200; text-align:left;}
   .dropdown {display:block;
     > .dropdown-toggle {color:$color-main;}
