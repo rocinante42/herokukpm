@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_available_classrooms, only: [:activities, :dashboard_classroom]
-  before_action :set_available_roles, only: [:new, :edit]
+  before_action :set_available_data, only: [:new, :edit]
   load_and_authorize_resource
 
   # GET /users
@@ -210,7 +210,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :direct_phone, :role_id, :classroom_id)
+      params.require(:user).permit(:first_name, :last_name, :email, :direct_phone, :role_id, :classroom_id, :school_id)
     end
 
     def set_available_classrooms
@@ -260,8 +260,10 @@ class UsersController < ApplicationController
       end
     end
 
-    def set_available_roles
+    def set_available_data
       @roles = Role.all.to_a
       @roles.unshift(OpenStruct.new(id:nil, name: 'Choose Type'))
+      @schools = School.all.to_a
+      @schools.unshift(OpenStruct.new(id:nil, name: 'Choose School'))
     end
 end
