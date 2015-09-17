@@ -65,7 +65,7 @@
           <td class="text-left minimal">
             <div class="dropdown simple medium select">
               <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @current_classroom.teacher.full_name %></span>
+                <span class="value"><%= @current_classroom.teacher.try(:full_name) || @teachers.first.full_name %></span>
                 <span class="caret"></span>
               </a>
               <div class="dropdown-wrap dropdown-menu-right">
@@ -73,8 +73,9 @@
                   <% @teachers.each do |teacher| %>
                     <div>
                       <li><%= link_to teacher.full_name, 'javascript:', class: 'changeTeacher' %></li>
-                        <%= form_for @current_classroom, remote: true do |f| %>
+                        <%= form_for @current_classroom do |f| %>
                           <%= f.hidden_field :user_id, value: teacher.id %>
+                          <%= hidden_field_tag :url, dashboard_classroom_path(classroom: @current_classroom) %>
                         <% end %>
                     </div>
                   <% end %>
@@ -88,11 +89,11 @@
               </div>
             </div>
           </td>
-          <% if can? :edit, @current_classroom.teacher %>
-            <td class="minimal">
+          <td class="minimal">
+            <% if @current_classroom.teacher && (can? :edit, @current_classroom.teacher) %>
               <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher), class: 'btn btn-warning btn-simple' %>
-            </td>
-          <% end %>
+            <% end %>
+          </td>
         <% end %>
         <td>
           <span class="text-main font-large"><%= @current_classroom.kids.count %></span>

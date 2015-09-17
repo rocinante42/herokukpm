@@ -57,11 +57,12 @@ class ClassroomsController < ApplicationController
   def update
     respond_to do |format|
       if @classroom.update(classroom_params)
-        format.html { redirect_to @classroom, notice: 'Classroom was successfully updated.' }
+        format.html { redirect_to params[:url] || @classroom, notice: 'Classroom was successfully updated.' }
         format.js{render nothing: true}
         format.json { render :show, status: :ok, location: @classroom }
       else
         format.html { render :edit }
+        format.js{render nothing: true}
         format.json { render json: @classroom.errors, status: :unprocessable_entity }
       end
     end
