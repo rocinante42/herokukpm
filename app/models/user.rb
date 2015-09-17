@@ -1,16 +1,18 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+  attr_accessor :classroom_id
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :role
   belongs_to :school
-  has_many :classrooms
-  has_many :students, through: :classrooms, source: :kids
+  has_one :classroom
+  has_many :students, through: :classroom, source: :kids
   has_many :schools, -> { uniq }, through: :classrooms
   has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
-  has_many :schools, through: :classrooms
+  #has_many :schools, through: :classrooms
+
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 

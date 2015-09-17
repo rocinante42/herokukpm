@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_available_classrooms, only: [:activities, :dashboard_classroom]
+  before_action :set_available_data, only: [:new, :edit]
   load_and_authorize_resource
 
   # GET /users
@@ -18,7 +19,8 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
-    @user.build_role(name: 'Teacher')
+    @user.role = Role.find_by(name: params[:role])
+    @user.classroom = Classroom.find_by(id:params[:classroom])
   end
 
   # GET /users/1/edit
@@ -29,12 +31,12 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
+    @user.classroom = Classroom.find_by(id:user_params[:classroom_id])
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_admin_path(@user), notice: 'User was successfully created.' }
+        format.html { redirect_to dashboard_path, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
-        @user.build_role(name: 'Teacher')
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -44,9 +46,11 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    @user.assign_attributes(user_params)
+    @user.classroom = Classroom.find_by(id:user_params[:classroom_id])
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to users_admin_path(@user), notice: 'User was successfully updated.' }
+      if @user.save
+        format.html { redirect_to dashboard_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }
@@ -206,7 +210,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :direct_phone, :role_id)
+      params.require(:user).permit(:first_name, :last_name, :email, :direct_phone, :role_id, :classroom_id, :school_id)
     end
 
     def set_available_classrooms
@@ -255,5 +259,12 @@ class UsersController < ApplicationController
         end
         @classroom_hash[ct_id] = current_classrooms
       end
+    end
+
+    def set_available_data
+      @roles = Role.all.to_a
+      @roles.unshift(OpenStruct.new(id:nil, name: 'Choose Type'))
+      @schools = School.all.to_a
+      @schools.unshift(OpenStruct.new(id:nil, name: 'Choose School'))
     end
 end
