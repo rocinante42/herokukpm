@@ -1,48 +1,76 @@
-<p>
-  <strong>Name:</strong>
-  <%= @classroom.name %>
-</p>
-
-<p>
-  <strong>School:</strong>
-  <%= link_to @classroom.school.name, @classroom.school if @classroom.school %>
-</p>
-
-<p>
-  <strong>Teacher:</strong>
-  <%= @classroom.teacher.full_name if @classroom.teacher %>
-</p>
-
-<p>
-  <strong>Type:</strong>
-  <%= @classroom.class_type.type_name if @classroom.class_type %>
-</p>
-
-<%= form_tag activate_classroom_path(@classroom) do %>
-  <table>
-    <tr>
-      <th>Kid</th>
-      <% @bubble_groups.each do |bubble_group| %>
-        <th><%= link_to bubble_group.name, bubble_group %></th>
-      <% end %>
-    </tr>
-    <% @classroom.kids.each do |kid| %>
-      <tr>
-        <td><%= link_to kid.full_name, kid %></td>
-        <% @bubble_groups.each do |bubble_group| %>
+<%= render 'shared/section_title', title: 'Show Classroom' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
           <td>
-            <% status = kid.bubble_group_statuses.find_by(bubble_group: bubble_group) %>
-            <% if status %>
-              <%= select_tag "active[#{status.id}]", options_for_select(BubbleGroupStatus::ACTIVE_SELECT_OPTIONS, status.active) %>
-            <% end %>
+            <span class="font-large">Name:</span>
+            <h4 class="text-main"><%= @classroom.name %></h4>
           </td>
-        <% end %>
-      </tr>
-    <% end %>
-  </table>
-  <%= submit_tag "Save" %>
-<% end %>
-<br>
+          <td>
+            <span class="font-large">School:</span>
+            <h4><%= link_to @classroom.school.name, @classroom.school if @classroom.school %></h4>
+          </td>
+        </tr>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Teacher:</span>
+            <h4 class="text-main"><%= @classroom.teacher.full_name if @classroom.teacher %></h4>
+          </td>
+          <td>
+            <span class="font-large">Type:</span>
+            <h4 class="text-main"><%= @classroom.class_type.type_name if @classroom.class_type %></h4>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
-<%= link_to 'Edit', edit_classroom_path(@classroom) %> |
-<%= link_to 'Back', classrooms_path %>
+<div class="container kmSection">
+  <%= form_tag activate_classroom_path(@classroom) do %>
+    <div class="row">
+      <div class="col-md-12">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Kid</th>
+            <% @bubble_groups.each do |bubble_group| %>
+              <th class="text-center">
+                <span><%= bubble_group.acronym %></span>
+                <i class="fa fa-question-circle text-info v-top" data-toggle="tooltip" title="<%= bubble_group.name %>"></i>
+              </th>
+            <% end %>
+          </tr>
+          </thead>
+          <tbody>
+          <% @classroom.kids.each do |kid| %>
+            <tr>
+              <td><%= link_to kid.full_name, kid %></td>
+              <% @bubble_groups.each do |bubble_group| %>
+                <td class="text-center">
+                  <% status = kid.bubble_group_statuses.find_by(bubble_group: bubble_group) %>
+                  <% if status %>
+                    <%= select_tag "active[#{status.id}]", options_for_select(BubbleGroupStatus::ACTIVE_SELECT_OPTIONS, status.active) %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row actions text-right">
+      <div class="col-md-12">
+        <%= link_to 'Back', classrooms_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+        <%= link_to 'Edit', edit_classroom_path(@classroom), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+        <%= submit_tag "Save", class: 'btn btn-info btn-simple btn-large btn-narrow' %>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,37 +1,86 @@
-<%= form_for(@classroom) do |f| %>
-  <% if @classroom.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@classroom.errors.count, "error") %> prohibited this classroom from being saved:</h2>
+<%= render 'shared/section_title', title: @classroom.new_record? ? 'Create New Classroom' : 'Editing Classroom' %>
 
-      <ul>
-      <% @classroom.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+<div class="container kmSection">
+  <%= form_for(@classroom, html: {class: 'form-horizontal form-classic form-vpad'}) do |f| %>
+    <%= render 'shared/error_messages', object: @classroom %>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+          <%= f.label :name, "Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :name, placeholder: 'Name', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :school_id, "School", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% schools = School.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @classroom.school ? @classroom.school.name : schools.first.name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% schools.each do |school| %>
+                  <li><a href="javascript:" data-id="<%= school.id %>"><%= school.name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :school_id, value: @classroom.school ? @classroom.school.id : schools.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :user_id, "Teacher", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% teachers = User.teachers %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @classroom.teacher ? @classroom.teacher.full_name : teachers.first.full_name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% teachers.each do |teacher| %>
+                  <li><a href="javascript:" data-id="<%= teacher.id %>"><%= teacher.full_name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :user_id, value: @classroom.teacher ? @classroom.teacher.id : teachers.first.id %>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :classroom_type_id, "Classroom Type", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <div class="dropdown select">
+              <% classrooms = ClassroomType.all %>
+              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span class="value"><%= @classroom.class_type ? @classroom.class_type.type_name : classrooms.first.type_name %></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <% classrooms.each do |classroom| %>
+                  <li><a href="javascript:" data-id="<%= classroom.id %>"><%= classroom.type_name %></a></li>
+                <% end %>
+              </ul>
+              <%= f.hidden_field :classroom_type_id, value: @classroom.class_type ? @classroom.class_type.id : classrooms.first.id %>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :school %><br>
-    <%= f.collection_select :school_id, School.all, :id, :name %>
-  </div>
-  <div class="field">
-    <%= f.label "Teacher" %><br>
-    <%if current_user.admin? %>
-    <%= f.collection_select :user_id, User.teachers, :id, :full_name, include_blank: true %>
-    <%else%>
-    <%= f.collection_select :user_id, User.teachers, :id, :full_name, { selected: current_user.id } %>
-    <% end %>
-  </div>
-  <div class="field">
-    <%= f.label "Classroom type" %><br>
-    <%= f.collection_select :classroom_type_id, ClassroomType.all, :id, :type_name%>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+    <div class="row text-center actions">
+      <%= link_to 'Back', classrooms_path, class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <% if @classroom.new_record? %>
+        <%= f.submit 'Create Classroom', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= link_to 'Show', @classroom, class: 'btn btn-warning btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Update Classroom', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% end %>
+    </div>
+
+  <% end %>
+</div>
