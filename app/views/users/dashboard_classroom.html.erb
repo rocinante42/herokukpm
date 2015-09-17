@@ -80,7 +80,7 @@
                   <% end %>
                 </ul>
                   <div class="dropdown-action">
-                    <%= link_to new_users_admin_path, class:'btn', onclick: "window.location.href = $(this).attr('href');" do %>
+                    <%= link_to new_users_admin_path(classroom:@current_classroom, role: 'Teacher'), class:'btn', onclick: "window.location.href = $(this).attr('href');" do %>
                       <i class="fa fa-plus"></i>
                       <span>Add Teacher</span>
                     <% end %>

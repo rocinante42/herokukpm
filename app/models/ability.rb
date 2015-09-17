@@ -45,7 +45,8 @@ class Ability
         (u.kids & user.school.students).any? if u.parent?
       end
       can :manage, User, User.teachers do |u|
-        u.schools.where(id: user.school.id).any?
+        u.school == user.school
+        #u.schools.where(id: user.school.id).any?
       end
       can :manage, Assignment
     end
