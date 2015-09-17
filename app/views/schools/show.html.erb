@@ -1,7 +1,43 @@
-<p>
-  <strong>Name:</strong>
-  <%= @school.name %>
-</p>
+<%= render 'shared/section_title', title: 'Show School' %>
+<div class="container kmSection">
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tbody>
+        <tr class="no-border-top">
+          <td>
+            <span class="font-large">Name:</span>
+            <h4 class="text-main"><%= @school.name %></h4>
+          </td>
+          <td>
+            <table class="table">
+              <thead>
+              <tr>
+                <th class="text-center minimal">Classroom Name</th>
+                <th class="text-center">Total Students</th>
+              </tr>
+              </thead>
 
-<%= link_to 'Edit', edit_school_path(@school) %> |
-<%= link_to 'Back', schools_path %>
+              <tbody>
+              <% @school.classrooms.each do |classroom| %>
+                <tr>
+                  <td class="text-center minimal"><%= link_to classroom.name, classroom %></td>
+                  <td class="text-center text-main"><%= classroom.kids.count %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row actions text-right">
+    <div class="col-md-12">
+      <%= link_to 'Back', schools_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+      <%= link_to 'Edit', edit_school_path(@school), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
+    </div>
+  </div>
+</div>
