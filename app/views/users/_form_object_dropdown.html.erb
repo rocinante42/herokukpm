@@ -2,7 +2,7 @@
 <div class="form-group <%= type.to_s %> <%= @user.new_record? && !object && type != :role ? 'hidden' : '' %>">
   <%= f.label "#{type}_id", type.to_s.capitalize,class: "col-sm-4 control-label text-main" %>
   <%= f.hidden_field "#{type}_id", value: object.try(:id) %>
-  <% if @user.new_record? && object %>
+  <% if @user.new_record? && object || (object && object.is_a?(Role) && params[:edit_role] == 'false') %>
     <div class="col-sm-8">
       <label class="col-sm-4 control-label text-main accessToken"><%= object.name %></label>
     </div>
