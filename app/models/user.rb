@@ -51,6 +51,6 @@ class User < ActiveRecord::Base
   end
 
   def set_school
-    self.school = self.classroom.try(:school)
+    self.school = self.classroom.school if self.classroom
   end
 end
