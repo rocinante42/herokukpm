@@ -91,7 +91,7 @@
           </td>
           <td class="minimal">
             <% if @current_classroom.teacher && (can? :edit, @current_classroom.teacher) %>
-              <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher), class: 'btn btn-warning btn-simple' %>
+              <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher, edit_role: false), class: 'btn btn-warning btn-simple' %>
             <% end %>
           </td>
         <% end %>
