@@ -7,9 +7,9 @@ class User < ActiveRecord::Base
   belongs_to :role
   belongs_to :school
   has_one :classroom
-  has_many :students, through: :classroom, source: :kids
   has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
+  delegate :students, to: :classroom
 
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
