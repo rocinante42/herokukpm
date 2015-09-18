@@ -48,7 +48,7 @@ function initUserDropdownSelect()
       $('.form-group.classroom').toggleClass('hidden', roleName !== 'Teacher');
       if(roleName !== 'Teacher')
       {
-        ('#updateClassrooms #school_id').val('');
+        $('#updateClassrooms #school_id').val('');
         $('#updateClassrooms').submit();
       }
     }
