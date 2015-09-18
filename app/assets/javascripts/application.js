@@ -36,3 +36,32 @@ function initDropdownSelect(classroom_hash)
     }
   });
 }
+
+function initUserDropdownSelect()
+{
+  $('.dropdown.select ul > li > a').off('click').on('click', function(){
+    var id = $(this).data('id');
+    if($(this).closest('.form-group').hasClass('role'))
+    {
+      var roleName = $(this).text();
+      $('.form-group.school').toggleClass('hidden', roleName.indexOf('Teacher') == -1);
+      $('.form-group.classroom').toggleClass('hidden', roleName !== 'Teacher');
+      if(roleName !== 'Teacher')
+      {
+        $('#updateClassrooms #school_id').val('');
+        $('#updateClassrooms').submit();
+      }
+    }
+    if($(this).closest('.form-group').hasClass('school'))
+    {
+      var roleName = $('.form-group.role .dropdown.select span.value').text();
+      $('#updateClassrooms #school_id').val(id);
+      if(roleName === 'Teacher')
+      {
+        $('#updateClassrooms').submit();
+      }
+    }
+    $(this).closest('.form-group').find('input[type="hidden"]').val(id);
+  });
+}
+

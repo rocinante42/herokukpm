@@ -1,0 +1,16 @@
+<% object = @user.send(type) %>
+<div class="form-group <%= type.to_s %> <%= @user.new_record? && !object && type != :role ? 'hidden' : '' %>">
+  <%= f.label "#{type}_id", type.to_s.capitalize,class: "col-sm-4 control-label text-main" %>
+  <%= f.hidden_field "#{type}_id", value: object.try(:id) %>
+  <% if @user.new_record? && object %>
+    <div class="col-sm-8">
+      <label class="col-sm-4 control-label text-main accessToken"><%= object.name %></label>
+    </div>
+  <% else %>
+    <div class="col-sm-8">
+      <div class="dropdown select <%= type.to_s %>">
+        <%= render 'dropdown', object: object, options:options %>
+      </div>
+    </div>
+  <% end %>
+</div>

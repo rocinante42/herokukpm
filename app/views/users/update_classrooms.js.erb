@@ -1,0 +1,10 @@
+$('.dropdown.select.classroom').html("<%= j render 'dropdown', object: nil, options:@classrooms %>");
+$('input#user_classroom_id').val('');
+<% unless @school %>
+  $('input#user_school_id').val('');
+  $('.dropdown.select.school span.value').text('Choose School');
+<% end %>
+$('.dropdown.select.classroom ul > li > a').off('click').on('click', function(){
+  var id = $(this).data('id');
+  $(this).closest('.form-group').find('input[type="hidden"]').val(id);
+});

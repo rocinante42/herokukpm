@@ -1,0 +1,9 @@
+<a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+  <span class="value"><%= object.try(:name) || options.first.name %></span>
+  <span class="caret"></span>
+</a>
+<ul class="dropdown-menu dropdown-menu-right">
+  <% options.each do |option| %>
+    <li><a href="javascript:" data-id="<%= option.id %>"><%= option.name %></a></li>
+  <% end %>
+</ul>

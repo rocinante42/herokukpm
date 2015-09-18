@@ -14,7 +14,6 @@
 
 <div class="container">
   <%= form_for @user, url: @user.new_record? ? users_admin_index_path : users_admin_path, html: {class: 'form-horizontal form-classic form-vpad'} do |f| %>
-    <%= f.hidden_field :classroom_id, value: @user.classroom.try(:id) %>
     <%= render 'shared/error_messages', :object => @user %>
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
@@ -42,52 +41,9 @@
             <%= f.text_field :email, placeholder: 'Email', class: 'form-control' %>
           </div>
         </div>
-        <div class="form-group role">
-          <%= f.label :role_id, 'Type of User',class: "col-sm-4 control-label text-main" %>
-          <%= f.hidden_field :role_id, id: 'roleField', value: @user.role.try(:id) %>
-          <% if @user.new_record? && @user.role %>
-            <div class="col-sm-8">
-              <label class="col-sm-4 control-label text-main accessToken"><%= @user.role.name %></label>
-            </div>
-          <% else %>
-            <div class="col-sm-8">
-              <div class="dropdown select role">
-                <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <span class="value"><%= @user.role.try(:name) || @roles.first.name %></span>
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <% @roles.each do |role| %>
-                    <li><a href="javascript:" data-id="<%= role.id %>" data-name="<%= role.name %>"><%= role.name %></a></li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-          <% end %>
-        </div>
-        <div class="form-group school <%= @user.new_record? && !@user.school ? 'hidden' : '' %>">
-          <%= f.label :school_id, 'School',class: "col-sm-4 control-label text-main" %>
-          <%= f.hidden_field :school_id, id: 'schoolField', value: @user.school.try(:id) %>
-          <% if @user.new_record? && @user.school %>
-            <div class="col-sm-8">
-              <label class="col-sm-4 control-label text-main accessToken"><%= @user.school.name %></label>
-            </div>
-          <% else %>
-            <div class="col-sm-8">
-              <div class="dropdown select school">
-                <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <span class="value"><%= @user.school.try(:name) || @schools.first.name %></span>
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <% @schools.each do |school| %>
-                    <li><a href="javascript:" data-id="<%= school.id %>"><%= school.name %></a></li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-          <% end %>
-        </div>
+        <%= render 'form_object_dropdown', f: f, type: :role, options: @roles %>
+        <%= render 'form_object_dropdown', f: f, type: :school, options: @schools %>
+        <%= render 'form_object_dropdown', f: f, type: :classroom, options: @classrooms %>
       </div>
     </div>
     <div class="row text-center actions">
@@ -103,17 +59,13 @@
     </div>
   <% end %>
 
+<%= form_tag update_classrooms_path, method: :get, remote: true, id: 'updateClassrooms' do %>
+  <%= hidden_field_tag :school_id, @user.school.try(:id) %>
+<% end %>
+
 <script>
   $(document).ready(function(){
-    $('.dropdown.select ul > li > a').click(function(){
-      var id = $(this).data('id');
-      if($(this).closest('.form-group').hasClass('role'))
-      {
-        var roleName = $(this).data('name');
-        $('.form-group.school').toggleClass('hidden', roleName.indexOf('Teacher') == -1, 3000);
-      }
-      $(this).closest('.form-group').find('input[type="hidden"]').val(id);
-    });
+    initUserDropdownSelect();
   });
 </script>
 <!-- END convert this to plugin and add to ujs.js when issue-52 is merged to master -->

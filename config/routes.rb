@@ -49,12 +49,7 @@ Rails.application.routes.draw do
 
   resources :bubbles
 
-  resources :users_admin, controller: 'users' do
-    collection do
-     # get :dashboard
-     # get :dashboard_admin
-    end
-  end
+  resources :users_admin, controller: 'users'
 
 
   resources :assignments do
@@ -72,6 +67,7 @@ Rails.application.routes.draw do
   get 'teacher_mode' => 'users#teacher_mode'
   get 'dashboard_admin' => 'users#dashboard_admin'
   get 'dashboard_classroom' => 'users#dashboard_classroom'
+  get 'update_classrooms' => 'users#update_classrooms'
 
   namespace :api do
     resources :kids do
