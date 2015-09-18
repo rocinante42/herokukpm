@@ -104,7 +104,10 @@
 <script>
   $(document).ready(function(){
     $('#classroomTypeTab li a').click(function(){
-      $('.row.kmSection.classRooms').toggleClass('hidden');
+      var type = $(this).attr('class');
+      $('.row.kmSection.classRooms').each(function(){
+        $(this).toggleClass('hidden', !$(this).hasClass(type));
+      });
     });
   });
 </script>

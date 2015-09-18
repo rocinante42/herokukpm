@@ -3,7 +3,7 @@
     <div class="col-md-8 col-md-offset-2">
       <ul class="nav nav-pills simple bordered nav-justified font-xlarge" id="classroomTypeTab">
         <% @total_hash.keys.each do |ct_name| %>
-          <li role="presentation" class="<%= @bottom_current_classroom_type.type_name == ct_name ? 'active' : '' %>"><a href="#<%= ct_name.downcase.tr(' ', '_') %>" data-toggle="pill"><%= ct_name%></a>
+          <li role="presentation" class="<%= @bottom_current_classroom_type.type_name == ct_name ? 'active' : '' %>"><a href="#<%= ct_name.downcase.tr(' ', '_') %>" data-toggle="pill" class="<%= ct_name.downcase.tr(' ', '_') %>"><%= ct_name%></a>
           </li>
         <% end %>
       </ul>
@@ -11,7 +11,7 @@
   </div>
 
   <% @total_hash.each do |ct_name, ct_item| %>
-    <div class="row kmSection classRooms classRoomDropdown text-center <%= @bottom_current_classroom_type.type_name != ct_name ? 'hidden' : '' %>">
+    <div class="row <%= ct_name.downcase.tr(' ', '_') %> kmSection classRooms classRoomDropdown text-center <%= @bottom_current_classroom_type.type_name != ct_name ? 'hidden' : '' %>">
       <div class="dropdown simple">
         <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
           <span><%= @bottom_current_classroom_type.type_name == ct_name ? @bottom_current_classroom.name : ct_item[:classrooms].values[0][:classroom][:name] %></span>
