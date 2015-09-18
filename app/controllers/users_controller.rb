@@ -104,7 +104,7 @@ class UsersController < ApplicationController
       @current_classroom = Classroom.find(params[:classroom])
       @current_school = @current_classroom.school
     else
-      @current_classroom = @current_school.classrooms.sample
+      @current_classroom = current_user.teacher? ? current_user.classroom : @current_school.classrooms.sample
     end
     if params.has_key? :school
       @current_school = School.find(params[:school])
@@ -144,7 +144,8 @@ class UsersController < ApplicationController
       @bottom_current_classroom = @current_classroom
     end
     @total_hash = {}
-    @current_school.classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
+    classrooms = current_user.teacher? ? [current_user.classroom] : @current_school.classrooms
+    classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
       ct = ClassroomType.find(ct_id)
       ct_name = ct.type_name
       @total_hash[ct_name] = {
