@@ -44,3 +44,5 @@
 .btn-danger {background:$color-brand-fade;}
 
 .dropdown-menu {max-height:160px; overflow:auto;}
+
+.nav-pills.simple.bordered > li:only-child > a{border-radius: 26px;}

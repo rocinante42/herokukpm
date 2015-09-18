@@ -15,13 +15,17 @@
       <div class="dropdown simple">
         <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
           <span><%= @bottom_current_classroom_type.type_name == ct_name ? @bottom_current_classroom.name : ct_item[:classrooms].values[0][:classroom][:name] %></span>
-          <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-right">
-          <% ct_item[:classrooms].each do |_, cr_item| %>
-            <li><%= link_to cr_item[:classroom][:name], dashboard_path(current_cr: cr_item[:classroom]), remote: true %></li>
+          <% unless current_user.teacher? %>
+            <span class="caret"></span>
           <% end %>
-        </ul>
+        </a>
+        <% unless current_user.teacher? %>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <% ct_item[:classrooms].each do |_, cr_item| %>
+              <li><%= link_to cr_item[:classroom][:name], dashboard_path(current_cr: cr_item[:classroom]), remote: true %></li>
+            <% end %>
+          </ul>
+        <% end %>
       </div>
     </div>
   <% end %>
