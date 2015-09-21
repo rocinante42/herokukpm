@@ -37,7 +37,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def single_track_activity
-    kid_activities.last.touch if (inactive?) && kid_activities.any?
+    kid_activities.last.touch if (inactive? || none?) && kid_activities.any?
     kid_activities.create if active?
   end
 
