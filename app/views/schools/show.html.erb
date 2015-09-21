@@ -22,7 +22,7 @@
               <% @school.classrooms.each do |classroom| %>
                 <tr>
                   <td class="text-center minimal"><%= link_to classroom.name, classroom %></td>
-                  <td class="text-center text-main"><%= classroom.kids.count %></td>
+                  <td class="text-center text-main"><%= classroom.students.count %></td>
                 </tr>
               <% end %>
               </tbody>

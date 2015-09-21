@@ -84,7 +84,7 @@ class UsersController < ApplicationController
       @total_assignments_hash[bg.id] = {}
       @total_assignments_hash[bg.id][:bubble_group] = bg
       @total_assignments_hash[bg.id][:global_assignment] = assignment
-      @current_classroom.kids.each do |kid|
+      @current_classroom.students.each do |kid|
         assignment = kid.assignments.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
         assignment.status = Assignment::NONE if assignment.new_record?
         @total_assignments_hash[bg.id][:kid_assignments] ||= {}
@@ -117,7 +117,7 @@ class UsersController < ApplicationController
     end
 
     @time_intervals_and_kids = []
-    kids = @current_classroom.kids.includes(:kid_activities)
+    kids = @current_classroom.students.includes(:kid_activities)
     if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id)}).any?
       kids_time = kids.map(&:recent_play_time)
       max_time = kids_time.max{|a,b| a <=> b }
@@ -164,8 +164,8 @@ class UsersController < ApplicationController
           @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
           @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
           bg.bubble_categories.sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
-            total_count = category.bubbles.count * cr.kids.count
-            passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:cr.kids.pluck(:id)}).count.to_f
+            total_count = category.bubbles.count * cr.students.count
+            passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:cr.students.pluck(:id)}).count.to_f
             @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
               passed: passed_count / total_count * 100
             }

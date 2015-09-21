@@ -60,7 +60,7 @@ class Assignment < ActiveRecord::Base
   end
 
   def create_sub_assignments
-    classroom.kids.each do |kid|
+    classroom.students.each do |kid|
       assignment = sub_assignments.where(bubble_group: bubble_group, kid:kid, classroom: classroom).first_or_initialize
       if assignment.new_record?
         assignment.status = ACTIVE

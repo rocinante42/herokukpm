@@ -22,7 +22,7 @@ class KidsController < ApplicationController
     @schools.each do |school|
       @classroom_hash[school.id] = school.classrooms.pluck(:id, :name)
     end
-    @kids = @current_classroom.kids.paginate(page: @page, per_page: 10)
+    @kids = @current_classroom.students.paginate(page: @page, per_page: 10)
   end
 
   # GET /kids/1
