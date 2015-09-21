@@ -47,7 +47,7 @@
           </tr>
           </thead>
           <tbody>
-          <% @classroom.kids.each do |kid| %>
+          <% @classroom.students.each do |kid| %>
             <tr>
               <td><%= link_to kid.full_name, kid %></td>
               <% @bubble_groups.each do |bubble_group| %>
