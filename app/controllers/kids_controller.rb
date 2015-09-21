@@ -256,7 +256,7 @@ class KidsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def kid_params
-      params.require(:kid).permit(:login_id, :classroom_id, :school_id, :first_name, :last_name, :gender, :age, :primary_language, :access_token, family_relationships_attributes:[:id, parent_attributes:[:id, :email, :password, :role_id]])
+      params.require(:kid).permit(:login_id, :classroom_id, :school_id, :first_name, :last_name, :gender, :age, :primary_language, :access_token, family_relationships_attributes:[:id, parent_attributes:[:id, :email, :first_name, :last_name, :password, :role_id]])
     end
 
     def prepare_reports_data

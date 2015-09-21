@@ -139,7 +139,7 @@
     var location = parseInt(<%= @first_new_parent %>);
     $(document).on('click', 'a.add-template', function(){
       var el = $(this);
-      $('#parents .form-group.template-body').eq(location).removeClass('hidden');
+      $('#parents .template-body').eq(location).removeClass('hidden');
       location++;
     });
 
