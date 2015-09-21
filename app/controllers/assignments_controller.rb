@@ -39,11 +39,13 @@ class AssignmentsController < ApplicationController
 
   def bulk_submit
     classroom = Classroom.find(params[:classroom_id])
-    BubbleGroup.all.find_each do |bg|
-      next unless classroom.classroom_type.bubble_groups.include? bg
+    bubble_groups = params[:all] ? classroom.bubble_groups : classroom.bubble_groups.where(id: params[:bubble_groups])
+    time_limits = params[:all] ? Array.new(bubble_groups.count, params[:time_limit]) : params[:time_limit]
+    bubble_groups.each_with_index do |bg, index|
+      next if time_limits[index].blank?
       assignment = Assignment.where(bubble_group:bg, classroom:classroom).first_or_initialize
       assignment.status = Assignment::ACTIVE
-      assignment.time_limit = params[:time_limit]
+      assignment.time_limit = time_limits[index]
       assignment.save!
     end
     redirect_to :back

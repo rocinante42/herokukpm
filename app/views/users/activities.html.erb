@@ -40,7 +40,7 @@
             <td>
               <div class="dropdown simple medium select timeLimit">
                 <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <span class="value">2 hours</span>
+                  <span class="value"><%= @time_options.first[0] %></span>
                   <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
@@ -51,12 +51,21 @@
                 <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
               </div>
             </td>
+            <td>
+              <%= link_to 'Set', 'javascript:', onclick: "$('#bulk_submit_all').submit();return false;", class: 'btn btn-warning btn-simple'%>
+            </td>
           </tr>
         </tbody>
       </table>
     <% end %>
   </div>
 </div>
+
+<%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_all' do %>
+  <%= hidden_field_tag :classroom_id, @current_classroom.id %>
+  <%= hidden_field_tag :time_limit, nil %>
+  <%= hidden_field_tag :all %>
+<% end %>
 
 <div class="container kmSection">
   <div class="row">
@@ -71,22 +80,40 @@
         </tr>
       </thead>
       <tbody>
-      <tr class="text-center v-middle">
-        <td class="text-center">
-          <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
-        </td>
-        <% @total_assignments_hash.each do |bg_id, info| %>
-          <% bg = info[:bubble_group] %>
-          <% assignment = info[:global_assignment] %>
-          <td>
-            <%= render 'assignments/new_form', assignment: assignment, kid: nil, bg:bg %>
+      <%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_selected' do %>
+        <%= hidden_field_tag :classroom_id, @current_classroom.id %>
+        <tr class="text-center v-middle">
+          <td class="text-center">
+            <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
           </td>
-        <% end %>
-
-      </tr>
+            <% @total_assignments_hash.each do |bg_id, info| %>
+              <% bg = info[:bubble_group] %>
+              <% assignment = info[:global_assignment] %>
+              <%= hidden_field_tag 'bubble_groups[]', bg.id %>
+              <td>
+                <div class="btn-multi center-block">
+                  <div class="extra-action">
+                    <div class="extra-container">
+                      <div class="dropdown simple select bulkTime">
+                        <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <span class="value"><%= @time_options.detect{|to| to[1] == assignment.time_limit}[0] || @time_options.first[0] %></span>
+                          <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                          <% @time_options.each do |to| %>
+                            <li><a href="javascript:" data-id="<%= to[1] %>"><%= to[0] %></a></li>
+                          <% end %>
+                        </ul>
+                        <%= hidden_field_tag 'time_limit[]', nil %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            <% end %>
+        </tr>
+      <% end %>
       </tbody>
-
-
       <thead>
         <tr class="no-border-top">
           <th class="text-center">Students</th>
@@ -114,16 +141,10 @@
   </div>
 
   <div class="row actions text-right">
-    <% if @current_classroom.assignments.none_status.any? || @current_classroom.assignments.empty? %>
-      <%= form_tag bulk_submit_assignments_path, id: 'bulk_submit' do %>
-        <%= hidden_field_tag :classroom_id, @current_classroom.id %>
-        <%= hidden_field_tag :time_limit, 2.hours %>
-        <%= submit_tag 'Submit', class: 'btn btn-success btn-simple btn-large btn-wide' %>
-      <% end %>
-    <% else %>
+    <% if @current_classroom.assignments.active.any? %>
       <%= link_to 'Reset', bulk_update_assignments_path(classroom_id: @current_classroom, status: Assignment::NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
-      <%= link_to 'Pause', bulk_update_assignments_path(classroom_id: @current_classroom, status: Assignment::INACTIVE), class: 'btn btn-info btn-simple btn-large btn-wide' %>
     <% end %>
+    <%= link_to 'Submit', 'javascript:', onclick: "$('#bulk_submit_selected').submit();return false;" ,class: 'btn btn-success btn-simple btn-large btn-wide' %>
   </div>
 </div>
 
@@ -136,7 +157,7 @@
     initDropdownSelect(<%= @classroom_hash.to_json.html_safe %>);
     $('.dropdown.select.timeLimit ul > li > a').click(function(){
       var time_limit = $(this).data('time-limit');
-      $('#bulk_submit #time_limit').val(time_limit);
+      $('#bulk_submit_all #time_limit').val(time_limit);
     });
   });
 </script>

@@ -17,9 +17,9 @@
   <%= form_for assignment do |f| %>
     <%= f.hidden_field :status, value: Assignment::ACTIVE %>
     <div class="btn-multi center-block">
-      <%= link_to 'javascript:', class: 'info action action-center' do %>
+      <%= link_to 'javascript:', class: 'btn-warning-brand action action-center' do %>
         <div class="action-media">
-          <i class="fa fa-play"></i>
+          <i class="fa fa-stop"></i>
         </div>
       <% end %>
     </div>
@@ -29,9 +29,9 @@
   <%= form_for assignment do |f| %>
     <%= f.hidden_field :status, value: Assignment::INACTIVE %>
     <div class="btn-multi center-block">
-      <%= link_to 'javascript:', class: 'success action action-center' do %>
+      <%= link_to 'javascript:', class: 'btn-warning-brand action action-center' do %>
         <div class="action-media">
-          <i class="fa fa-pause"></i>
+          <i class="fa fa-stop"></i>
         </div>
       <% end %>
     </div>
