@@ -12,8 +12,8 @@ module BubbleGroupsHelper
         result = 'Counting and<br>Cardinality to 20'
       when 'Number Line Model'
         result = 'Number Line<br>Model'
-      when 'Addition and Subtraction Comparison'
-        result = 'Addition and Subtraction<br>Comparison'
+      when 'Addition and Subtraction Compare'
+        result = 'Addition and Subtraction<br>Compare'
       when 'Addition and Subtraction Count On'
         result = 'Addition and Subtraction<br>Count On'
     end
