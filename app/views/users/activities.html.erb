@@ -27,8 +27,8 @@
             </td>
             <td class="minimal"></td>
             <td></td>
-            <td class="minimal">
-              <h4>Set Time:</h4>
+            <td class="minimal" colspan="2">
+              <h4>Set Time for All Bubble Groups:</h4>
             </td>
           </tr>
           <tr>
@@ -37,7 +37,7 @@
               <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
             </td>
             <td></td>
-            <td>
+            <td class="minimal">
               <div class="dropdown simple medium select timeLimit">
                 <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   <span class="value"><%= @time_options.first[0] %></span>
@@ -51,7 +51,7 @@
                 <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
               </div>
             </td>
-            <td>
+            <td class="minimal">
               <%= link_to 'Set', 'javascript:', onclick: "$('#bulk_submit_all').submit();return false;", class: 'btn btn-warning btn-simple'%>
             </td>
           </tr>
