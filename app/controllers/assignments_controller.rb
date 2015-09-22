@@ -1,6 +1,7 @@
 class AssignmentsController < ApplicationController
   before_action :set_assignment, only: [:show, :edit, :update, :destroy]
   load_and_authorize_resource
+  skip_before_filter :verify_authenticity_token, :only => [:bulk_submit, :bulk_update]
 
   respond_to :html
 
