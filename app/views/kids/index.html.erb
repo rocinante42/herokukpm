@@ -99,7 +99,7 @@
     </div>
   </div>
   <div class="row actions text-right">
-    <%= link_to new_kid_path, class: 'btn btn-warning btn-simple btn-large btn-wide' do %>
+    <%= link_to new_kid_path(classroom: @current_classroom), class: 'btn btn-warning btn-simple btn-large btn-wide' do %>
       <i class="fa fa-plus"></i>
       <span>Add New Kid</span>
     <% end %>
