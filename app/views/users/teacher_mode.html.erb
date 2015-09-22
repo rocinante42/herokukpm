@@ -1,5 +1,5 @@
 <div class="iFrameGames">
-  <% BubbleGroup.pluck(:name).each_with_index do |game, index| %>
+  <% ["Counting and Cardinality to 20", "Base 10", "Number Line Model", "Addition and Subtraction"].each_with_index do |game, index| %>
     <% css_class = index > 0 ? 'inactive' : '' %>
     <%= link_to game, 'http://emotionrays.com/_demo/', class: "btn btn-simple btn-warning submenu #{css_class} gameBtn" %>
     <br>
