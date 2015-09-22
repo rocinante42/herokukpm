@@ -252,6 +252,10 @@ require 'tempfile'
 
 Zip::File.open('./db/bubble_groups.zip') do |zip_file|
   # Handle entries one by one
+  ["Counting and Cardinality to 20", "Base 10 How Many", "Base 10 Produce",
+   "Number Line Model", "Addition and Subtraction Count All", "Addition and Subtraction Count On",
+   "Addition and Subtraction Compare"
+   ].each{ |bg_name| BubbleGroup.find_or_create_by(name: bg_name) }
   zip_file.each do |entry|
     next if entry.name =~ /__MACOSX/ or entry.name =~ /\.DS_Store/ or entry.file? or entry.name.eql? 'bubble_groups/'
     puts "Extracting directory #{entry.name}"
@@ -302,9 +306,9 @@ Zip::File.open('./db/bubble_groups.zip') do |zip_file|
 end
 
 ##adding bubble groups to classroom types(Kindergarten, First Grade)
-common_groups = BubbleGroup.where(name: ['Base 10 How Many', 'Base 10 Produce', 'Addition and Subtraction Count All', 'Counting and Cardinality to 20', 'Number Line Model'])
+common_groups = BubbleGroup.where(name: ['Counting and Cardinality to 20', 'Base 10 How Many', 'Base 10 Produce', 'Number Line Model', 'Addition and Subtraction Count All'])
 type_1.bubble_groups << common_groups
-type_2.bubble_groups << common_groups + BubbleGroup.where(name: ['Addition and Subtraction Comparison', 'Addition and Subtraction Count On'])
+type_2.bubble_groups << common_groups + BubbleGroup.where(name: ['Addition and Subtraction Count On', 'Addition and Subtraction Compare'])
 
 ##create triggers from csv file
 Trigger.create_from_csv File.open("./db/triggers.csv")
