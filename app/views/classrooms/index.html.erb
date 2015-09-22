@@ -71,7 +71,7 @@
             </td>
             <td class="">
               <span class="text-main font-large">
-                <%= classroom.teacher.full_name %>
+                <%= classroom.teacher.try(:full_name) %>
               </span>
             </td>
             <td>
