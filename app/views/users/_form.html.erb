@@ -58,6 +58,7 @@
       </div>
     </div>
   <% end %>
+</div>
 
 <%= form_tag update_classrooms_path, method: :get, remote: true, id: 'updateClassrooms' do %>
   <%= hidden_field_tag :school_id, @user.school.try(:id) %>
