@@ -43,72 +43,74 @@
   <div class="row">
     <table class="table fit">
       <thead>
-      <tr>
-        <th class="text-center">Classroom</th>
-        <th></th>
-        <% unless current_user.teacher? %>
-          <th class="text-center">Teacher</th>
+        <tr>
+          <th class="text-center">Classroom</th>
           <th></th>
-        <% end %>
-        <th class="text-center">Total Students</th>
-        <th></th>
-        <th class="text-center minimal">Add Student</th>
-      </tr>
+          <% unless current_user.teacher? %>
+            <th class="text-center">Teacher</th>
+            <th></th>
+          <% end %>
+          <th class="text-center">Total Students</th>
+          <th></th>
+          <th class="text-center minimal">Add Student</th>
+        </tr>
       </thead>
       <tbody>
-      <tr class="text-center v-middle">
-        <td class="text-left minimal">
-          <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
-        </td>
-        <td></td>
-        <% unless current_user.teacher? %>
+        <tr class="text-center v-middle">
           <td class="text-left minimal">
-            <div class="dropdown simple medium select">
-              <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @current_classroom.teacher.try(:full_name) || @teachers.first.full_name %></span>
-                <span class="caret"></span>
-              </a>
-              <div class="dropdown-wrap dropdown-menu-right">
-                <ul class="dropdown-menu">
-                  <% @teachers.each do |teacher| %>
-                    <div>
-                      <li><%= link_to teacher.full_name, 'javascript:', class: 'changeTeacher' %></li>
-                        <%= form_for @current_classroom do |f| %>
-                          <%= f.hidden_field :user_id, value: teacher.id %>
-                          <%= hidden_field_tag :url, dashboard_classroom_path(classroom: @current_classroom) %>
-                        <% end %>
-                    </div>
-                  <% end %>
-                </ul>
-                  <div class="dropdown-action">
-                    <%= link_to new_users_admin_path(classroom:@current_classroom, role: 'Teacher'), class:'btn', onclick: "window.location.href = $(this).attr('href');" do %>
-                      <i class="fa fa-plus"></i>
-                      <span>Add Teacher</span>
+            <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
+          </td>
+          <td></td>
+          <% unless current_user.teacher? %>
+            <% cur_teacher = @current_classroom.teacher || @teachers.first %>
+            <td class="text-left minimal">
+              <div class="dropdown simple medium select">
+                <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                  <span class="value"><%= cur_teacher.full_name %></span>
+                  <span class="caret"></span>
+                </a>
+                <div class="dropdown-wrap dropdown-menu-right">
+                  <ul class="dropdown-menu">
+                    <% @teachers.each do |teacher| %>
+                      <div>
+                        <li><%= link_to teacher.full_name, 'javascript:', class: 'changeTeacher' %></li>
+                          <%= form_for @current_classroom do |f| %>
+                            <%= f.hidden_field :user_id, value: teacher.id %>
+                            <%= hidden_field_tag :url, dashboard_classroom_path(classroom: @current_classroom) %>
+                          <% end %>
+                      </div>
                     <% end %>
-                  </div>
+                  </ul>
+                    <div class="dropdown-action">
+                      <%= link_to new_users_admin_path(classroom:@current_classroom, role: 'Teacher'), class:'btn', onclick: "window.location.href = $(this).attr('href');" do %>
+                        <i class="fa fa-plus"></i>
+                        <span>Add Teacher</span>
+                      <% end %>
+                    </div>
+                </div>
               </div>
-            </div>
-          </td>
-          <td class="minimal">
-            <% if @current_classroom.teacher && (can? :edit, @current_classroom.teacher) %>
-              <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher, edit_role: false), class: 'btn btn-warning btn-simple' %>
-            <% end %>
-          </td>
-        <% end %>
-        <td>
-          <span class="text-main font-large"><%= @current_classroom.students.count %></span>
-        </td>
-
-        <td></td>
-        <% if can? :create, Kid %>
+            </td>
+            <td class="minimal">
+              <% if @current_classroom.teacher && (can? :edit, @current_classroom.teacher) %>
+                <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher, edit_role: false), class: 'btn btn-warning btn-simple' %>
+                <%= link_to 'Delete', users_admin_path(cur_teacher), method: :delete, remote: true, class: 'btn btn-danger btn-simple', id: 'btn_delete_teacher' %>
+              <% end %>
+            </td>
+          <% end %>
           <td>
-            <%= link_to new_kid_path(classroom: @current_classroom), class: 'btn btn-info btn-simple btn-large btn-wide' do %>
-              <i class="fa fa-plus"></i>
-              <span>Add New Student</span>
-            <% end %>
+            <span class="text-main font-large"><%= @current_classroom.students.count %></span>
           </td>
-        <% end %>
-      </tr>
+
+          <td></td>
+          <% if can? :create, Kid %>
+            <td>
+              <%= link_to new_kid_path(classroom: @current_classroom), class: 'btn btn-info btn-simple btn-large btn-wide' do %>
+                <i class="fa fa-plus"></i>
+                <span>Add New Student</span>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
       </tbody>
     </table>
 
@@ -177,7 +179,7 @@
     var schools = <%= @school_hash.to_json.html_safe %>;
     var classrooms = schools[<%= @current_school.id %>]['classrooms'];
     initDropdownSelect(classrooms);
-    $('.changeTeacher').click(function(){
+    $('.changeTeacher, #btn_delete_teacher').click(function(){
       $(this).closest('.dropdown').find('a span.value').text($(this).text());
       $(this).closest('div').find('form').submit();
     });
