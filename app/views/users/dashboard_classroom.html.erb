@@ -62,7 +62,7 @@
           </td>
           <td></td>
           <% unless current_user.teacher? %>
-            <% cur_teacher = @current_classroom.teacher || @teachers.first %>
+            <% cur_teacher = @current_classroom.teachers.first || @teachers.first %>
             <td class="text-left minimal">
               <div class="dropdown simple medium select">
                 <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -91,8 +91,8 @@
               </div>
             </td>
             <td class="minimal">
-              <% if @current_classroom.teacher && (can? :edit, @current_classroom.teacher) %>
-                <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teacher, edit_role: false), class: 'btn btn-warning btn-simple' %>
+              <% if @current_classroom.teachers.first && (can? :edit, @current_classroom.teachers.first) %>
+                <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teachers.first, edit_role: false), class: 'btn btn-warning btn-simple' %>
                 <%= link_to 'Delete', users_admin_path(cur_teacher), method: :delete, remote: true, class: 'btn btn-danger btn-simple', id: 'btn_delete_teacher' %>
               <% end %>
             </td>

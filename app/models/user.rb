@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   belongs_to :role
   belongs_to :school
-  has_one :classroom
+  belongs_to :classroom
   has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
   delegate :students, to: :classroom

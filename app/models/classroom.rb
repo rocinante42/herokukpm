@@ -1,13 +1,13 @@
 class Classroom < ActiveRecord::Base
   belongs_to :school
   belongs_to :classroom_type
-  belongs_to :teacher, class_name: 'User', foreign_key: 'user_id'
 
+  has_many :teachers, class_name: 'User', foreign_key: 'classroom_id'
   has_many :students, class_name: 'Kid', dependent: :destroy
   has_many :assignments
   has_many :bubble_groups, through: :classroom_type
 
-  validates_presence_of :school, :name
+  validates_presence_of :school, :name, :classroom_type
   validates_uniqueness_of :name, scope: :school
 
   def class_type

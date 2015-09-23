@@ -42,14 +42,14 @@
         <div class="form-group">
           <%= label_tag :name, "Classroom", class: "col-sm-4 control-label text-main" %>
           <div class="col-sm-8">
-            <span class="form-control form-control-static"><%= @user.classroom.name %></span>
+            <span class="form-control form-control-static"><%= @user.classroom.try(:name) %></span>
           </div>
         </div>
       <% elsif @user.teacher_admin? %>
         <div class="form-group">
           <%= label_tag :name, "School", class: "col-sm-4 control-label text-main" %>
           <div class="col-sm-8">
-            <span class="form-control form-control-static"><%= @user.classroom.school.name %></span>
+            <span class="form-control form-control-static"><%= @user.classroom.try(:school).try(:name) %></span>
           </div>
         </div>
       <% end %>

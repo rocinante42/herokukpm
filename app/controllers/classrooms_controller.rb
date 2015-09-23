@@ -39,8 +39,9 @@ class ClassroomsController < ApplicationController
   # POST /classrooms
   # POST /classrooms.json
   def create
-    @classroom = Classroom.new(classroom_params)
-
+    @classroom = Classroom.new(classroom_params.except(:user_id))
+    teacher = User.find_by(id: classroom_params[:user_id])
+    @classroom.teachers << teacher if teacher
     respond_to do |format|
       if @classroom.save
         format.html { redirect_to @classroom, notice: 'Classroom was successfully created.' }
@@ -55,8 +56,11 @@ class ClassroomsController < ApplicationController
   # PATCH/PUT /classrooms/1
   # PATCH/PUT /classrooms/1.json
   def update
+    @classroom.assign_attributes(classroom_params.except(:user_id))
+    teacher = User.find_by(id: classroom_params[:user_id])
+    @classroom.teachers << teacher if teacher
     respond_to do |format|
-      if @classroom.update(classroom_params)
+      if @classroom.save
         format.html { redirect_to params[:url] || @classroom, notice: 'Classroom was successfully updated.' }
         format.js{render nothing: true}
         format.json { render :show, status: :ok, location: @classroom }
@@ -100,6 +104,6 @@ class ClassroomsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def classroom_params
-      params.require(:classroom).permit(:name, :school_id, :classroom_type_id,:user_id)
+      params.require(:classroom).permit(:name, :school_id, :classroom_type_id, :user_id)
     end
 end
