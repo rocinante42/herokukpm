@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150909090338) do
+ActiveRecord::Schema.define(version: 20150923144333) do
 
   create_table "assignments", force: true do |t|
     t.integer  "kid_id"
@@ -103,14 +103,12 @@ ActiveRecord::Schema.define(version: 20150909090338) do
   create_table "classrooms", force: true do |t|
     t.string   "name"
     t.integer  "classroom_type_id"
-    t.integer  "user_id"
     t.integer  "school_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "classrooms", ["classroom_type_id"], name: "index_classrooms_on_classroom_type_id"
-  add_index "classrooms", ["user_id"], name: "index_classrooms_on_user_id"
 
   create_table "edges", force: true do |t|
     t.integer  "source_id"
@@ -206,8 +204,10 @@ ActiveRecord::Schema.define(version: 20150909090338) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.integer  "school_id"
+    t.integer  "classroom_id"
   end
 
+  add_index "users", ["classroom_id"], name: "index_users_on_classroom_id"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   add_index "users", ["role_id"], name: "index_users_on_role_id"
