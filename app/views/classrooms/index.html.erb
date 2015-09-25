@@ -71,7 +71,7 @@
             </td>
             <td class="">
               <span class="text-main font-large">
-                <%= classroom.teachers.first.try(:full_name) %>
+                <%= classroom.teachers.map(&:full_name).join(', ') %>
               </span>
             </td>
             <td>

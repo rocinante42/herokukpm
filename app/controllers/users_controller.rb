@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_available_classrooms, only: [:activities, :dashboard_classroom]
-  before_action :set_available_data, only: [:new, :edit]
+  before_action :set_available_data, only: [:new, :create, :edit]
   helper_method :set_classrooms
   load_and_authorize_resource
 
@@ -54,7 +54,7 @@ class UsersController < ApplicationController
     @user.classroom = Classroom.find_by(id:user_params[:classroom_id])
     respond_to do |format|
       if @user.save
-        format.html { redirect_to users_admin_index_path, notice: 'User was successfully updated.' }
+        format.html { redirect_to params[:url] || users_admin_index_path, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
         set_classrooms
@@ -69,7 +69,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_admin_index_path, notice: 'User was successfully destroyed.' }
+      format.html { redirect_to params[:url] || users_admin_index_path, notice: 'User was successfully destroyed.' }
       format.js
       format.json { head :no_content }
     end
@@ -232,7 +232,7 @@ class UsersController < ApplicationController
         }
         school.classrooms.to_a.group_by(&:classroom_type_id).each do |ct, classrooms|
           classroom_type = ClassroomType.find(ct)
-          @school_hash[school.id][:classrooms][classroom_type.id] = classrooms.map{|cr| [cr.id, cr.name, cr.teachers.first.try(:id)]}
+          @school_hash[school.id][:classrooms][classroom_type.id] = classrooms.map{|cr| [cr.id, cr.name, cr.teachers.map(&:id)]}
         end
       end
       if current_user.admin?
@@ -240,7 +240,7 @@ class UsersController < ApplicationController
         @classroom_types = ClassroomType.all
       else
         if current_user.teacher?
-          classrooms = Classroom.where(school: current_user.school, teacher: current_user)
+          classrooms = Classroom.where(school: current_user.school, id: current_user.classroom)
           @teachers = User.where(id: current_user.id)
         else
           classrooms = Classroom.where(school: current_user.school)

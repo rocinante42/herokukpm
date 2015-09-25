@@ -69,6 +69,7 @@ table.table {width:100%;
   &.continual {margin-bottom:0;}
   > .row-high > tr > * {height:55px;}
   > .v-middle > tr > * {vertical-align:middle;}
+  > .v-top > tr > * {vertical-align:top;}
   > thead > tr > th {font-weight:normal; border-bottom:solid 2px #cccccc; color:#cccccc;}
   > tbody {
     > tr {position:relative;}
@@ -77,12 +78,17 @@ table.table {width:100%;
     &.col-pad > * {padding-left:10px; padding-right:10px;}
     > *.col-pad {padding-left:10px; padding-right:10px;}
     &.v-middle > * {vertical-align:middle;}
+    &.v-top > * {vertical-align:top;}
     &.no-border-top > * {border-top:none;}
     > *.minimal {width:1px; white-space:nowrap;}
     > *.equal {width:50%;}
     > *.actions {
       .btn {margin-left:5px; margin-right:5px;}
     }
+    > *.fit { padding-left:0; padding-right:0;}
+    > *.fit-left {padding-left:0;}
+    > *.fit-right {padding-right:0;}
+    > *.v-top {vertical-align:top;}
   }
   &.fit > * > tr > * {
     &:first-child {padding-left:0;}
