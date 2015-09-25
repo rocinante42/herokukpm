@@ -44,6 +44,12 @@
         <%= render 'form_object_dropdown', f: f, type: :role, options: @roles %>
         <%= render 'form_object_dropdown', f: f, type: :school, options: @schools %>
         <%= render 'form_object_dropdown', f: f, type: :classroom, options: @classrooms %>
+        <div class="kmSection teachersList <%= 'hidden' if !@user.classroom || @user.classroom.teachers.none? %>">
+          <h4>Teachers assigned to this classroom</h4>
+          <h4 class="col-sm-offset-4 col-sm-8 text-main">
+            <%= raw @user.classroom.teachers.map(&:full_name).join('<br><br>') if @user.classroom %>
+          </h4>
+        </div>
       </div>
     </div>
     <div class="row text-center actions">
@@ -61,7 +67,9 @@
 </div>
 
 <%= form_tag update_classrooms_path, method: :get, remote: true, id: 'updateClassrooms' do %>
+  <%= hidden_field_tag :role_id, @user.role.try(:id) %>
   <%= hidden_field_tag :school_id, @user.school.try(:id) %>
+  <%= hidden_field_tag :classroom_id, @user.classroom.try(:id) %>
 <% end %>
 
 <script>

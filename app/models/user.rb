@@ -24,6 +24,8 @@ class User < ActiveRecord::Base
 #when a user signs up, they need to be assigned a role. We can make this default to “Teacher”
   def assign_role
     self.role = Role.find_by name: "Teacher" if self.role.nil?
+    self.school    = nil unless can_have? :school
+    self.classroom = nil unless can_have? :classroom
   end
 
   def full_name
@@ -44,6 +46,19 @@ class User < ActiveRecord::Base
 
   def teacher_admin?
     self.role.try(:name) == "Teacher Admin"
+  end
+
+  def can_have? obj
+    case obj.to_s.underscore.to_sym
+    when :classroom
+      return self.teacher?
+    when :school
+      return self.teacher? || self.teacher_admin?
+    when :role
+      true
+    else
+      false
+    end
   end
 
   def welcome_email

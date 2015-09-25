@@ -40,28 +40,15 @@ function initDropdownSelect(classroom_hash)
 function initUserDropdownSelect()
 {
   $('.dropdown.select ul > li > a').off('click').on('click', function(){
-    var id = $(this).data('id');
+    var id   = $(this).data('id');
+    var form = $('#updateClassrooms');
     if($(this).closest('.form-group').hasClass('role'))
-    {
-      var roleName = $(this).text();
-      $('.form-group.school').toggleClass('hidden', roleName.indexOf('Teacher') == -1);
-      $('.form-group.classroom').toggleClass('hidden', roleName !== 'Teacher');
-      if(roleName !== 'Teacher')
-      {
-        $('#updateClassrooms #school_id').val('');
-        $('#updateClassrooms').submit();
-      }
-    }
+      form.find('#role_id').val(id);
     if($(this).closest('.form-group').hasClass('school'))
-    {
-      var roleName = $('.form-group.role .dropdown.select span.value').text();
-      $('#updateClassrooms #school_id').val(id);
-      if(roleName === 'Teacher')
-      {
-        $('#updateClassrooms').submit();
-      }
-    }
-    $(this).closest('.form-group').find('input[type="hidden"]').val(id);
+      form.find('#school_id').val(id);
+    if($(this).closest('.form-group').hasClass('classroom'))
+      form.find('#classroom_id').val(id);
+    form.submit();
   });
 }
 
