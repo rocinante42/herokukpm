@@ -232,7 +232,7 @@ class UsersController < ApplicationController
         }
         school.classrooms.to_a.group_by(&:classroom_type_id).each do |ct, classrooms|
           classroom_type = ClassroomType.find(ct)
-          @school_hash[school.id][:classrooms][classroom_type.id] = classrooms.map{|cr| [cr.id, cr.name, cr.user_id]}
+          @school_hash[school.id][:classrooms][classroom_type.id] = classrooms.map{|cr| [cr.id, cr.name, cr.teachers.first.try(:id)]}
         end
       end
       if current_user.admin?

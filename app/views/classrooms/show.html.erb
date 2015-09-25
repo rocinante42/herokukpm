@@ -17,7 +17,7 @@
         <tr class="no-border-top">
           <td>
             <span class="font-large">Teacher:</span>
-            <h4 class="text-main"><%= @classroom.teacher.full_name if @classroom.teacher %></h4>
+            <h4 class="text-main"><%= @classroom.teachers.first.full_name if @classroom.teachers.any? %></h4>
           </td>
           <td>
             <span class="font-large">Type:</span>
