@@ -43,69 +43,82 @@
 
 <div class="container kmSection">
   <div class="row">
+
     <table class="table fit">
       <thead>
         <tr>
           <th class="text-center">Classroom</th>
           <th></th>
           <% unless current_user.teacher? %>
-            <th class="text-center">Teacher</th>
+            <th class="text-center">Teachers</th>
             <th></th>
+            <th class="text-center">Choose Teacher</th>
+            <th class="fit-left"></th>
           <% end %>
-          <th class="text-center">Total Students</th>
+          <th class="text-center nowrap">Total Students</th>
           <th></th>
           <th class="text-center minimal">Add Student</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="text-center v-middle">
+        <tr class="text-center v-top">
           <td class="text-left minimal">
             <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
           </td>
           <td></td>
           <% unless current_user.teacher? %>
-            <% cur_teacher = @current_classroom.teachers.first || @teachers.first %>
-            <td class="text-left minimal">
-              <div class="dropdown simple medium select">
+            <td class="text-left minimal" style="padding-top:18px;">
+              <% @current_classroom.teachers.each do |teacher| %>
+                <p><span class="text-main font-large"><%= teacher.full_name %></span><br></p>
+              <% end %>
+            </td>
+            <td class="text-left minimal" style="padding-top:18px;">
+              <% @current_classroom.teachers.each do |teacher| %>
+                <p>
+                  <% if current_user && (can? :edit, teacher) %>
+                    <%= link_to 'Unassign', users_admin_path(teacher, user: { classroom_id: nil }, url: dashboard_classroom_path(classroom: @current_classroom)), method: :patch, class: 'btn btn-warning btn-simple btn-sm' %>
+                    <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teachers.first, edit_role: false), class: 'btn btn-warning btn-simple btn-sm' %>
+                    <%= link_to 'Delete', users_admin_path(teacher, url: dashboard_classroom_path(classroom: @current_classroom)), method: :delete, class: 'btn btn-danger btn-simple btn-sm', id: 'btn_delete_teacher', data: { confirm: "Are you sure to remove this person from the system? This cannot be undone." } %>
+                  <% end %>
+                  <br>
+                </p>
+              <% end %>
+            </td>
+            <td class="text-left minimal" style="padding-top:18px;">
+              <div class="dropdown simple medium select" data-target="add_teacher_id">
                 <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <span class="value"><%= cur_teacher.full_name %></span>
+                  <span class="value"><%= @teachers.first.full_name %></span>
                   <span class="caret"></span>
                 </a>
                 <div class="dropdown-wrap dropdown-menu-right">
                   <ul class="dropdown-menu">
                     <% @teachers.each do |teacher| %>
-                      <div>
-                        <li><%= link_to teacher.full_name, 'javascript:', class: 'changeTeacher' %></li>
-                          <%= form_for @current_classroom do |f| %>
-                            <%= f.hidden_field :user_id, value: teacher.id %>
-                            <%= hidden_field_tag :url, dashboard_classroom_path(classroom: @current_classroom) %>
-                          <% end %>
-                      </div>
+                      <li><%= link_to teacher.full_name, 'javascript:', data: { id: teacher.id } %></li>
                     <% end %>
                   </ul>
-                    <div class="dropdown-action">
-                      <%= link_to new_users_admin_path(classroom:@current_classroom, role: 'Teacher'), class:'btn', onclick: "window.location.href = $(this).attr('href');" do %>
-                        <i class="fa fa-plus"></i>
-                        <span>Add Teacher</span>
-                      <% end %>
-                    </div>
+                  <div class="dropdown-action">
+                    <%= link_to new_users_admin_path(classroom:@current_classroom, role: 'Teacher'), class:'btn' do %>
+                      <i class="fa fa-plus"></i>
+                      <span>Add Teacher</span>
+                    <% end %>
+                  </div>
                 </div>
               </div>
             </td>
-            <td class="minimal">
-              <% if @current_classroom.teachers.first && (can? :edit, @current_classroom.teachers.first) %>
-                <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teachers.first, edit_role: false), class: 'btn btn-warning btn-simple' %>
-                <%= link_to 'Delete', users_admin_path(cur_teacher), method: :delete, remote: true, class: 'btn btn-danger btn-simple', id: 'btn_delete_teacher' %>
+            <td class="minimal fit-left" style="padding-top:18px;">
+              <%= form_for @current_classroom do |f| %>
+                <%= f.hidden_field :user_id, value: nil, id: 'add_teacher_id' %>
+                <%= hidden_field_tag :url, dashboard_classroom_path(classroom: @current_classroom) %>
+                <%= f.submit 'Assign', class: 'btn btn-warning btn-simple' %>
               <% end %>
             </td>
           <% end %>
-          <td>
+          <td style="padding-top:19px;">
             <span class="text-main font-large"><%= @current_classroom.students.count %></span>
           </td>
-
           <td></td>
           <% if can? :create, Kid %>
-            <td>
+            <td style="padding-top:13px;">
               <%= link_to new_kid_path(classroom: @current_classroom), class: 'btn btn-info btn-simple btn-large btn-wide' do %>
                 <i class="fa fa-plus"></i>
                 <span>Add New Student</span>
@@ -115,7 +128,6 @@
         </tr>
       </tbody>
     </table>
-
 
     <table class="table fit">
       <thead>
@@ -138,7 +150,6 @@
               <%= image_tag avatar %>
             <% end %>
           </td>
-
           <td>
             <span class="text-main font-large"><%= kid.full_name %></span>
           </td>
@@ -147,7 +158,6 @@
               <td>
                 <%= link_to 'Kindergarten Report', reports_kid_path(kid), class: 'btn btn-info btn-simple btn-wide' %>
               </td>
-
               <td>
                 <%= link_to 'Full Report', reports_kid_path(kid, full_report: true), class: 'btn btn-info btn-simple btn-wide' %>
               </td>
@@ -167,7 +177,6 @@
               <%= link_to 'Delete', kid, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-extended' %>
             </td>
           <% end %>
-
         </tr>
       <% end %>
       </tbody>
@@ -181,9 +190,6 @@
     var schools = <%= @school_hash.to_json.html_safe %>;
     var classrooms = schools[<%= @current_school.id %>]['classrooms'];
     initDropdownSelect(classrooms);
-    $('.changeTeacher, #btn_delete_teacher').click(function(){
-      $(this).closest('.dropdown').find('a span.value').text($(this).text());
-      $(this).closest('div').find('form').submit();
-    });
   });
 </script>
+
