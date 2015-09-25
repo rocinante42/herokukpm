@@ -8,36 +8,38 @@
   </div>
 </div>
 
-<div class="container kmSection">
-  <div class="row">
-    <%= form_tag dashboard_classroom_path, method: :get do %>
-      <table class="table inline solid fit">
-        <tbody>
-        <tr class="col-pad">
-          <% if current_user.admin? %>
+<% unless current_user.teacher? %>
+  <div class="container kmSection">
+    <div class="row">
+      <%= form_tag dashboard_classroom_path, method: :get do %>
+        <table class="table inline solid fit">
+          <tbody>
+          <tr class="col-pad">
+            <% if current_user.admin? %>
+              <td>
+                <h4>Choose School:</h4>
+              </td>
+            <% end %>
             <td>
-              <h4>Choose School:</h4>
+              <h4>Choose Classroom Type:</h4>
             </td>
-          <% end %>
-          <td>
-            <h4>Choose Classroom Type:</h4>
-          </td>
-          <td>
-            <h4>Choose Classroom:</h4>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <%= render 'dropdown_filter' %>
-          <td>
-            <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    <% end %>
+            <td>
+              <h4>Choose Classroom:</h4>
+            </td>
+            <td></td>
+          </tr>
+          <tr>
+            <%= render 'dropdown_filter' %>
+            <td>
+              <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
   </div>
-</div>
+<% end %>
 
 <div class="container kmSection">
   <div class="row">

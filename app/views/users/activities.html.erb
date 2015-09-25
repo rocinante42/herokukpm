@@ -19,23 +19,27 @@
                 <h4>Choose School:</h4>
               </td>
             <% end %>
-            <td class="minimal">
-              <h4>Choose Classroom Type:</h4>
-            </td>
-            <td class="minimal">
-              <h4>Choose Classroom:</h4>
-            </td>
-            <td class="minimal"></td>
+            <% unless current_user.teacher? %>
+              <td class="minimal">
+                <h4>Choose Classroom Type:</h4>
+              </td>
+              <td class="minimal">
+                <h4>Choose Classroom:</h4>
+              </td>
+              <td class="minimal"></td>
+            <% end %>
             <td></td>
             <td class="minimal" colspan="2">
               <h4>Set Time for All Bubble Groups:</h4>
             </td>
           </tr>
           <tr>
-            <%= render 'dropdown_filter' %>
-            <td>
-              <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
-            </td>
+            <% unless current_user.teacher? %>
+              <%= render 'dropdown_filter' %>
+              <td>
+                <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
+              </td>
+            <% end %>
             <td></td>
             <td class="minimal">
               <div class="dropdown simple medium select timeLimit">
