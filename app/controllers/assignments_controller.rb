@@ -42,6 +42,12 @@ class AssignmentsController < ApplicationController
     classroom = Classroom.find(params[:classroom_id])
     bubble_groups = params[:all] ? classroom.bubble_groups : classroom.bubble_groups.where(id: params[:bubble_groups])
     time_limits = params[:all] ? Array.new(bubble_groups.count, params[:time_limit]) : params[:time_limit]
+
+    if time_limits.all?(&:blank?)
+      flash[:error] = "No time limit specified."
+      redirect_to activities_path and return
+    end
+
     bubble_groups.each_with_index do |bg, index|
       next if time_limits[index].blank?
       assignment = Assignment.where(bubble_group:bg, classroom:classroom).first_or_initialize

@@ -1,15 +1,8 @@
-<div class="container-fluid kmSection">
-  <div class="row kmSectionTitle">
-    <div class="container">
-      <div class="pull-left">
-        <h4>Activities</h4>
-      </div>
-    </div>
-  </div>
-</div>
+<%= render "shared/section_title", title: "Activities" %>
 
 <div class="container kmSection">
   <div class="row">
+    <%= flash_messages %>
     <%= form_tag activities_path, method: :get do %>
       <table class="table solid fit">
         <tbody>
@@ -71,6 +64,16 @@
   <%= hidden_field_tag :all %>
 <% end %>
 
+<%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_selected' do %>
+  <%= hidden_field_tag :classroom_id, @current_classroom.id %>
+  <% @total_assignments_hash.each do |bg_id, info| %>
+    <% bg = info[:bubble_group] %>
+    <% assignment = info[:global_assignment] %>
+    <%= hidden_field_tag 'bubble_groups[]', bg.id %>
+    <%= hidden_field_tag 'time_limit[]', nil, id: "time_limit_#{bg.id}" %>
+  <% end %>
+<% end %>
+
 <div class="container kmSection">
   <div class="row">
     <h4>Choose Activities</h4>
@@ -84,39 +87,32 @@
         </tr>
       </thead>
       <tbody>
-      <%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_selected' do %>
-        <%= hidden_field_tag :classroom_id, @current_classroom.id %>
         <tr class="text-center v-middle">
           <td class="text-center">
             <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
           </td>
-            <% @total_assignments_hash.each do |bg_id, info| %>
-              <% bg = info[:bubble_group] %>
-              <% assignment = info[:global_assignment] %>
-              <%= hidden_field_tag 'bubble_groups[]', bg.id %>
-              <td>
-                <div class="btn-multi center-block">
-                  <div class="extra-action">
-                    <div class="extra-container">
-                      <div class="dropdown simple select bulkTime">
-                        <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <span class="value"><%= @time_options.detect{|to| to[1] == assignment.time_limit}[0] || @time_options.first[0] %></span>
-                          <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                          <% @time_options.each do |to| %>
-                            <li><a href="javascript:" data-id="<%= to[1] %>"><%= to[0] %></a></li>
-                          <% end %>
-                        </ul>
-                        <%= hidden_field_tag 'time_limit[]', nil %>
-                      </div>
+          <% @total_assignments_hash.each do |bg_id, info| %>
+            <td>
+              <div class="btn-multi center-block">
+                <div class="extra-action">
+                  <div class="extra-container">
+                    <div class="dropdown simple select bulkTime" data-target="time_limit_<%= bg_id %>">
+                      <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="value"><%= @time_options.detect{|to| to[1] == info[:global_assignment].time_limit}[0] || @time_options.first[0] %></span>
+                        <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-right">
+                        <% @time_options.each do |to| %>
+                          <li><a href="javascript:" data-id="<%= to[1] %>"><%= to[0] %></a></li>
+                        <% end %>
+                      </ul>
                     </div>
                   </div>
                 </div>
-              </td>
-            <% end %>
+              </div>
+            </td>
+          <% end %>
         </tr>
-      <% end %>
       </tbody>
       <thead>
         <tr class="no-border-top">
