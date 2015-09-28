@@ -26,6 +26,48 @@ p "Creating School"
 school_1 = School.find_or_create_by({
   name: "BestTeam"
   })
+
+#/////////////////////Class Type//////////////////////////
+p "Creating Class Type Kindergarten"
+type_1 = ClassroomType.find_or_create_by({
+  type_name: "Kindergarten",
+  type_description:"Children with age from 3  to 6 years old"
+   })
+
+p "Creating Class Type First grade"
+type_2 = ClassroomType.find_or_create_by({
+  type_name: "First grade",
+  type_description:"Children with age from 6  to 8 years old"
+  })
+
+p "Creating Teacher Administrator for School"
+
+User.new({
+  first_name: "Mark",
+  last_name:"Strong" ,
+  direct_phone:"123-123-1233" ,
+  email: "teacher_admin@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: teacher_admin_role,
+  school: school_1
+   }).save(validate:false)
+
+#////////////////////Classrooms///////////////////////////
+p "Creating Classroom_1"
+classroom_1 = Classroom.find_or_create_by({
+  name: "Clever",
+  classroom_type_id: type_1.id,
+  school_id:school_1.id
+  })
+
+p "Creating Classroom_2"
+classroom_2 = Classroom.find_or_create_by({
+  name: "Smart",
+  classroom_type_id: type_2.id,
+  school_id:school_1.id
+  })
+
 #/////////////////////Users//////////////////////////
 p "Creating Admin User"
 user_1 = User.new({
@@ -47,7 +89,8 @@ user_2 = User.new({
   password: "password",
   password_confirmation: "password",
   role: teacher_role,
-  school: school_1
+  school: school_1,
+  classroom: classroom_1
    })
 user_2.save(validate:false)
 p "Creating Teacher User 1"
@@ -59,7 +102,8 @@ user_3 = User.new({
   password: "password",
   password_confirmation: "password",
   role: teacher_role,
-  school: school_1
+  school: school_1,
+  classroom: classroom_2
    })
 user_3.save(validate:false)
 p "Creating Parent User"
@@ -113,49 +157,6 @@ parent_gross = User.new({
   role: parent_role
    })
 parent_gross.save(validate:false)
-#/////////////////////Class Type//////////////////////////
-p "Creating Class Type Kindergarten"
-type_1 = ClassroomType.find_or_create_by({
-  type_name: "Kindergarten",
-  type_description:"Children with age from 3  to 6 years old"
-   })
-
-p "Creating Class Type First grade"
-type_2 = ClassroomType.find_or_create_by({
-  type_name: "First grade",
-  type_description:"Children with age from 6  to 8 years old"
-  })
-
-p "Creating Teacher Administrator for School"
-
-User.new({
-  first_name: "Mark",
-  last_name:"Strong" ,
-  direct_phone:"123-123-1233" ,
-  email: "teacher_admin@test.com",
-  password: "password",
-  password_confirmation: "password",
-  role: teacher_admin_role,
-  school: school_1
-   }).save(validate:false)
-
-#////////////////////Classrooms///////////////////////////
-p "Creating Classroom_1"
-classroom_1 = Classroom.find_or_create_by({
-  name: "Clever",
-  classroom_type_id: type_1.id,
-  user_id: user_2.id,
-  school_id:school_1.id
-  })
-
-p "Creating Classroom_2"
-classroom_2 = Classroom.find_or_create_by({
-    name: "Smart",
-    classroom_type_id: type_2.id,
-    user_id: user_3.id,
-    school_id:school_1.id
-    })
-
 #/////////////////////GAME////////////////////
 p"Creating Games"
 
