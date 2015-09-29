@@ -8,6 +8,16 @@
   </div>
 </div>
 
+<% if not @current_classroom %>
+
+<div class="container kmSection">
+  <div class="row text-center">
+    <h3 class="padding-wall">You don't have a classroom assigned to you.</h3>
+  </div>
+</div>
+
+<% else %>
+
 <% unless current_user.teacher? %>
   <div class="container kmSection">
     <div class="row">
@@ -193,3 +203,4 @@
   });
 </script>
 
+<% end %>
