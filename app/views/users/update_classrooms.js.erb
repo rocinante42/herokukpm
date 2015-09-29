@@ -1,10 +1,9 @@
-$('.dropdown.select.classroom').html("<%= j render 'dropdown', object: nil, options:@classrooms %>");
-$('input#user_classroom_id').val('');
-<% unless @school %>
-  $('input#user_school_id').val('');
-  $('.dropdown.select.school span.value').text('Choose School');
-<% end %>
-$('.dropdown.select.classroom ul > li > a').off('click').on('click', function(){
-  var id = $(this).data('id');
-  $(this).closest('.form-group').find('input[type="hidden"]').val(id);
-});
+$('.dropdown.select.classroom > *').remove(':not(input)');
+$('.dropdown.select.classroom').append("<%= j render 'dropdown', object: @classroom, options: @classrooms %>");
+$('.teachersList .text-main').html("<%= raw @classroom_teachers.present? ? @classroom_teachers.map(&:full_name).join('<br><br>') : '' %>")
+<% user = User.new(role: @role) %>
+$('.form-group.school').toggleClass('hidden', <%= !user.can_have? :school %>);
+$('.form-group.classroom').toggleClass('hidden', <%= !user.can_have? :classroom %>);
+$('.teachersList').toggleClass('hidden', <%= !(user.can_have?(:classroom) && @classroom_teachers.present?) %>);
+
+initUserDropdownSelect();

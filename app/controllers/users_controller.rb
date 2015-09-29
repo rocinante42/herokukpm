@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_available_classrooms, only: [:activities, :dashboard_classroom]
-  before_action :set_available_data, only: [:new, :create, :edit]
+  before_action :set_available_data, only: [:new, :create, :edit, :update_classrooms]
   helper_method :set_classrooms
   load_and_authorize_resource
 
@@ -208,6 +208,9 @@ class UsersController < ApplicationController
 
   def update_classrooms
     set_classrooms
+    @role               = Role.where.not(name: 'Parent').find_by(id: params[:role_id])
+    @classroom          = Classroom.find_by(id:params[:classroom_id], school: @school)
+    @classroom_teachers = @classroom.teachers if @classroom
   end
 
   private
