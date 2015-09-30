@@ -1,3 +1,23 @@
+<% unless @current_classroom %>
+
+<div class="container-fluid kmSection">
+  <div class="row kmSectionTitle">
+    <div class="container">
+      <div class="pull-left">
+        <h4>Dashboard</h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container kmSection">
+  <div class="row text-center">
+    <h3 class="padding-wall">You don't have a classroom assigned to you.</h3>
+  </div>
+</div>
+
+<% else %>
+
 <div class="container-fluid kmSection">
   <div class="row kmSectionTitle">
     <div class="container">
@@ -20,7 +40,7 @@
         <% end %>
         <div class="dropdown simple">
           <a href="javascript:;" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span><%= @current_classroom.name %></span>
+            <span><%= @current_classroom.try(:name) %></span>
             <% unless current_user.teacher? %>
               <span class="caret"></span>
             <% end %>
@@ -104,6 +124,8 @@
 <div id="bottomDashboard">
   <%= render 'shared/bottom_dashboard' %>
 </div>
+
+<% end %>
 
 <script>
   $(document).ready(function(){

@@ -1,5 +1,15 @@
 <%= render "shared/section_title", title: "Activities" %>
 
+<% unless @current_classroom %>
+
+<div class="container kmSection">
+  <div class="row text-center">
+    <h3 class="padding-wall">You don't have a classroom assigned to you.</h3>
+  </div>
+</div>
+
+<% else %>
+
 <div class="container kmSection">
   <div class="row">
     <%= flash_messages %>
@@ -161,3 +171,5 @@
     });
   });
 </script>
+
+<% end %>

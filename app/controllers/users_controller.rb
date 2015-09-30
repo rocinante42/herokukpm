@@ -76,22 +76,23 @@ class UsersController < ApplicationController
   end
 
   def activities
-    @total_assignments_hash = {}
-    BubbleGroup.all.find_each do |bg|
-      next unless @current_classroom_type.bubble_groups.include? bg
-      assignment = @current_classroom.assignments.general.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
-      assignment.status = Assignment::NONE if assignment.new_record?
-      @total_assignments_hash[bg.id] = {}
-      @total_assignments_hash[bg.id][:bubble_group] = bg
-      @total_assignments_hash[bg.id][:global_assignment] = assignment
-      @current_classroom.students.each do |kid|
-        assignment = kid.assignments.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
+    if @current_classroom
+      @total_assignments_hash = {}
+      BubbleGroup.all.find_each do |bg|
+        next unless @current_classroom_type.bubble_groups.include? bg
+        assignment = @current_classroom.assignments.general.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
         assignment.status = Assignment::NONE if assignment.new_record?
-        @total_assignments_hash[bg.id][:kid_assignments] ||= {}
-        @total_assignments_hash[bg.id][:kid_assignments][kid.id] = assignment
+        @total_assignments_hash[bg.id] = {}
+        @total_assignments_hash[bg.id][:bubble_group] = bg
+        @total_assignments_hash[bg.id][:global_assignment] = assignment
+        @current_classroom.students.each do |kid|
+          assignment = kid.assignments.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
+          assignment.status = Assignment::NONE if assignment.new_record?
+          @total_assignments_hash[bg.id][:kid_assignments] ||= {}
+          @total_assignments_hash[bg.id][:kid_assignments][kid.id] = assignment
+        end
       end
     end
-
     @time_options = [['Not Selected', nil],['2 Hours', 2.hours], ['1 Day', 1.days], ['2 Days', 2.days], ['5 Days', 5.days]]
   end
 
@@ -116,59 +117,61 @@ class UsersController < ApplicationController
       @current_classroom = @current_school.classrooms.sample
     end
 
-    @time_intervals_and_kids = []
-    kids = @current_classroom.students.includes(:kid_activities)
-    if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id)}).any?
-      kids_time = kids.map(&:recent_play_time)
-      max_time = kids_time.max{|a,b| a <=> b }
-      step = max_time / 5
-      steps = (0..max_time).step(step).to_a
-      time_intervals_in_seconds = steps.map.with_index{|el, index| [el, steps[index+1]]}[0...-1]
-      time_intervals_in_minutes = time_intervals_in_seconds.map{|step| [(step[0]/60).round, (step[1]/60).round]}
-      time_intervals_in_minutes.each_with_index do |ti, index|
-        selected_kids = kids.select{|kid| (ti[0]..ti[1]).include? (kid.recent_play_time/60).round}
-        @time_intervals_and_kids[index] = {}
-        @time_intervals_and_kids[index][:time_interval] = ti
-        @time_intervals_and_kids[index][:kids] = selected_kids
+    if @current_classroom
+      @time_intervals_and_kids = []
+      kids = @current_classroom.students.includes(:kid_activities)
+      if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id)}).any?
+        kids_time = kids.map(&:recent_play_time)
+        max_time = kids_time.max{|a,b| a <=> b }
+        step = max_time / 5
+        steps = (0..max_time).step(step).to_a
+        time_intervals_in_seconds = steps.map.with_index{|el, index| [el, steps[index+1]]}[0...-1]
+        time_intervals_in_minutes = time_intervals_in_seconds.map{|step| [(step[0]/60).round, (step[1]/60).round]}
+        time_intervals_in_minutes.each_with_index do |ti, index|
+          selected_kids = kids.select{|kid| (ti[0]..ti[1]).include? (kid.recent_play_time/60).round}
+          @time_intervals_and_kids[index] = {}
+          @time_intervals_and_kids[index][:time_interval] = ti
+          @time_intervals_and_kids[index][:kids] = selected_kids
+        end
+        @kids_count_per_timegroup = @time_intervals_and_kids.map{|item| item[:kids].count}
+      else
+        @kids_count_per_timegroup = Array.new(5,0)
+        @time_intervals_and_kids = Array.new(5,{})
+        @time_intervals_and_kids.each_with_index do |item, index|
+          item[:time_interval] = [24 * index ,24 * (index + 1)]
+          item[:kids] = []
+        end
       end
-      @kids_count_per_timegroup = @time_intervals_and_kids.map{|item| item[:kids].count}
-    else
-      @kids_count_per_timegroup = Array.new(5,0)
-      @time_intervals_and_kids = Array.new(5,{})
-      @time_intervals_and_kids.each_with_index do |item, index|
-        item[:time_interval] = [24 * index ,24 * (index + 1)]
-        item[:kids] = []
-      end
-    end
 
-    if params.has_key? :current_cr
-      @bottom_current_classroom = Classroom.find(params[:current_cr])
-      @bottom_current_classroom_type = @bottom_current_classroom.classroom_type
-    else
-      @bottom_current_classroom_type = @current_classroom.classroom_type
-      @bottom_current_classroom = @current_classroom
-    end
-    @total_hash = {}
-    classrooms = current_user.teacher? ? [current_user.classroom] : @current_school.classrooms
-    classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
-      ct = ClassroomType.find(ct_id)
-      ct_name = ct.type_name
-      @total_hash[ct_name] = {
-        classrooms: {}
-      }
-      classrooms.each do |cr|
-        @total_hash[ct_name][:classrooms][cr.id] = {}
-        @total_hash[ct_name][:classrooms][cr.id][:classroom] = cr
-        @total_hash[ct_name][:classrooms][cr.id][:bubble_groups] = {}
-        ct.bubble_groups.each do |bg|
-          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
-          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
-          bg.bubble_categories.sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
-            total_count = category.bubbles.count * cr.students.count
-            passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:cr.students.pluck(:id)}).count.to_f
-            @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
-              passed: passed_count / total_count * 100
-            }
+      if params.has_key? :current_cr
+        @bottom_current_classroom = Classroom.find(params[:current_cr])
+        @bottom_current_classroom_type = @bottom_current_classroom.classroom_type
+      else
+        @bottom_current_classroom_type = @current_classroom.classroom_type
+        @bottom_current_classroom = @current_classroom
+      end
+      @total_hash = {}
+      classrooms = current_user.teacher? ? [current_user.classroom] : @current_school.classrooms
+      classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
+        ct = ClassroomType.find(ct_id)
+        ct_name = ct.type_name
+        @total_hash[ct_name] = {
+          classrooms: {}
+        }
+        classrooms.each do |cr|
+          @total_hash[ct_name][:classrooms][cr.id] = {}
+          @total_hash[ct_name][:classrooms][cr.id][:classroom] = cr
+          @total_hash[ct_name][:classrooms][cr.id][:bubble_groups] = {}
+          ct.bubble_groups.each do |bg|
+            @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
+            @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
+            bg.bubble_categories.sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
+              total_count = category.bubbles.count * cr.students.count
+              passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:cr.students.pluck(:id)}).count.to_f
+              @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
+                passed: passed_count / total_count * 100
+              }
+            end
           end
         end
       end
@@ -255,20 +258,22 @@ class UsersController < ApplicationController
       else
         @current_classroom = classrooms.sample
       end
-      @current_school = @current_classroom.school
-      if params.has_key? :school
-        @current_school = School.find(params[:school])
-        @current_classroom = @current_school.classrooms.sample
-      end
-      @current_classroom_type = @current_classroom.classroom_type
-
-      @classroom_hash = {}
-      @school_hash[@current_school.id][:classrooms].each do |ct_id, classrooms|
-        current_classrooms = classrooms
-        if current_user.teacher?
-          current_classrooms = current_classrooms.select{|cr| cr[2] == current_user.id}
+      if @current_classroom
+        @current_school = @current_classroom.school
+        if params.has_key? :school
+          @current_school = School.find(params[:school])
+          @current_classroom = @current_school.classrooms.sample
         end
-        @classroom_hash[ct_id] = current_classrooms
+        @current_classroom_type = @current_classroom.classroom_type
+
+        @classroom_hash = {}
+        @school_hash[@current_school.id][:classrooms].each do |ct_id, classrooms|
+          current_classrooms = classrooms
+          if current_user.teacher?
+            current_classrooms = current_classrooms.select{|cr| cr[2] == current_user.id}
+          end
+          @classroom_hash[ct_id] = current_classrooms
+        end
       end
     end
 
