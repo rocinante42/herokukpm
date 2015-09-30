@@ -297,7 +297,7 @@ class KidsController < ApplicationController
       if current_user.admin?
         classrooms = Classroom.all
       elsif current_user.teacher?
-        classrooms = Classroom.where(school: current_user.school, teacher: current_user)
+        classrooms = Classroom.where(school: current_user.school, id: current_user.classroom)
       else
         classrooms = Classroom.where(school: current_user.school)
       end

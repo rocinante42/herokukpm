@@ -90,4 +90,7 @@ Rails.application.routes.draw do
     resources :schools
     resources :classrooms
   end
+
+  get '*path' => redirect('/')
+
 end
