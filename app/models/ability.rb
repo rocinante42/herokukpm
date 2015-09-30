@@ -10,11 +10,6 @@ class Ability
       can :manage, Kid do |kid|
         user.students.include? kid
       end
-      ##Ability with classroom
-      can :create, Classroom
-      can :manage, Classroom do |classroom|
-        classroom.try(:teacher) == user
-      end
       can :create, User
       can :manage, User do |u|
         (user.students & u.kids).any?
