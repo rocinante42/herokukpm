@@ -6,9 +6,9 @@ class ClassroomsController < ApplicationController
   # GET /classrooms.json
   def index
     if current_user.teacher?
-      @classrooms = Classroom.where(school: current_school, user: current_user)
+      @current_school = current_user.school
+      @classrooms = Classroom.where(school: @current_school, id: current_user.classroom)
       @schools = School.where(id: @current_school.id)
-      @current_school = current_school
     else
       @schools = School.all
       @current_school = @schools.sample
