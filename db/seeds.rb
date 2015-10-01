@@ -311,5 +311,26 @@ common_groups = BubbleGroup.where(name: ['Counting and Cardinality to 20', 'Base
 type_1.bubble_groups << common_groups
 type_2.bubble_groups << common_groups + BubbleGroup.where(name: ['Addition and Subtraction Count On', 'Addition and Subtraction Compare'])
 
+##adding custom bubble categories to classroom types (Kindergarten, First Grade)
+custom_categories = {
+  # Kindergarten:
+  type_1 => {
+    'Addition and Subtraction Count All' => ['1-5', '6-10'],
+    'Base 10 How Many' => ['1-10', '11-20'],
+    'Base 10 Produce' => ['1-10', '11-20']
+  },
+  # First Grade
+  type_2 => {}
+}
+
+[type_1, type_2].each do |ct|
+  ct.bubble_categories = []
+  ct.bubble_groups.each do |bg|
+    cats = bg.bubble_categories.uniq.to_a
+    cats = cats.select{|bc| bc.name.in? custom_categories[ct][bg.name] } if custom_categories[ct].has_key? bg.name
+    ct.bubble_categories += cats
+  end
+end
+
 ##create triggers from csv file
 Trigger.create_from_csv File.open("./db/triggers.csv")

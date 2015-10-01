@@ -269,7 +269,7 @@ class KidsController < ApplicationController
       end
       @classroom_type.bubble_groups.each do |bg|
         @reports[bg.name] = {}
-        bg.bubble_categories.sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
+        (bg.bubble_categories & @classroom_type.bubble_categories).sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
           total_count = category.bubbles.count
           passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:@kid.id}).uniq.count
           @reports[bg.name][category.name] = {
