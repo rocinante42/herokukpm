@@ -320,7 +320,9 @@ custom_categories = {
     'Base 10 Produce' => ['1-10', '11-20']
   },
   # First Grade
-  type_2 => {}
+  type_2 => {
+    'Addition and Subtraction Count On' => ['6-10', '11-15', '16-20']
+  }
 }
 
 [type_1, type_2].each do |ct|
