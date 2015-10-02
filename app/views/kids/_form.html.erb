@@ -33,10 +33,10 @@
           </div>
         <% else %>
           <div class="form-group">
-            <%= f.hidden_field :classroom_id, id: 'classroom_id', value: @kid.classroom.try(:id) %>
             <label class="col-sm-4 control-label text-main">Classroom</label>
             <div class="col-sm-8">
               <div class="dropdown select">
+                <%= f.hidden_field :classroom_id, id: 'classroom_id', value: @kid.classroom.try(:id) %>
                 <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   <span class="value"><%= @kid.classroom.try(:name) || @classrooms[0][1] %></span>
                   <span class="caret"></span>
@@ -64,10 +64,10 @@
           </div>
         </div>
         <div class="form-group">
-          <%= f.hidden_field :gender, id: 'gender', value: @kid.gender %>
           <label class="col-sm-4 control-label text-main">Gender</label>
           <div class="col-sm-8">
             <div class="dropdown select">
+              <%= f.hidden_field :gender, id: 'gender', value: @kid.gender %>
               <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="value"><%= @kid.persisted? ? @kid.humanize_gender : @genders.first[0] %></span>
                 <span class="caret"></span>
@@ -87,10 +87,10 @@
           </div>
         </div>
         <div class="form-group">
-          <%= f.hidden_field :primary_language, id: 'primary_language', value: @kid.primary_language %>
           <label class="col-sm-4 control-label text-main">Primary Language</label>
           <div class="col-sm-8">
             <div class="dropdown select">
+              <%= f.hidden_field :primary_language, id: 'primary_language', value: @kid.primary_language %>
               <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span class="value"><%= @kid.primary_language || @languages.first[0] %></span>
                 <span class="caret"></span>
@@ -108,21 +108,19 @@
             <div id="parents">
               <%= render 'parents', f:f %>
             </div>
-            <%= link_to 'javascript:;', class:'control-label add-template', data: {target: '#add_parent', location: 'before'} do %>
+            <%= link_to 'javascript:;', class:'control-label add-template hidden', data: {target: '#add_parent', location: 'before'} do %>
               Add Parent
             <% end %>
           </div>
         </div>
         <div class="row text-center actions">
-          <div class="col-md-<%= @kid.persisted? ? '7' : '6' %> col-md-offset-3">
-            <%= link_to 'Cancel', dashboard_classroom_path(classroom: @kid.classroom.try(:id)), class: 'btn btn-large btn-warning btn-wide btn-simple' %>
-            <% if @kid.persisted? %>
-              <%= link_to 'Delete', @kid, method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
-              <%= f.submit 'Confirm', class: 'btn btn-info btn-large btn-wide btn-simple' %>
-            <% else %>
-              <%= f.submit 'Create Kid', class: 'btn btn-info btn-large btn-wide btn-simple' %>
-            <% end %>
-          </div>
+          <%= link_to 'Cancel', dashboard_classroom_path(classroom: @kid.classroom.try(:id)), class: 'btn btn-large btn-warning btn-wide btn-simple' %>
+          <% if @kid.persisted? %>
+            <%= link_to 'Delete', @kid, method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+            <%= f.submit 'Confirm', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+          <% else %>
+            <%= f.submit 'Create Kid', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+          <% end %>
         </div>
       </div>
     </div>
@@ -131,20 +129,26 @@
 
 <script>
   $(document).ready(function(){
-    $('.dropdown.select ul > li > a').click(function(){
-      var id = $(this).data('id');
-      $(this).closest('.form-group').find('input[type="hidden"]').val(id);
-    });
-
-    var location = parseInt(<%= @first_new_parent %>);
     $(document).on('click', 'a.add-template', function(){
-      var el = $(this);
-      $('#parents .template-body').eq(location).removeClass('hidden');
-      location++;
+      var templates = $('#parents .template-body');
+      if (templates.filter(':visible').length < 2) {
+        t = templates.filter('.hidden').first();
+        t.find('input').attr('disabled', false);
+        t.removeClass('hidden');
+      }
+      $(this).toggleClass('hidden', templates.filter(':visible').length >= 2)
     });
 
     $(document).on('click', 'a.remove-template', function() {
-      $(this).closest('.template-body').remove();
+      var parent = $(this).closest('.template-body');
+      if (parent.hasClass('new-record'))
+        parent.addClass('hidden').find('input').attr('disabled', true);
+      else
+        parent.remove();
+      $('a.add-template').removeClass('hidden');
     });
+
+    if ($('#parents .template-body:visible').length < 2)
+      $('a.add-template').removeClass('hidden');
   });
 </script>

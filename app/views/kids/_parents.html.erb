@@ -1,6 +1,6 @@
-<% @first_new_parent = @kid.family_relationships.index{|family_rel| family_rel.new_record? } %>
 <% @kid.family_relationships.each_with_index do |family_rel, index| %>
-  <div class="template-body <%= family_rel.new_record? ? 'hidden' : '' %>" id="parent#<%= family_rel.parent.id %>">
+  <% start_hidden = family_rel.new_record? && family_rel.errors.none? %>
+  <div class="template-body <%= 'hidden' if start_hidden %> <%= 'new-record' if family_rel.new_record? %>" id="parent#<%= family_rel.parent.id %>">
     <%= f.fields_for :family_relationships, family_rel do |fr| %>
       <%= fr.fields_for :parent do |parent| %>
         <div class="kmSection">
@@ -8,8 +8,8 @@
           <div class="form-group">
             <label class="col-sm-4 control-label text-main">Email:</label>
             <div class="col-sm-8">
-              <%= parent.hidden_field :role_id, value: Role.find_by(name: 'Parent').id %>
-              <%= parent.text_field :email, placeholder: 'email@example.com', class: 'form-control' %>
+              <%= parent.hidden_field :role_id, value: Role.find_by(name: 'Parent').id, disabled: start_hidden %>
+              <%= parent.text_field :email, placeholder: 'email@example.com', class: 'form-control', disabled: start_hidden %>
             </div>
             <div class="off-field off-right">
               <div class="col-sm-12">
@@ -27,14 +27,14 @@
           <div class="form-group">
             <label class="col-sm-4 control-label text-main">First Name:</label>
             <div class="col-sm-8">
-              <%= parent.text_field :first_name, placeholder: 'First Name', class: 'form-control' %>
+              <%= parent.text_field :first_name, placeholder: 'First Name', class: 'form-control', disabled: start_hidden %>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-4 control-label text-main">Last Name:</label>
             <div class="col-sm-8">
-              <%= parent.text_field :last_name, placeholder: 'Last Name', class: 'form-control' %>
+              <%= parent.text_field :last_name, placeholder: 'Last Name', class: 'form-control', disabled: start_hidden %>
             </div>
           </div>
 
