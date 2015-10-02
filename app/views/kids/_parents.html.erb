@@ -1,6 +1,5 @@
-<% @first_new_parent = @kid.family_relationships.index{|family_rel| family_rel.new_record? } %>
 <% @kid.family_relationships.each_with_index do |family_rel, index| %>
-  <div class="template-body <%= family_rel.new_record? ? 'hidden' : '' %>" id="parent#<%= family_rel.parent.id %>">
+  <div class="template-body <%= family_rel.new_record? ? 'hidden new-record' : '' %>" id="parent#<%= family_rel.parent.id %>">
     <%= f.fields_for :family_relationships, family_rel do |fr| %>
       <%= fr.fields_for :parent do |parent| %>
         <div class="kmSection">

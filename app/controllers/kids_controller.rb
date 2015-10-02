@@ -34,12 +34,12 @@ class KidsController < ApplicationController
   def new
     @kid = Kid.new
     @kid.classroom = Classroom.find(params[:classroom]) if params.has_key? :classroom
-    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
+    2.times{@kid.family_relationships.build.build_parent}
   end
 
   # GET /kids/1/edit
   def edit
-    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
+    2.times{@kid.family_relationships.build.build_parent}
   end
 
   ## GET /kids/1/report
