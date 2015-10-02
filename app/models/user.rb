@@ -14,6 +14,8 @@ class User < ActiveRecord::Base
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
+  validates_presence_of :classroom, if: :teacher?
+
   before_save :assign_role, :set_school
   after_create :welcome_email
   after_save :welcome_email, :if => :email_changed?
