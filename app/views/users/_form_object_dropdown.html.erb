@@ -3,6 +3,7 @@
   <%= f.label "#{type}_id", type.to_s.capitalize,class: "col-sm-4 control-label text-main" %>
   <% if @user.new_record? && object || (object && object.is_a?(Role) && params[:edit_role] == 'false') %>
     <div class="col-sm-8">
+      <%= f.hidden_field "#{type}_id", value: object.try(:id) %>
       <label class="col-sm-4 control-label text-main accessToken"><%= object.name %></label>
     </div>
   <% else %>
