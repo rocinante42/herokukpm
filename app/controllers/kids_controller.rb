@@ -2,7 +2,6 @@ class KidsController < ApplicationController
   before_action :authenticate_user!
   before_action :prepare_reports_data, only: [:reports, :download_report]
   before_action :set_available_values_for_kid, only: [:new, :edit]
-  before_action :clear_empty_parents, only: [:create, :update]
   load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:result]
 
@@ -305,7 +304,4 @@ class KidsController < ApplicationController
       @classrooms.unshift([nil, 'Choose Classroom'])
     end
 
-    def clear_empty_parents
-      params[:kid][:family_relationships_attributes].delete_if{|index, fr| fr[:parent_attributes][:email].blank?} if params[:kid][:family_relationships_attributes]
-    end
 end
