@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_available_classrooms, only: [:activities, :dashboard_classroom]
-  before_action :set_available_data, only: [:new, :create, :edit, :update_classrooms]
+  before_action :set_available_data, only: [:new, :create, :edit, :update, :update_classrooms]
   helper_method :set_classrooms
   load_and_authorize_resource
 
@@ -37,7 +37,7 @@ class UsersController < ApplicationController
     @user.classroom = Classroom.find_by(id:user_params[:classroom_id])
     respond_to do |format|
       if @user.save
-        format.html { redirect_to dashboard_classroom_path, notice: 'User was successfully created.' }
+        format.html { redirect_to dashboard_classroom_path(classroom: @user.classroom), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         set_classrooms

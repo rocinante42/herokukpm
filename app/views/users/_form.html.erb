@@ -53,15 +53,13 @@
       </div>
     </div>
     <div class="row text-center actions">
-      <div class="col-md-<%= @user.persisted? ? '7' : '6' %> col-md-offset-3">
-        <%= link_to 'Cancel', users_admin_index_path, class: 'btn btn-large btn-warning btn-wide btn-simple' %>
-        <% if @user.persisted? %>
-          <%= link_to 'Delete', users_admin_path(@user), method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
-          <%= f.submit 'Confirm', class: 'btn btn-info btn-large btn-wide btn-simple' %>
-        <% else %>
-          <%= f.submit 'Create User', class: 'btn btn-info btn-large btn-wide btn-simple' %>
-        <% end %>
-      </div>
+      <%= link_to 'Cancel', users_admin_index_path, class: 'btn btn-large btn-warning btn-wide btn-simple' %>
+      <% if @user.persisted? %>
+        <%= link_to 'Delete', users_admin_path(@user), method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+        <%= f.submit 'Confirm', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% else %>
+        <%= f.submit 'Create User', class: 'btn btn-info btn-large btn-wide btn-simple' %>
+      <% end %>
     </div>
   <% end %>
 </div>

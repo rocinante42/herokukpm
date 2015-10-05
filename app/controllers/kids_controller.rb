@@ -2,7 +2,6 @@ class KidsController < ApplicationController
   before_action :authenticate_user!
   before_action :prepare_reports_data, only: [:reports, :download_report]
   before_action :set_available_values_for_kid, only: [:new, :edit]
-  before_action :clear_empty_parents, only: [:create, :update]
   load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:result]
 
@@ -34,12 +33,12 @@ class KidsController < ApplicationController
   def new
     @kid = Kid.new
     @kid.classroom = Classroom.find(params[:classroom]) if params.has_key? :classroom
-    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
+    2.times{@kid.family_relationships.build.build_parent}
   end
 
   # GET /kids/1/edit
   def edit
-    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
+    2.times{@kid.family_relationships.build.build_parent}
   end
 
   ## GET /kids/1/report
@@ -305,7 +304,4 @@ class KidsController < ApplicationController
       @classrooms.unshift([nil, 'Choose Classroom'])
     end
 
-    def clear_empty_parents
-      params[:kid][:family_relationships_attributes].delete_if{|index, fr| fr[:parent_attributes][:email].blank?} if params[:kid][:family_relationships_attributes]
-    end
 end
