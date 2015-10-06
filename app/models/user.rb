@@ -63,6 +63,17 @@ class User < ActiveRecord::Base
     end
   end
 
+  def can_change? obj
+    case obj.to_s.underscore.to_sym
+    when :school
+      return self.admin?
+    when :classroom, :role
+      return self.admin? || self.teacher_admin?
+    else
+      false
+    end
+  end
+
   def welcome_email
     UserMailer.welcome_email(self).deliver
   end
