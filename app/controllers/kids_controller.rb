@@ -289,9 +289,9 @@ class KidsController < ApplicationController
       @languages = 
                  {
                     'Choose language' => nil,
-                    'English' => 'English',
                     'Spanish' => 'Spanish',
-                    'Portuguese' => 'Portuguese'
+                    'English' => 'English',
+                    'Other' => nil
                  }
       if current_user.admin?
         classrooms = Classroom.all

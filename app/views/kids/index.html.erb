@@ -76,8 +76,7 @@
         <tr class="text-center v-middle">
           <td class="minimal">
             <%= link_to kid do %>
-              <% avatar = kid.male? ? 'boy_avatar.png' : 'girl_avatar.jpg' %>
-              <%= image_tag avatar %>
+              <%= image_tag kid_avatar_for kid %>
             <% end %>
           </td>
           <td><%= kid.full_name %></td>

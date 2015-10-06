@@ -69,7 +69,7 @@
             <div class="dropdown select">
               <%= f.hidden_field :gender, id: 'gender', value: @kid.gender %>
               <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @kid.persisted? ? @kid.humanize_gender : @genders.first[0] %></span>
+                <span class="value"><%= @kid.persisted? ? @kid.humanize_gender : @genders.keys.first %></span>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
@@ -89,10 +89,9 @@
         <div class="form-group">
           <label class="col-sm-4 control-label text-main">Primary Language</label>
           <div class="col-sm-8">
-            <div class="dropdown select">
-              <%= f.hidden_field :primary_language, id: 'primary_language', value: @kid.primary_language %>
+            <div class="dropdown select" data-target='primary_language'>
               <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @kid.primary_language || @languages.first[0] %></span>
+                <span class="value"><%= @kid.primary_language.present? ? @kid.primary_language : @languages.keys.first %></span>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
@@ -101,6 +100,11 @@
                 <% end %>
               </ul>
             </div>
+          </div>
+        </div>
+        <div class="form-group hidden" id="custom_language">
+          <div class="col-sm-8 col-sm-offset-4">
+            <%= f.text_field :primary_language, id: 'primary_language', value: @kid.primary_language, placeholder: 'Choose Language', class: 'form-control' %>
           </div>
         </div>
         <div class="form-group" id="add_parent">
@@ -150,5 +154,9 @@
 
     if ($('#parents .template-body:visible').length < 2)
       $('a.add-template').removeClass('hidden');
+
+    $(document).on('click', '.dropdown[data-target="primary_language"] li a', function(){
+      $('#custom_language').toggleClass('hidden', !$(this).closest('li').filter(':last-child').length);
+    });
   });
 </script>
