@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     @user = User.new
     @user.role = Role.find_by(name: params[:role])
     @user.classroom = Classroom.find_by(id:params[:classroom])
+    @user.school = current_user.school if current_user.teacher_admin?
     set_classrooms
   end
 
