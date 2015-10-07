@@ -13,7 +13,7 @@
       <% end %>
     </div>
     <div class="col-sm-3">
-      <% items = {'Gender:' => "#{@kid.gender ? 'Male' : 'Female'}", 'Age:' => "#{@kid.age}", 'Primary Language:' => "#{@kid.primary_language}", 'Access Token:' => "#{@kid.access_token}" } %>
+      <% items = {'Gender:' => "#{@kid.humanize_gender}", 'Age:' => "#{@kid.age}", 'Primary Language:' => "#{@kid.primary_language}", 'Access Token:' => "#{@kid.access_token}" } %>
       <% items.each do |title, value| %>
         <span><%= title %></span>
         <p class="font-xlarge text-main"><%= raw value %></p>
