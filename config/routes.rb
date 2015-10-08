@@ -32,6 +32,7 @@ Rails.application.routes.draw do
       get :games
       post :result
       get :download_report
+      post :reset_access_token
     end
   end
 

@@ -19,8 +19,10 @@
         <% if @kid.persisted? %>
           <div class="form-group">
             <%= f.label :access_token, "Access Token", class: "col-sm-4 control-label text-main" %>
-            <div class="col-sm-8">
-              <%= f.label :access_token, @kid.access_token, class: "col-sm-4 control-label text-main accessToken"  %>
+            <div class="col-sm-8 resetToken">
+              <%= f.label :access_token, @kid.access_token, class: "control-label text-main v-middle" %>
+              &nbsp;&nbsp;
+              <%= link_to "Change ID", reset_access_token_kid_path(@kid), method: :post, remote: true, class: "btn btn-info btn-wide btn-simple" %>
             </div>
           </div>
         <% end %>
@@ -28,7 +30,7 @@
           <div class="form-group">
             <label class="col-sm-4 control-label text-main">Classroom</label>
             <div class="col-sm-8">
-              <label class="col-sm-4 control-label text-main accessToken"><%= @kid.classroom.try(:name) %></label>
+              <label class="col-sm-4 control-label text-main"><%= @kid.classroom.try(:name) %></label>
             </div>
           </div>
         <% else %>
@@ -158,5 +160,10 @@
     $(document).on('click', '.dropdown[data-target="primary_language"] li a', function(){
       $('#custom_language').toggleClass('hidden', !$(this).closest('li').filter(':last-child').length);
     });
+
+    $('.resetToken').on('ajax:success', function(e, data, status){
+      $(this).find('label').text(data.kid.access_token);
+    });
+
   });
 </script>
