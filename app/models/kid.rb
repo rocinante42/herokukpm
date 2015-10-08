@@ -81,7 +81,7 @@ class Kid < ActiveRecord::Base
 
   def generate_access_token
     begin
-      self.access_token = classroom.school.name.split.join + rand(100..999).to_s
+      self.access_token = classroom.school.name.split.join + rand(1000..9999).to_s
     end while self.class.exists?(access_token: access_token)
   end
 
