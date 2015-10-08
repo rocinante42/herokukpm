@@ -22,21 +22,27 @@
   }
 }
 
-$row-height: 40px;
-$mixed-row-height: 80px;
-
-.apt-body {
-  .apt-y-axis {line-height:$row-height;}
-  .grid {margin-bottom:$row-height / 2; background-size: 1px $row-height;}
-  .apt-bar {bottom:-$row-height / 2;}
-  &.mixed {
-    $total-bar-width: 10px;
-    .apt-y-axis {line-height:$mixed-row-height;}
-    .grid {height:$mixed-row-height * 5; margin-bottom:$mixed-row-height / 2; background-size: 1px $mixed-row-height; }
-    .apt-bar {left:10px + $total-bar-width; bottom:-$mixed-row-height / 2;}
-    .apt-total-bar {height:$mixed-row-height * 5 + 1; bottom:-$mixed-row-height / 2; border-left:solid $total-bar-width $color-brand-fade;}
+@mixin apt-responsive($min_height, $row-height, $mixed-row-height){
+  @media (min-height: $min-height) {
+    .apt-body {
+      .apt-y-axis {line-height:$row-height;}
+      .grid {margin-bottom:$row-height / 2; background-size: 1px $row-height;}
+      .apt-bar {bottom:-$row-height / 2;}
+      &.mixed {
+        $total-bar-width: 10px;
+        .apt-y-axis {line-height:$mixed-row-height;}
+        .grid {height:$mixed-row-height * 5; margin-bottom:$mixed-row-height / 2; background-size: 1px $mixed-row-height; }
+        .apt-bar {left:10px + $total-bar-width; bottom:-$mixed-row-height / 2;}
+        .apt-total-bar {height:$mixed-row-height * 5 + 1; bottom:-$mixed-row-height / 2; border-left:solid $total-bar-width $color-brand-fade;}
+      }
+    }
   }
 }
+
+@include apt-responsive(500px, 20px, 40px);
+@include apt-responsive(625px, 25px, 50px);
+@include apt-responsive(750px, 30px, 60px);
+@include apt-responsive(950px, 40px, 80px);
 
 .apt-col:hover {background: rgba(0, 0, 0, 0.1);
   .grid {opacity:1;}
