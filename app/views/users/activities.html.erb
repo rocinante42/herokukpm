@@ -110,15 +110,14 @@
     </table>
 
   </div>
-
   <div class="row actions text-right">
-    <h4>Set Time for Selected Bubble Groups:</h4>
+    <h4 class="col-sm-offset-4">Set Time for Selected Bubble Groups:</h4>
     <% if @current_classroom.assignments.active.any? %>
-      <div class="activities status">
+      <div class="activities status  col-sm-6">
         Activities are selected
       </div>
     <% else %>
-      <div class="activities status">
+      <div class=" noactivities status col-sm-8">
         No activities are selected
       </div>
     <% end %>

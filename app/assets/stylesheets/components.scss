@@ -167,4 +167,29 @@ table.table.fit.schools tr{height:50px; border-bottom: 1px solid #dddddd;}
 .dropdown.simple.selected > a{text-align:center; background: #167f3a;}
 .dropdown.simple.bulkSelectTime{text-align:left;}
 .dropdown.simple.bulkSelectTime > a{ padding-top: 5px; padding-bottom: 5px; border-radius: 100px;}
-.activities.status{float:left;}
+.status{
+  float: left;
+  background: #e2e2e2;
+  line-height: 2em;
+  text-align: center;
+  border-radius: 15px;
+
+
+}
+.activities{
+  color: green;
+  border: 1px solid green;
+}
+.noactivities{
+  color: black;
+  border: 1px solid grey;
+}
+.timeLimit{
+  margin: 0 15px 0 0;
+}
+.row.actions.text-right > h4{
+  text-align: center;
+  padding-bottom: 15px;
+  margin-right: -38px;
+}
+
