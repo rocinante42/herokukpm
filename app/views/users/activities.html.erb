@@ -14,6 +14,7 @@
   <div class="row">
     <%= flash_messages %>
     <%= form_tag activities_path, method: :get do %>
+      <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
       <table class="table solid fit">
         <tbody>
           <tr class="col-pad">
@@ -32,9 +33,6 @@
               <td class="minimal"></td>
             <% end %>
             <td></td>
-            <td class="minimal" colspan="2">
-              <h4>Set Time for All Bubble Groups:</h4>
-            </td>
           </tr>
           <tr>
             <% unless current_user.teacher? %>
@@ -44,23 +42,6 @@
               </td>
             <% end %>
             <td></td>
-            <td class="minimal">
-              <div class="dropdown simple medium select timeLimit">
-                <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <span class="value"><%= @time_options.first[0] %></span>
-                  <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                  <% @time_options.each do |to| %>
-                    <li><a href="javascript:" data-time-limit="<%= to[1] %>"><%= to[0] %></a></li>
-                  <% end %>
-                </ul>
-                <%= hidden_field_tag :classroom_type, @current_classroom_type.id %>
-              </div>
-            </td>
-            <td class="minimal">
-              <%= link_to 'Set', 'javascript:', onclick: "$('#bulk_submit_all').submit();return false;", class: 'btn btn-warning btn-simple'%>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -68,19 +49,14 @@
   </div>
 </div>
 
-<%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_all' do %>
-  <%= hidden_field_tag :classroom_id, @current_classroom.id %>
-  <%= hidden_field_tag :time_limit, nil %>
-  <%= hidden_field_tag :all %>
-<% end %>
-
 <%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_selected' do %>
   <%= hidden_field_tag :classroom_id, @current_classroom.id %>
+  <%= hidden_field_tag :time_limit, nil %>
   <% @total_assignments_hash.each do |bg_id, info| %>
     <% bg = info[:bubble_group] %>
     <% assignment = info[:global_assignment] %>
     <%= hidden_field_tag 'bubble_groups[]', bg.id %>
-    <%= hidden_field_tag 'time_limit[]', nil, id: "time_limit_#{bg.id}" %>
+    <%= hidden_field_tag 'selected[]', nil, id: "selected_#{bg.id}" %>
   <% end %>
 <% end %>
 
@@ -106,17 +82,24 @@
               <div class="btn-multi center-block">
                 <div class="extra-action">
                   <div class="extra-container">
-                    <div class="dropdown simple select bulkTime" data-target="time_limit_<%= bg_id %>">
-                      <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="value"><%= @time_options.detect{|to| to[1] == info[:global_assignment].time_limit}[0] || @time_options.first[0] %></span>
-                        <span class="caret"></span>
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-right">
-                        <% @time_options.each do |to| %>
-                          <li><a href="javascript:" data-id="<%= to[1] %>"><%= to[0] %></a></li>
-                        <% end %>
-                      </ul>
-                    </div>
+                    <% unless info[:global_assignment].active? %>
+                      <div class="dropdown simple select bulkTime" data-target="selected_<%= bg_id %>">
+                        <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <span class="value"><%= info[:global_assignment].humanized_status %></span>
+                          <span class="caret"></span>
+                        </a>
+                          <ul class="dropdown-menu dropdown-menu-right">
+                            <li><a href="javascript:" data-id="">Not Selected</a></li>
+                            <li><a href="javascript:" data-id="yes">Selected</a></li>
+                          </ul>
+                      </div>
+                    <% else %>
+                      <div class="dropdown simple select selected bulkTime">
+                        <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <span class="value"><%= info[:global_assignment].humanized_status %></span>
+                        </a>
+                      </div>
+                    <% end %>
                   </div>
                 </div>
               </div>
@@ -124,33 +107,32 @@
           <% end %>
         </tr>
       </tbody>
-      <thead>
-        <tr class="no-border-top">
-          <th class="text-center">Students</th>
-          <th colspan="999"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @current_classroom.students.each do |kid| %>
-          <tr class="text-center v-middle">
-            <td class="text-center">
-              <span class="text-main font-large"><%= kid.full_name %></span>
-            </td>
-            <% BubbleGroup.all.find_each do |bg| %>
-              <% next unless @current_classroom_type.bubble_groups.include? bg %>
-              <% assignment = @total_assignments_hash[bg.id][:kid_assignments][kid.id] %>
-                <td>
-                  <%= render 'assignments/new_form', assignment: assignment, kid: kid, bg:bg %>
-                </td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
     </table>
 
   </div>
 
   <div class="row actions text-right">
+    <h4>Set Time for Selected Bubble Groups:</h4>
+    <% if @current_classroom.assignments.active.any? %>
+      <div class="activities status">
+        Activities are selected
+      </div>
+    <% else %>
+      <div class="activities status">
+        No activities are selected
+      </div>
+    <% end %>
+    <div class="dropdown simple medium select timeLimit bulkSelectTime">
+      <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="value"><%= @time_options.first[0] %></span>
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <% @time_options.each do |to| %>
+          <li><a href="javascript:" data-time-limit="<%= to[1] %>"><%= to[0] %></a></li>
+        <% end %>
+      </ul>
+    </div>
     <% if @current_classroom.assignments.active.any? %>
       <%= link_to 'Reset', bulk_update_assignments_path(classroom_id: @current_classroom, status: Assignment::NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
     <% end %>
@@ -167,7 +149,7 @@
     initDropdownSelect(<%= @classroom_hash.to_json.html_safe %>);
     $('.dropdown.select.timeLimit ul > li > a').click(function(){
       var time_limit = $(this).data('time-limit');
-      $('#bulk_submit_all #time_limit').val(time_limit);
+      $('#bulk_submit_selected #time_limit').val(time_limit);
     });
   });
 </script>
