@@ -11,7 +11,7 @@
   .grid {position:relative; background: url(asset_path('apt-grid.png')) repeat; opacity:0.7;}
   .apt-bar {position:absolute; left:10px; right:10px; background:rgba(0, 185, 185, 0.8); transition: background 0.2s ease;}
   .apt-x-axis {border-top:solid 7px #666666; transition: background, color 0.2s ease;}
-  .apt-tip {visibility:hidden; margin-top:-20px; margin-bottom:-20px; z-index:-1; transition: margin 0.2s ease;}
+  .apt-tip {visibility:hidden; padding: 20px 0; margin-top:-20px; margin-bottom:-20px; z-index:-1; transition: margin 0.2s ease;}
   &.mixed {
     .grid {position:relative; background: url(asset_path('apt-grid-mixed.png')) repeat;}
     .apt-total-bar {position:absolute; left:10px; right:10px; border-top:solid 2px $color-brand-fade; transition: background 0.2s ease;
@@ -26,20 +26,25 @@
   @media (min-height: $min-height) {
     .apt-body {
       .apt-y-axis {line-height:$row-height;}
-      .grid {margin-bottom:$row-height / 2; background-size: 1px $row-height;}
+      .grid {height: $row-height * 10; margin-bottom:$row-height / 2; background-size: auto $row-height;}
       .apt-bar {bottom:-$row-height / 2;}
       &.mixed {
         $total-bar-width: 10px;
         .apt-y-axis {line-height:$mixed-row-height;}
-        .grid {height:$mixed-row-height * 5; margin-bottom:$mixed-row-height / 2; background-size: 1px $mixed-row-height; }
+        .grid {height:$mixed-row-height * 5; margin-bottom:$mixed-row-height / 2; background-size: auto $mixed-row-height; }
         .apt-bar {left:10px + $total-bar-width; bottom:-$mixed-row-height / 2;}
         .apt-total-bar {height:$mixed-row-height * 5 + 1; bottom:-$mixed-row-height / 2; border-left:solid $total-bar-width $color-brand-fade;}
+      }
+      &.apt-dynamic {
+        .grid {height: auto;
+          .grid-v-space {width:1px; height: $row-height;}
+        }
       }
     }
   }
 }
 
-@include apt-responsive(500px, 20px, 40px);
+@include apt-responsive(0px, 20px, 40px);
 @include apt-responsive(625px, 25px, 50px);
 @include apt-responsive(750px, 30px, 60px);
 @include apt-responsive(950px, 40px, 80px);
@@ -55,6 +60,8 @@ $arrow-size: 10px;
 $padding: 10px;
 .apt-tip {position:absolute; width:100%;
   .apt-tip-content {position:relative; margin:0 20px; padding:$padding; border-radius:10px; background:$color-brand-fade; color:$color-inv; box-shadow:0 0 20px #999;}
+  &.top {bottom:100%;}
+  &.bottom {top:0;}
   &.top .apt-tip-content:after, &.bottom .apt-tip-content:before {position:absolute; content:''; left:50%; margin-left:-$arrow-size;}
   &.top .apt-tip-content:after {margin-top:$padding; border:solid $arrow-size $color-brand-fade; border-color: $color-brand-fade transparent transparent;}
   &.bottom .apt-tip-content:before {margin-top:-2 * $arrow-size - $padding; border:solid $arrow-size $color-brand-fade; border-color:transparent transparent $color-brand-fade;}
