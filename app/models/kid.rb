@@ -83,6 +83,10 @@ class Kid < ActiveRecord::Base
     end while self.class.exists?(access_token: access_token)
   end
 
+  def as_json(options={})
+    {id: self.id, first_name: self.first_name, last_name: self.last_name}
+  end
+
   private
 
   def set_token_expiration_time
