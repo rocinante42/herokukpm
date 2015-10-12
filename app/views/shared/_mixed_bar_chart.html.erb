@@ -1,7 +1,4 @@
 <% rows_count = 5 %>
-<% row_height = 80 %>
-<% titles = categories.keys %>
-<% total_grid_height = rows_count * row_height %>
 
 <div class="row apt-body mixed">
   <div class="col-md-2 font-xxlarge text-right apt-y-axis">
@@ -14,10 +11,10 @@
       <% columns_count = categories.values.length %>
       <% categories.each do |category, values| %>
         <div class="col-md-<%= 12 / columns_count %> apt-col">
-          <div class="grid" style="height: <%= total_grid_height %>px;">
+          <div class="grid">
             <% percent = values[:percent] %>
             <div class="apt-bar" style="height: <%= percent %>%;"></div>
-            <div class="apt-total-bar" style="height:<%= total_grid_height + 1 %>px;">
+            <div class="apt-total-bar">
               <div class="apt-label">
                 <span class="font-normal">&nbsp;&nbsp;<%= percent.round(0) %>%</span>
               </div>
