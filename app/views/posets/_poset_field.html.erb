@@ -1,0 +1,20 @@
+<% bg_poset = @bubble_group.send("#{type}_poset") %>
+<div class="form-group">
+  <%= f.label "#{type}_poset_id", "#{type.capitalize} Poset", class: "col-sm-4 control-label text-main" %>
+  <div class="col-sm-8">
+    <div class="dropdown select">
+      <% posets = Poset.all %>
+      <% posets.unshift(OpenStruct.new(id:nil, name:nil)) %>
+      <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="value"><%= bg_poset.try(:name) %></span>
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <% posets.each do |poset| %>
+          <li><a href="javascript:" data-id="<%= poset.id %>"><%= poset.name %></a></li>
+        <% end %>
+      </ul>
+      <%= f.hidden_field :backward_poset_id, value: bg_poset.try(:id) %>
+    </div>
+  </div>
+</div>
