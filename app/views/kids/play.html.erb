@@ -57,7 +57,7 @@
 <% else %>
   <h2>Select a Bubble Group to play:</h2>
   <ul>
-    <% BubbleGroup.all.each do |bubble_group| %>
+    <% @kid.available_bubble_groups.each do |bubble_group| %>
       <li><%= link_to bubble_group.name, play_kid_path(@kid, bubble_group_id: bubble_group.id) %></li>
     <% end %>
   </ul>
