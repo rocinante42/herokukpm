@@ -22,7 +22,7 @@
         <div class="kmSection">
           <h3>Select from existing classroom types</h3>
           <div class="form-group">
-            <%= f.label :classroom_type_ids, "Full Poset", class: "col-sm-4 control-label text-main" %>
+            <%= f.label :classroom_type_ids, "Classroom Types", class: "col-sm-4 control-label text-main" %>
             <div class="col-sm-8">
               <%= f.collection_select :classroom_type_ids, ClassroomType.all, :id, :type_name, {}, {multiple: true, class: 'form-control'} %>
             </div>
