@@ -16,7 +16,7 @@ class Kid < ActiveRecord::Base
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
 
-  validates_presence_of :first_name, :last_name, :gender, :age, :primary_language
+  validates_presence_of :first_name, :last_name
   validates :classroom, has_classroom: true
 
   before_create :generate_access_token
@@ -77,13 +77,17 @@ class Kid < ActiveRecord::Base
     assignments.active.any? ? BubbleGroup.joins(:assignments).merge(assignments.active).uniq : classroom.bubble_groups
   end
 
-  private
-
   def generate_access_token
     begin
-      self.access_token = classroom.school.name.split.join + rand(100..999).to_s
+      self.access_token = classroom.school.name.split.join + rand(1000..9999).to_s
     end while self.class.exists?(access_token: access_token)
   end
+
+  def as_json(options={})
+    {id: self.id, first_name: self.first_name, last_name: self.last_name}
+  end
+
+  private
 
   def set_token_expiration_time
     self.token_expiration_time = DateTime.now + 5.minutes

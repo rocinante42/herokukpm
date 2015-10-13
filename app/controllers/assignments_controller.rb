@@ -40,19 +40,20 @@ class AssignmentsController < ApplicationController
 
   def bulk_submit
     classroom = Classroom.find(params[:classroom_id])
-    bubble_groups = params[:all] ? classroom.bubble_groups : classroom.bubble_groups.where(id: params[:bubble_groups])
-    time_limits = params[:all] ? Array.new(bubble_groups.count, params[:time_limit]) : params[:time_limit]
+    bubble_groups = classroom.bubble_groups.where(id: params[:bubble_groups])
+    time_limit = params[:time_limit]
+    selected = params[:selected]
 
-    if time_limits.all?(&:blank?)
+    if time_limit.blank?
       flash[:error] = "No time limit specified."
       redirect_to activities_path and return
     end
 
     bubble_groups.each_with_index do |bg, index|
-      next if time_limits[index].blank?
+      next if selected[index].blank?
       assignment = Assignment.where(bubble_group:bg, classroom:classroom).first_or_initialize
       assignment.status = Assignment::ACTIVE
-      assignment.time_limit = time_limits[index]
+      assignment.time_limit = time_limit
       assignment.save!
     end
     redirect_to :back

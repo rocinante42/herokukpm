@@ -247,6 +247,13 @@ class KidsController < ApplicationController
     end
   end
 
+  ## POST /kids/1/reset_access_token
+  def reset_access_token
+    @kid.generate_access_token
+    @kid.save
+    redirect_to action: :show, format: :json
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_kid
@@ -289,9 +296,9 @@ class KidsController < ApplicationController
       @languages = 
                  {
                     'Choose language' => nil,
-                    'English' => 'English',
                     'Spanish' => 'Spanish',
-                    'Portuguese' => 'Portuguese'
+                    'English' => 'English',
+                    'Other' => nil
                  }
       if current_user.admin?
         classrooms = Classroom.all

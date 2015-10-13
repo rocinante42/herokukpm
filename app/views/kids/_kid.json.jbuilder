@@ -6,7 +6,7 @@ if rec == 0
   json.extract! kid, :id
 else
   ## simple attrs
-  json.extract! kid, :id, :first_name, :last_name, :primary_language
+  json.extract! kid, :id, :first_name, :last_name, :primary_language, :access_token
 
   ## relationships
   if kid.classroom

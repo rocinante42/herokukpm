@@ -74,4 +74,8 @@ class Assignment < ActiveRecord::Base
   def update_all_assignments_statuses
     sub_assignments.update_all(status:status)
   end
+
+  def humanized_status
+    active? ? 'Selected' : 'Not Selected'
+  end
 end
