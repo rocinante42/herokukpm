@@ -159,7 +159,7 @@ class KidsController < ApplicationController
 
     ## build a bubble group status for each bubble group, if needed, and assemble all of the active bubbles
     available = []
-    BubbleGroup.all.each do |bubble_group|
+    @kid.available_bubble_groups.each do |bubble_group|
       bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble_group)
       if bubble_group_status.active?
         available += bubble_group_status.available_bubbles
@@ -199,7 +199,7 @@ class KidsController < ApplicationController
 
     ## build a bubble group status for each bubble group, if needed, and assemble all of the active bubbles
     available = []
-    BubbleGroup.all.each do |bubble_group|
+    @kid.available_bubble_groups.each do |bubble_group|
       bubble_group_status = @kid.bubble_group_statuses.find_or_create_by(bubble_group: bubble_group)
       if bubble_group_status.active?
         available += bubble_group_status.available_bubbles
