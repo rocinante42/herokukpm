@@ -7,4 +7,8 @@ class Edge < ActiveRecord::Base
 
   scope :exiting, ->(bubble) { where(source: bubble) }
   scope :entering, ->(bubble) { where(destination: bubble) }
+
+  scope :in_category, ->(cat = nil) { cat ? joins('INNER JOIN "bubbles" "sources" ON "sources"."id" = "edges"."source_id" INNER JOIN "bubbles" "destinations" ON "destinations"."id" = "edges"."destination_id"')
+                                              .where(sources: {bubble_category_id: cat}, destinations: {bubble_category_id: cat}) : all }
+
 end

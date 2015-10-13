@@ -7,24 +7,24 @@ class BubbleStatus < ActiveRecord::Base
   scope :passed, ->{ where(passed: true) }
   scope :failed, ->{ where(passed: false) }
 
-  def predecessors(poset = nil)
+  def predecessors(poset = nil, cat = nil)
     poset ||= self.bubble_group_status.current_poset
-    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.predecessors(poset))
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.predecessors(poset, cat))
   end
 
-  def successors(poset = nil)
+  def successors(poset = nil, cat = nil)
     poset ||= self.bubble_group_status.current_poset
-    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.successors(poset))
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.successors(poset, cat))
   end
 
-  def downset(poset = nil)
+  def downset(poset = nil, cat = nil)
     poset ||= self.bubble_group_status.current_poset
-    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.downset(poset))
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.downset(poset, cat))
   end
 
-  def upset(poset = nil)
+  def upset(poset = nil, cat = nil)
     poset ||= self.bubble_group_status.current_poset
-    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.upset(poset))
+    self.bubble_group_status.bubble_statuses.where(bubble: self.bubble.upset(poset, cat))
   end
 
   def reset
@@ -36,5 +36,6 @@ class BubbleStatus < ActiveRecord::Base
     self.reset
     self.save!
   end
+
 end
 

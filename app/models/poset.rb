@@ -7,16 +7,16 @@ class Poset < ActiveRecord::Base
     BubbleGroup.where('full_poset_id = (?) OR forward_poset_id = (?) OR backward_poset_id = (?)', self, self, self).first
   end
 
-  def bubbles
-    Bubble.where(id: self.edges.pluck(:source_id, :destination_id).flatten.uniq)
+  def bubbles cat = nil
+    Bubble.where(id: self.edges.in_category(cat).pluck(:source_id, :destination_id).flatten.uniq)
   end
 
-  def minima
-    Bubble.where(id: self.edges.pluck(:source_id).uniq - self.edges.pluck(:destination_id).uniq)
+  def minima cat = nil
+    Bubble.where(id: self.edges.in_category(cat).pluck(:source_id).uniq - self.edges.in_category(cat).pluck(:destination_id).uniq)
   end
 
-  def maxima
-    Bubble.where(id: self.edges.pluck(:destination_id).uniq - self.edges.pluck(:source_id).uniq)
+  def maxima cat = nil
+    Bubble.where(id: self.edges.in_category(cat).pluck(:destination_id).uniq - self.edges.in_category(cat).pluck(:source_id).uniq)
   end
 
   def self.create_from_csv csv_file, bubbles, poset_params
