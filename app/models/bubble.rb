@@ -13,33 +13,35 @@ class Bubble < ActiveRecord::Base
 
   validates :name, uniqueness: { scope: :bubble_group_id }, presence: true
 
-  def predecessors(poset)
-    Bubble.where(id: poset.edges.entering(self).pluck(:source_id))
+  scope :in_category, ->(cat) { cat ? where(bubble_category_id: cat) : all }
+
+  def predecessors(poset, cat = nil)
+    Bubble.where(id: poset.edges.entering(self).in_category(cat).pluck(:source_id))
   end
 
-  def successors(poset)
-    Bubble.where(id: poset.edges.exiting(self).pluck(:destination_id))
+  def successors(poset, cat = nil)
+    Bubble.where(id: poset.edges.exiting(self).in_category(cat).pluck(:destination_id))
   end
 
-  def upset(poset)
+  def upset(poset, cat = nil)
     up = []
 
     tmp = [self.id]
     while tmp.length > 0
       up = up | tmp
-      tmp = poset.edges.where(source_id: tmp).pluck(:destination_id) - up
+      tmp = poset.edges.in_category(cat).where(source_id: tmp).pluck(:destination_id) - up
     end
 
     Bubble.where(id: up)
   end
 
-  def downset(poset)
+  def downset(poset, cat = nil)
     down = []
 
     tmp = [self.id]
     while tmp.length > 0
       down = down | tmp
-      tmp = poset.edges.where(destination_id: tmp).pluck(:source_id) - down
+      tmp = poset.edges.in_category(cat).where(destination_id: tmp).pluck(:source_id) - down
     end
 
     Bubble.where(id: down)

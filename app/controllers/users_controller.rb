@@ -166,7 +166,7 @@ class UsersController < ApplicationController
           ct.bubble_groups.each do |bg|
             @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name] = {}
             @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories] = {}
-            bg.bubble_categories.sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
+            (bg.bubble_categories & ct.bubble_categories).sort_by{|ct| ct.name.split('-').first.to_i}.each do |category|
               total_count = category.bubbles.count * cr.students.count
               passed_count = category.bubbles.joins(bubble_statuses: :bubble_group_status).where(bubble_statuses:{passed:true}, bubble_group_statuses:{kid_id:cr.students.pluck(:id)}).count.to_f
               @total_hash[ct_name][:classrooms][cr.id][:bubble_groups][bg.name][:categories][category.name] = {
