@@ -1,0 +1,13 @@
+<% object = @trigger.send(type) %>
+<div class="form-group">
+  <%= f.label "#{type}_id", type.to_s.titleize, class: "col-sm-4 control-label text-main" %>
+  <div class="col-sm-8">
+    <% select_class = type == :bubble ? 'bubbles' : 'bubbleGroups' %>
+    <% bubble_groups = BubbleGroup.all %>
+    <% options.unshift(OpenStruct.new(id:nil, name:nil)) %>
+    <div class="dropdown select <%= select_class %>">
+      <%= f.hidden_field "#{type}_id", value: object ? object.id : options.first.id %>
+      <%= render 'users/dropdown', object: object, options:options %>
+    </div>
+  </div>
+</div>
