@@ -1,25 +1,65 @@
 <%= render 'shared/section_title', title: 'View Kid' %>
 
 <div class="container kmSection">
+  <div class="row text-center">
+    <%= image_tag "student_avatar_medium.jpg", class: 'img-responsive center-block' %>
+  </div>
+  <% items = {
+    'Access Token:' => "#{@kid.access_token}",
+    'Classroom:' => "#{@kid.classroom ? (link_to @kid.classroom.name, @kid.classroom) : "None"}",
+    'First Name:' => "#{@kid.first_name}",
+    'Last Name:' => "#{@kid.last_name}",
+    'Gender:' => "#{@kid.humanize_gender}",
+    'Age:' => "#{@kid.age}",
+    'Primary Language:' => "#{@kid.primary_language}"
+  } %>
+  <div class="row text-left kmSection">
+    <div class="col-sm-6 col-sm-offset-3">
+      <table class="table solid">
+        <tbody>
+          <% items.each do |key, value| %>
+            <tr class="col-pad text-main">
+              <td></td>
+              <td class="font-xlarge minimal">
+                <%= raw key %>
+              </td>
+              <td class="minimal"></td>
+              <td class="font-xlarge equal">
+                <%= raw value %>
+              </td>
+            </tr>
+          <% end %>
+          <tr class="section">
+            <td></td>
+            <td colspan="3" class="fit-left">
+              <span class="font-xlarge">Parent Information</span>
+            </td>
+          </tr>
+          <% @kid.parents.each_with_index do |parent, parent_index| %>
+            <% parent_fields = {
+              'Email:' => "#{parent.email}",
+              'First Name:' => "#{parent.first_name}",
+              'Last Name:' => "#{parent.last_name}"
+            } %>
+            <% parent_fields.each do |key, value| %>
+              <tr class="col-pad text-main <%= 'subsection' if key == parent_fields.keys.first && parent_index > 0 %>">
+                <td></td>
+                <td class="font-xlarge minimal">
+                  <%= raw key %>
+                </td>
+                <td class="minimal"></td>
+                <td class="font-xlarge equal">
+                  <%= raw value %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
   <div class="row">
-    <div class="col-sm-2">
-      <%= image_tag "student_avatar_medium.jpg", class: 'img-responsive center-block' %>
-    </div>
-    <div class="col-sm-2">
-      <% items = {'Login:' => "#{@kid.login_id}", 'Classroom:' => "#{@kid.classroom ? (link_to @kid.classroom.name, @kid.classroom) : "None"}", 'First Name:' => "#{@kid.first_name}", 'Last Name:' => "#{@kid.last_name}" } %>
-      <% items.each do |title, value| %>
-        <span><%= title %></span>
-        <p class="font-xlarge text-main"><%= raw value %></p>
-      <% end %>
-    </div>
-    <div class="col-sm-3">
-      <% items = {'Gender:' => "#{@kid.humanize_gender}", 'Age:' => "#{@kid.age}", 'Primary Language:' => "#{@kid.primary_language}", 'Access Token:' => "#{@kid.access_token}" } %>
-      <% items.each do |title, value| %>
-        <span><%= title %></span>
-        <p class="font-xlarge text-main"><%= raw value %></p>
-      <% end %>
-    </div>
-    <div class="col-sm-5">
+    <div class="col-sm-6 col-sm-offset-3">
       <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
         <span>Status:</span>
         <p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p>
@@ -39,10 +79,11 @@
         <%= link_to 'Play', play_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
         <%= link_to 'Play Games', play_game_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
         <%= link_to 'Show Games', games_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
+        <br>
       <% end %>
-      <%= link_to 'Reports', reports_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
+      <%= link_to 'Back', dashboard_classroom_path(classroom: @kid.classroom), class: 'btn btn-danger btn-simple btn-wide' %>
       <%= link_to 'Edit', edit_kid_path(@kid), class: 'btn btn-warning btn-simple btn-wide' %>
-      <%= link_to 'Back', dashboard_classroom_path(classroom: @kid.classroom), class: 'btn btn-warning btn-simple btn-wide' %>
+      <%= link_to 'Reports', reports_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
     </div>
   </div>
 </div>

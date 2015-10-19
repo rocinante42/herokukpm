@@ -77,6 +77,8 @@ table.table {width:100%;
   > * > tr {
     &.col-pad > * {padding-left:10px; padding-right:10px;}
     > *.col-pad {padding-left:10px; padding-right:10px;}
+    &.section > * {padding-top:30px;}
+    &.subsection > * {padding-top:20px;}
     &.v-middle > * {vertical-align:middle;}
     &.v-top > * {vertical-align:top;}
     &.no-border-top > * {border-top:none;}
