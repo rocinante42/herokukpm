@@ -9,83 +9,81 @@
 </div>
 
 <div class="container">
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name),
+               html: { method: :put, class: 'form-horizontal form-classic form-vpad kmDeviseForm' }) do |f| %>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name),
-             html: { method: :put, class: 'form-horizontal form-classic form-vpad' }) do |f| %>
-  <%= devise_error_messages! %>
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="form-group">
-              <%= f.label :first_name, "First Name", class: "col-sm-4 control-label text-main" %>
-              <div class="col-sm-8">
-                <%= f.text_field :first_name, placeholder: 'First Name', class: 'form-control' %>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <%= f.label :last_name, "Last Name", class: "col-sm-4 control-label text-main" %>
-              <div class="col-sm-8">
-                <%= f.text_field :last_name, placeholder: 'Last Name', class: 'form-control' %>
-              </div>
-            </div>
-
-           <div class="form-group">
-             <%= f.label :direct_phone, "Direct Phone", class: "col-sm-4 control-label text-main" %>
-             <div class="col-sm-8">
-               <%= f.text_field :direct_phone, placeholder: 'Direct Phone', class: 'form-control' %>
-             </div>
-           </div>
-
-            <div class="form-group">
-              <%= f.label :email, "Email", class: "col-sm-4 control-label text-main" %>
-              <div class="col-sm-8">
-                <%= f.text_field :email, placeholder: 'Email', class: 'form-control' %>
-              </div>
-            </div>
-
-              <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-                <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-              <% end %>
-
-                <i class="col-sm-7 col-sm-offset-4">(leave blank if you don't want to change it)</i>
-                <div class="form-group">
-                   <%= f.label :password,"Password", class: "col-sm-4 control-label text-main" %>
-                   <div class="col-sm-8">
-                     <%= f.password_field :password,placeholder:"Password", autocomplete: "off", class: 'form-control' %>
-                   </div>
-                </div>
-
-                <div class="form-group confPasswordGroup">
-                  <%= f.label :password_confirmation,"Confirm password", class: "col-sm-4 control-label text-main confPassword" %><br />
-                  <div class="col-sm-8">
-                    <%= f.password_field :password_confirmation,placeholder:"Password", autocomplete: "off", class: 'form-control' %>
-                  </div>
-                </div>
-
-                <i class="col-sm-9 col-sm-offset-4">(we need your current password to confirm your changes)</i>
-                <div class="form-group">
-                <%= f.label :current_password, "Password", class: "col-sm-4 control-label text-main", for:"password" %>
-                  <div class="col-sm-8">
-                   <%= f.password_field :current_password, placeholder:"Password", autocomplete: "off",  class: 'form-control', id: "password" %>
-                  </div>
-                </div>
-                <br /><br />
-
-    <div class="row text-center actions">
-       <%= link_to "Back", :back, class: 'btn btn-large btn-warning btn-wide btn-simple btn-group' %>
-       <%= f.submit "Update", class: 'btn btn-info btn-large btn-wide btn-simple btn-group' %>
+    <div class="row errored">
+      <div class="col-md-6 col-md-offset-3">
+        <%= devise_error_messages! %>
+      </div>
     </div>
-<% end %>
-  <br>
-  <br>
-<h4 class="col-md-pull-3">Delete My Account</h4>
-  <div class="row text-center actions">
- <%= button_to "Delete", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
 
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+          <%= f.label :first_name, "First Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :first_name, placeholder: 'First Name', class: 'form-control' %>
+          </div>
+        </div>
 
+        <div class="form-group">
+          <%= f.label :last_name, "Last Name", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :last_name, placeholder: 'Last Name', class: 'form-control' %>
+          </div>
+        </div>
 
-  </div>
-  </div>
-  </div>
-  </div>
-  </div>
+        <div class="form-group">
+          <%= f.label :direct_phone, "Direct Phone", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :direct_phone, placeholder: 'Direct Phone', class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :email, "Email", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.text_field :email, placeholder: 'Email', class: 'form-control' %>
+          </div>
+        </div>
+
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+          <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <i class="col-sm-8 col-sm-offset-4">(leave blank if you don't want to change it)</i>
+        <div class="form-group">
+           <%= f.label :password,"Password", class: "col-sm-4 control-label text-main" %>
+           <div class="col-sm-8">
+             <%= f.password_field :password,placeholder:"Password", autocomplete: "off", class: 'form-control' %>
+           </div>
+        </div>
+
+        <div class="form-group confPasswordGroup">
+          <%= f.label :password_confirmation,"Confirm password", class: "col-sm-4 control-label text-main confPassword" %><br />
+          <div class="col-sm-8">
+            <%= f.password_field :password_confirmation, placeholder:"Password", autocomplete: "off", class: 'form-control' %>
+          </div>
+        </div>
+
+        <i class="col-sm-9 col-sm-offset-4">(we need your current password to confirm your changes)</i>
+        <div class="form-group">
+          <%= f.label :current_password, "Password", class: "col-sm-4 control-label text-main", for:"password" %>
+          <div class="col-sm-8">
+            <%= f.password_field :current_password, placeholder:"Password", autocomplete: "off",  class: 'form-control', id: "password" %>
+          </div>
+        </div>
+        <br><br>
+      </div>
+    </div>
+    <div class="row text-center actions">
+      <div class="col-md-6 col-md-offset-3">
+        <%= link_to "Back", :back, class: 'btn btn-large btn-warning btn-wide btn-simple btn-group' %>
+        <%= f.submit "Update", class: 'btn btn-info btn-large btn-wide btn-simple btn-group' %>
+        <h4 class="text-left kmSection">Delete My Account</h4>
+        <%= link_to "Delete", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      </div>
+    </div>
+  <% end %>
+</div>
