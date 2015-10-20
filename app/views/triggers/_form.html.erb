@@ -5,33 +5,17 @@
     <%= render 'shared/error_messages', object: @trigger %>
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
+        <%= render 'form_object_dropdown', f: f, type: :bubble_group, options: BubbleGroup.all %>
+        <%= render 'form_object_dropdown', f: f, type: :bubble, options: Bubble.all %>
 
         <div class="form-group">
-          <%= f.label :bubble_id, "Bubble", class: "col-sm-4 control-label text-main" %>
-          <div class="col-sm-8">
-            <div class="dropdown select">
-              <% bubbles = Bubble.all %>
-              <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @trigger.bubble ? @trigger.bubble.name : bubbles.first.name %></span>
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu dropdown-menu-right">
-                <% bubbles.each do |bubble| %>
-                  <li><a href="javascript:" data-id="<%= bubble.id %>"><%= bubble.name %></a></li>
-                <% end %>
-              </ul>
-              <%= f.hidden_field :bubble_id, value: @trigger.bubble ? @trigger.bubble.id : bubbles.first.id %>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <%= f.label :bubble_group_id, "Bubble Group", class: "col-sm-4 control-label text-main" %>
+          <%= f.label :destination, "Destination", class: "col-sm-4 control-label text-main" %>
           <div class="col-sm-8">
             <div class="dropdown select">
               <% bubble_groups = BubbleGroup.all %>
+              <% bubble_groups.unshift(OpenStruct.new(id:nil, name:nil)) %>
               <a href="javascript:" class="dropdown-toggle nowrap form-control full-width" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @trigger.bubble_group ? @trigger.bubble_group.name : bubble_groups.first.name %></span>
+                <span class="value"><%= '' %></span>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
@@ -39,7 +23,7 @@
                   <li><a href="javascript:" data-id="<%= group.id %>"><%= group.name %></a></li>
                 <% end %>
               </ul>
-              <%= f.hidden_field :bubble_group_id, value: @trigger.bubble_group ? @trigger.bubble_group.id : bubble_groups.first.id %>
+              <%= f.hidden_field :destination_id, value: nil %>
             </div>
           </div>
         </div>
@@ -70,3 +54,13 @@
     </div>
   <% end %>
 </div>
+
+<%= form_tag update_bubbles_path, method: :get, remote: true, id: 'updateBubbles' do %>
+  <%= hidden_field_tag :bubble_group_id, @trigger.bubble_group.try(:id) %>
+<% end %>
+
+<script>
+  $(document).ready(function(){
+    initTriggerDropdownSelect();
+  });
+</script>
