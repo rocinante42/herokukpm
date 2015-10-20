@@ -1,7 +1,7 @@
 bubble group,bubble,destination
-Addition and Subtraction Count All,"AddToResultCov_(8,10)-(3,3)",Addition and Subtraction Count On
-Addition and Subtraction Count All,"TakeFromResultCov_(8,10)-(3,3)",Addition and Subtraction Count On
+Addition and Subtraction Count All,"AddToResultCov_(8,10)-(2,2)",Addition and Subtraction Count On
 Addition and Subtraction Count All,"PutTogetherTotalCov_8,10",Addition and Subtraction Count On
-Addition and Subtraction Count All,"AddToResultCov_(8,10)-(3,3)",Addition and Subtraction Comparison
-Addition and Subtraction Count All,"TakeFromResultCov_(8,10)-(3,3)",Addition and Subtraction Comparison
+Addition and Subtraction Count All,"TakeFromResultCov_(8,10)-(2,2)",Addition and Subtraction Count On
+Addition and Subtraction Count All,"AddToResultCov_(8,10)-(2,2)",Addition and Subtraction Comparison
 Addition and Subtraction Count All,"PutTogetherTotalCov_8,10",Addition and Subtraction Comparison
+Addition and Subtraction Count All,"TakeFromResultCov_(8,10)-(2,2)",Addition and Subtraction Comparison
