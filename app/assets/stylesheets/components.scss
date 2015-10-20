@@ -152,7 +152,9 @@ table.table {width:100%;
 table.table.fit.schools tr{height:50px; border-bottom: 1px solid #dddddd;}
 
 .row.text-center.actions{margin-top: 20px;}
-.errored{color: #FF0000;}
+.errored{color: #FF0000;
+  h2 { font-size:24px; }
+}
 .pagination{display:block; text-align:center;}
 .confPassword{
   margin-top: 15px;
