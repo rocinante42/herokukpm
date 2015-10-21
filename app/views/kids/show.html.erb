@@ -58,29 +58,44 @@
       </table>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-6 col-sm-offset-3">
-      <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
-        <span>Status:</span>
-        <p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p>
-        <span>Bubble Group:</span>
-        <p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p>
-        <span>Actions:</span>
-        <p class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></p>
-      <% end %>
-    </div>
+</div>
+<% if current_user.admin? %>
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+      <table id="table" data-toggle="table" data-cache="false" data-height="299">
+          <thead>
+            <tr>
+                <th><p class="font-xlarge ">Bubble Group:</p></th><th><p class="font-xlarge ">Status:</p></th><th><p class="font-xlarge ">Actions:</p></th>
+            </tr>
+          </thead>
+            <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
+          <tr>
+              <td><p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p></td>
+              <td><p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p></td>
+              <td><p class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></p></td>
+          </tr>
+          <% end %>
+      </table>
+      <script type="text/javascript">
+      $('#table').bootstrapTable();
+      </script>
   </div>
 </div>
 
 <div class="container kmSection">
   <div class="row actions multi-row text-center">
     <div class="col-md-12">
-      <% if current_user.admin? %>
         <%= link_to 'Play', play_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
         <%= link_to 'Play Games', play_game_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
         <%= link_to 'Show Games', games_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
         <br>
-      <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div class="container kmSection">
+  <div class="row actions multi-row text-center">
+    <div class="col-md-12">
       <%= link_to 'Back', dashboard_classroom_path(classroom: @kid.classroom), class: 'btn btn-danger btn-simple btn-wide' %>
       <%= link_to 'Edit', edit_kid_path(@kid), class: 'btn btn-warning btn-simple btn-wide' %>
       <%= link_to 'Reports', reports_kid_path(@kid), class: 'btn btn-info btn-simple btn-wide' %>
