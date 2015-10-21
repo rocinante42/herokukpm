@@ -69,6 +69,7 @@ Rails.application.routes.draw do
   get 'dashboard_admin' => 'users#dashboard_admin'
   get 'dashboard_classroom' => 'users#dashboard_classroom'
   get 'update_classrooms' => 'users#update_classrooms'
+  get 'update_bubbles' => 'triggers#update_bubbles'
 
   namespace :api do
     resources :kids do

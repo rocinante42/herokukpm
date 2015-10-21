@@ -52,3 +52,14 @@ function initUserDropdownSelect()
     form.submit();
   });
 }
+
+function initTriggerDropdownSelect()
+{
+  $('.dropdown.select.bubbleGroups ul > li > a').off('click').on('click', function(){
+    var id   = $(this).data('id');
+    var form = $('#updateBubbles');
+    form.find('#bubble_group_id').val(id);
+    form.submit();
+  });
+}
+
