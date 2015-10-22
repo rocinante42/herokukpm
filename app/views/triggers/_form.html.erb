@@ -28,19 +28,6 @@
           </div>
         </div>
 
-        <% if @trigger.new_record? %>
-          <div class="kmSection">
-            <h4>Create from CSV</h4>
-            <div class="form-group">
-              <%= f.label :trigger_csv_file, "Trigger CSV:", class: "col-sm-4 control-label text-main" %>
-              <div class="col-sm-8">
-                <span class="form-alias"></span>
-                <%= f.file_field :trigger_csv_file %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-
         </div>
     </div>
     <div class="row text-center actions">
