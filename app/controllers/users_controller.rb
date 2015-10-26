@@ -152,7 +152,7 @@ class UsersController < ApplicationController
         @bottom_current_classroom = @current_classroom
       end
       @total_hash = {}
-      classrooms = current_user.teacher? ? [current_user.classroom] : @current_school.classrooms
+      classrooms = current_user.admin? ? @current_school.classrooms : [@current_classroom]
       classrooms.group_by(&:classroom_type_id).each do |ct_id, classrooms|
         ct = ClassroomType.find(ct_id)
         ct_name = ct.type_name
