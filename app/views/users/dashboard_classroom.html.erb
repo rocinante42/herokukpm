@@ -85,7 +85,7 @@
               <% @current_classroom.teachers.each do |teacher| %>
                 <p>
                   <% if current_user && (can? :edit, teacher) %>
-                    <%= link_to 'Edit', edit_users_admin_path(@current_classroom.teachers.first, edit_role: false), class: 'btn btn-warning btn-simple btn-sm' %>
+                    <%= link_to 'Edit', edit_users_admin_path(teacher, edit_role: false), class: 'btn btn-warning btn-simple btn-sm' %>
                     <%= link_to 'Delete', users_admin_path(teacher, url: dashboard_classroom_path(classroom: @current_classroom)), method: :delete, class: 'btn btn-danger btn-simple btn-sm', id: 'btn_delete_teacher', data: { confirm: "Are you sure to remove this person from the system? This cannot be undone." } %>
                   <% end %>
                   <br>
