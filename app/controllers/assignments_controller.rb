@@ -46,7 +46,7 @@ class AssignmentsController < ApplicationController
 
     if time_limit.blank?
       flash[:error] = "No time limit specified."
-      redirect_to activities_path and return
+      redirect_to activities_path(classroom: classroom.id) and return
     end
 
     bubble_groups.each_with_index do |bg, index|
@@ -56,7 +56,7 @@ class AssignmentsController < ApplicationController
       assignment.time_limit = time_limit
       assignment.save!
     end
-    redirect_to :back
+    redirect_to activities_path(classroom: classroom.id)
   end
 
   def bulk_update
@@ -64,7 +64,7 @@ class AssignmentsController < ApplicationController
     @classroom.assignments.each do |assignment|
       assignment.update(status:params[:status])
     end
-    redirect_to :back
+    redirect_to activities_path(classroom: @classroom.id)
   end
 
   private
