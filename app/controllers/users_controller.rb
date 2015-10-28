@@ -121,7 +121,7 @@ class UsersController < ApplicationController
     if @current_classroom
       @time_intervals_and_kids = []
       kids = @current_classroom.students.includes(:kid_activities)
-      if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id)}).any?
+      if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id), status: Assignment::ACTIVE}).any?
         kids_time = kids.map(&:recent_play_time)
         max_time = kids_time.max{|a,b| a <=> b }
         step = max_time / 5

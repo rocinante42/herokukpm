@@ -2,6 +2,7 @@ class KidsController < ApplicationController
   before_action :authenticate_user!
   before_action :prepare_reports_data, only: [:reports, :download_report]
   before_action :set_available_values_for_kid, only: [:new, :edit]
+  before_action :update_kid_token_expiration_time, only: [:play, :play_game, :games, :result]
   load_and_authorize_resource
   skip_before_filter :verify_authenticity_token, :only => [:result]
 
@@ -309,6 +310,11 @@ class KidsController < ApplicationController
       end
       @classrooms = classrooms.pluck(:id, :name)
       @classrooms.unshift([nil, 'Choose Classroom'])
+    end
+
+    def update_kid_token_expiration_time
+      set_kid
+      @kid.update_column(:token_expiration_time, DateTime.now + 5.minutes) if params.has_key?(:result)
     end
 
 end
