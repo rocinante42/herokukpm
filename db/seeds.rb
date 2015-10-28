@@ -328,7 +328,7 @@ custom_categories = {
 [type_1, type_2].each do |ct|
   ct.bubble_categories = []
   ct.bubble_groups.each do |bg|
-    cats = bg.bubble_categories.uniq.to_a
+    cats = bg.bubble_categories.to_a
     cats = cats.select{|bc| bc.name.in? custom_categories[ct][bg.name] } if custom_categories[ct].has_key? bg.name
     ct.bubble_categories += cats
   end
