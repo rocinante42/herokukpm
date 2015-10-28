@@ -1,6 +1,7 @@
 class BubbleGroupsController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
+  helper_method :set_data_from_params
 
   # GET /bubble_groups
   # GET /bubble_groups.json
@@ -26,39 +27,7 @@ class BubbleGroupsController < ApplicationController
   # POST /bubble_groups.json
   def create
     @bubble_group = BubbleGroup.create(bubble_group_params)
-
-    unless @bubble_group.errors.any?
-      bubble_file = params[:bubble_group][:bubble_file]
-      full_poset_file = params[:bubble_group][:full_poset_file]
-      forward_poset_file = params[:bubble_group][:forward_poset_file]
-      backward_poset_file = params[:bubble_group][:backward_poset_file]
-
-      bubbles = Bubble.all
-      if bubble_file
-        bubble_arr = Bubble.create_from_csv bubble_file, {bubble_group: @bubble_group}
-        bubbles = Bubble.where(id: bubble_arr.collect{ |b| b.id })
-      end
-
-      name = params[:bubble_group][:name]
-      full_poset = Poset.create_from_csv(full_poset_file, bubbles, {name: "#{name} -- Full Poset"})
-      forward_poset = Poset.create_from_csv(forward_poset_file, bubbles, {name: "#{name} -- Forward Poset"})
-      backward_poset = Poset.create_from_csv(backward_poset_file, bubbles, {name: "#{name} -- Backward Poset"})
-
-      @bubble_group.full_poset = full_poset if full_poset
-      @bubble_group.forward_poset = forward_poset if forward_poset
-      @bubble_group.backward_poset = backward_poset if backward_poset
-
-      @bubble_group.save
-    end
-
-    ## create the bubble games, if possible
-    unless @bubble_group.errors.any?
-      bubble_game_file = params[:bubble_group][:bubble_game_file]
-      bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
-
-      bubble_category_file = params[:bubble_group][:bubble_category_file]
-      bubble_categories = BubbleCategory.create_from_csv(bubble_category_file, bubble_group: @bubble_group)
-    end
+    set_data_from_params(destroy_old_data: false)
 
     respond_to do |format|
       unless @bubble_group.errors.any?
@@ -74,12 +43,9 @@ class BubbleGroupsController < ApplicationController
   # PATCH/PUT /bubble_groups/1
   # PATCH/PUT /bubble_groups/1.json
   def update
-    ## create the bubble games, if possible
-    bubble_game_file = params[:bubble_group][:bubble_game_file]
-    bubble_games = BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
+    set_data_from_params(destroy_old_data: true)
 
-    bubble_category_file = params[:bubble_group][:bubble_category_file]
-    bubble_categories = BubbleCategory.create_from_csv(bubble_category_file, bubble_group: @bubble_group)
+    @bubble_group.save
 
     respond_to do |format|
       if @bubble_group.update(bubble_group_params)
@@ -111,5 +77,45 @@ class BubbleGroupsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def bubble_group_params
       params.require(:bubble_group).permit(:name, :description, :full_poset_id, :forward_poset_id, :backward_poset_id, classroom_type_ids:[])
+    end
+
+    def set_data_from_params destroy_old_data:
+      unless @bubble_group.errors.any?
+        bubbles = Bubble.all
+        bubble_file = params[:bubble_group][:bubble_file]
+
+        if bubble_file
+          @bubble_group.bubbles.destroy_all if destroy_old_data
+          bubble_arr = Bubble.create_from_csv bubble_file, {bubble_group: @bubble_group}
+          bubbles = Bubble.where(id: bubble_arr.collect{ |b| b.id })
+        end
+
+        name = params[:bubble_group][:name]
+        ['full', 'forward', 'backward'].each do |type|
+          poset_file = params[:bubble_group]["#{type}_poset_file"]
+          if poset_file
+            @bubble_group.send("#{type}_poset").destroy if destroy_old_data
+            new_poset = Poset.create_from_csv(poset_file, bubbles, {name: "#{name} -- #{type.capitalize} Poset"})
+            @bubble_group.send("#{type}_poset=", new_poset) if new_poset
+          end
+        end
+        @bubble_group.save
+      end
+      unless @bubble_group.errors.any?
+
+        bubble_category_file = params[:bubble_group][:bubble_category_file]
+        if bubble_category_file
+          puts "delete bubble_categories !!!!!"
+          categories = BubbleCategory.joins(:bubbles).merge(@bubble_group.bubbles).uniq
+          categories.destroy_all if destroy_old_data
+          BubbleCategory.create_from_csv(bubble_category_file, bubble_group: @bubble_group)
+        end
+        bubble_game_file = params[:bubble_group][:bubble_game_file]
+        if bubble_game_file
+          games = BubbleGame.joins(:bubble).where(bubbles: {id: @bubble_group.bubbles.pluck(:id)}).uniq
+          games.destroy_all if destroy_old_data
+          BubbleGame.create_from_csv(bubble_game_file, @bubble_group, {})
+        end
+      end
     end
 end
