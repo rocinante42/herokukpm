@@ -70,6 +70,36 @@ class BubbleGroupStatusesController < ApplicationController
     render action: :show
   end
 
+  def bulk_submit
+    classroom = Classroom.find(params[:classroom_id])
+    bubble_groups = classroom.bubble_groups.where(id: params[:bubble_groups])
+    time_limit = params[:time_limit]
+    selected = params[:selected]
+
+    if time_limit.blank?
+      flash[:error] = "No time limit specified."
+      redirect_to activities_path(classroom: classroom.id) and return
+    end
+
+    bubble_groups.each_with_index do |bg, index|
+      next if selected[index].blank?
+      bubble_group_status = BubbleGroupStatus.where(bubble_group:bg, classroom:classroom).first_or_initialize
+      bubble_group_status.active = BubbleGroupStatus::ACTIVE_ACTIVE
+      bubble_group_status.time_limit = time_limit
+      bubble_group_status.save!
+    end
+    redirect_to activities_path(classroom: classroom.id)
+  end
+
+  def bulk_update
+    @classroom = Classroom.find(params[:classroom_id])
+    @classroom.bubble_group_statuses.each do |bg_status|
+      bg_status.update(active:params[:status])
+      bg_status.reset! if params[:status] == BubbleGroupStatus::ACTIVE_NONE
+    end
+    redirect_to activities_path(classroom: @classroom.id)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bubble_group_status

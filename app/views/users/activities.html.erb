@@ -49,10 +49,10 @@
   </div>
 </div>
 
-<%= form_tag bulk_submit_assignments_path, id: 'bulk_submit_selected' do %>
+<%= form_tag bulk_submit_bubble_group_statuses_path, id: 'bulk_submit_selected' do %>
   <%= hidden_field_tag :classroom_id, @current_classroom.id %>
   <%= hidden_field_tag :time_limit, nil %>
-  <% @total_assignments_hash.each do |bg_id, info| %>
+  <% @total_bg_statuses_hash.each do |bg_id, info| %>
     <% bg = info[:bubble_group] %>
     <% assignment = info[:global_assignment] %>
     <%= hidden_field_tag 'bubble_groups[]', bg.id %>
@@ -67,7 +67,7 @@
       <thead>
         <tr class="v-middle">
           <th class="text-center">Classroom</th>
-          <% @total_assignments_hash.each do |bg_id, info| %>
+          <% @total_bg_statuses_hash.each do |bg_id, info| %>
             <th class="text-center"><%= bubble_group_two_lines_name info[:bubble_group].name %></th>
           <% end %>
         </tr>
@@ -77,15 +77,15 @@
           <td class="text-center">
             <span class="text-main font-large"><%= @current_classroom_type.type_name %><br><%= @current_classroom.name %></span>
           </td>
-          <% @total_assignments_hash.each do |bg_id, info| %>
+          <% @total_bg_statuses_hash.each do |bg_id, info| %>
             <td>
               <div class="btn-multi center-block">
                 <div class="extra-action">
                   <div class="extra-container">
-                    <% unless info[:global_assignment].active? %>
+                    <% unless info[:global_bg_status].active? %>
                       <div class="dropdown simple select bulkTime" data-target="selected_<%= bg_id %>">
                         <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <span class="value"><%= info[:global_assignment].humanized_status %></span>
+                          <span class="value"><%= info[:global_bg_status].humanized_status %></span>
                           <span class="caret"></span>
                         </a>
                           <ul class="dropdown-menu dropdown-menu-right">
@@ -96,7 +96,7 @@
                     <% else %>
                       <div class="dropdown simple select selected bulkTime">
                         <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                          <span class="value"><%= info[:global_assignment].humanized_status %></span>
+                          <span class="value"><%= info[:global_bg_status].humanized_status %></span>
                         </a>
                       </div>
                     <% end %>
@@ -112,7 +112,7 @@
   </div>
   <div class="row actions text-right">
     <h4 class="col-sm-offset-4">Set Time for Selected Bubble Groups:</h4>
-    <% if @current_classroom.assignments.active.any? %>
+    <% if @current_classroom.bubble_group_statuses.active.any? %>
       <div class="activities status  col-sm-6">
         Activities are selected
       </div>
@@ -132,8 +132,8 @@
         <% end %>
       </ul>
     </div>
-    <% if @current_classroom.assignments.active.any? %>
-      <%= link_to 'Reset', bulk_update_assignments_path(classroom_id: @current_classroom, status: Assignment::NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
+    <% if @current_classroom.bubble_group_statuses.active.any? %>
+      <%= link_to 'Reset', bulk_update_bubble_group_statuses_path(classroom_id: @current_classroom, status: BubbleGroupStatus::ACTIVE_NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
     <% end %>
     <%= link_to 'Submit', 'javascript:', onclick: "$('#bulk_submit_selected').submit();return false;" ,class: 'btn btn-success btn-simple btn-large btn-wide' %>
   </div>

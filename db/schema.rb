@@ -11,22 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001133418) do
-
-  create_table "assignments", force: true do |t|
-    t.integer  "kid_id"
-    t.integer  "bubble_group_id"
-    t.integer  "status",          default: 0
-    t.integer  "time_limit"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "general_id"
-    t.integer  "classroom_id"
-  end
-
-  add_index "assignments", ["bubble_group_id"], name: "index_assignments_on_bubble_group_id"
-  add_index "assignments", ["classroom_id"], name: "index_assignments_on_classroom_id"
-  add_index "assignments", ["kid_id"], name: "index_assignments_on_kid_id"
+ActiveRecord::Schema.define(version: 20151029124702) do
 
   create_table "bubble_categories", force: true do |t|
     t.string   "name"
@@ -58,7 +43,12 @@ ActiveRecord::Schema.define(version: 20151001133418) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "active",          default: 0
+    t.integer  "general_id"
+    t.integer  "classroom_id"
+    t.integer  "time_limit"
   end
+
+  add_index "bubble_group_statuses", ["classroom_id"], name: "index_bubble_group_statuses_on_classroom_id"
 
   create_table "bubble_groups", force: true do |t|
     t.string   "name"
@@ -141,12 +131,10 @@ ActiveRecord::Schema.define(version: 20151001133418) do
   end
 
   create_table "kid_activities", force: true do |t|
-    t.integer  "assignment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "bubble_group_status_id"
   end
-
-  add_index "kid_activities", ["assignment_id"], name: "index_kid_activities_on_assignment_id"
 
   create_table "kids", force: true do |t|
     t.integer  "login_id"

@@ -1,3 +1,4 @@
+=begin
 class Assignment < ActiveRecord::Base
   belongs_to :kid
   belongs_to :bubble_group
@@ -79,3 +80,4 @@ class Assignment < ActiveRecord::Base
     active? ? 'Selected' : 'Not Selected'
   end
 end
+=end

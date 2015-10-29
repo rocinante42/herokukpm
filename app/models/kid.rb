@@ -9,9 +9,8 @@ class Kid < ActiveRecord::Base
 
   has_many :bubble_group_statuses, dependent: :destroy
   has_many :bubble_statuses, through: :bubble_group_statuses
-  has_many :assignments
-  has_many :bubble_groups, through: :assignments
-  has_many :kid_activities, through: :assignments
+  has_many :bubble_groups, through: :bubble_group_statuses
+  has_many :kid_activities, through: :bubble_group_statuses
   has_many :family_relationships, dependent: :destroy
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
@@ -74,7 +73,9 @@ class Kid < ActiveRecord::Base
   end
   
   def available_bubble_groups
-    assignments.active.any? ? BubbleGroup.joins(:assignments).merge(assignments.active).uniq : classroom.bubble_groups
+    active_bubble_groups = bubble_group_statuses.select(&:active?).map(&:bubble_group).uniq
+    #bubble_group_statuses.active.any? ? BubbleGroup.joins(:bubble_group_statuses).merge(bubble_group_statuses.active).uniq : classroom.bubble_groups
+    active_bubble_groups.any? ? active_bubble_groups : classroom.bubble_groups
   end
 
   def generate_access_token

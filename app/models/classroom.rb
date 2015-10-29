@@ -4,7 +4,7 @@ class Classroom < ActiveRecord::Base
 
   has_many :teachers, class_name: 'User', foreign_key: 'classroom_id'
   has_many :students, class_name: 'Kid', dependent: :destroy
-  has_many :assignments
+  has_many :bubble_group_statuses
   has_many :bubble_groups, through: :classroom_type
 
   validates_presence_of :school, :name, :classroom_type

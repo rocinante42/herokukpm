@@ -2,9 +2,18 @@ class BubbleGroupStatus < ActiveRecord::Base
   belongs_to :kid
   belongs_to :bubble_group
   belongs_to :poset
+  belongs_to :classroom
+  belongs_to :general, class_name: 'BubbleGroupStatus', foreign_key: 'general_id'
+  has_many :sub_bubble_group_statuses, class_name: 'BubbleGroupStatus', foreign_key: 'general_id'
+  has_many :kid_activities
 
   has_many :bubble_statuses, dependent: :destroy
   has_many :triggers, through: :bubble_group
+
+  scope :general, -> {where(kid:nil)}
+  scope :none_status, -> {where(active:ACTIVE_NONE)}
+  scope :active, -> {where(active:ACTIVE_ACTIVE)}
+  scope :inactive, -> {where(active:ACTIVE_INACTIVE)}
 
   alias :current_poset :poset
 
@@ -28,8 +37,12 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   ## ensure that the bubble group status is fully formed after creation
   after_create :reset!
+  after_save :track_activity
+  after_create :create_sub_bg_statuses, if: Proc.new{ |bg_status| bg_status.general? }
+  after_update :update_all_sub_bg_statuses, if: Proc.new{ |bg_status| bg_status.general? }
 
   def active?
+    puts "here!!!!"
     case self.active
     when ACTIVE_ACTIVE
       return true
@@ -111,6 +124,7 @@ class BubbleGroupStatus < ActiveRecord::Base
     ## this should all be done in a single transaction, since we should do everything or nothing
     ActiveRecord::Base.transaction do
       ## reset the counters and the poset
+      self.classroom ||= kid.try(:classroom)
       self.pass_counter = 0
       self.fail_counter = 0
       self.poset = self.bubble_group.full_poset
@@ -274,9 +288,66 @@ class BubbleGroupStatus < ActiveRecord::Base
     bubbles
   end
 
+  def track_activity
+    sub_statuses = general? ? sub_bubble_group_statuses : [self]
+    sub_statuses.each(&:single_track_activity)
+  end
+
+  def single_track_activity
+    kid_activities.last.touch if (inactive? || none?) && kid_activities.any?
+    kid_activities.create if active?
+  end
+
+  def time_left_in_seconds
+    sub_statuses = general? ? sub_bubble_group_statuses : [self]
+    sub_statuses.map(&:single_time_left_in_seconds).inject(:+)
+  end
+
+  def single_time_left_in_seconds
+    last_activity_progress = active? ? Time.now - kid_activities.last.created_at : 0
+    ((time_limit || 2.hours) - kid_activities.map(&:total_time).inject(:+) - last_activity_progress)
+  end
+
+  def expired?
+    time_left_in_seconds <= 0
+  end
+
+  def general?
+    kid.nil?
+  end
+
+  def none?
+    active == ACTIVE_NONE
+  end
+
+  def inactive?
+    active == ACTIVE_INACTIVE
+  end
+
+  def create_sub_bg_statuses
+    classroom.students.each do |kid|
+      bubble_group_status = sub_bubble_group_statuses.where(bubble_group: bubble_group, kid:kid, classroom: classroom).first_or_initialize
+      if bubble_group_status.new_record?
+        bubble_group_status.active = ACTIVE_ACTIVE
+        bubble_group_status.time_limit = time_limit
+        bubble_group_status.general = self
+        bubble_group_status.save!
+      end
+    end
+  end
+
+  def update_all_sub_bg_statuses
+    sub_bubble_group_statuses.update_all(active:self.active)
+  end
+
+  def humanized_status
+    active? ? 'Selected' : 'Not Selected'
+  end
+
   private
     def classroom_categories
-      kid.classroom.classroom_type.bubble_categories.ids
+
+      classroom.classroom_type.bubble_categories.ids
     end
 
     ## check the predecessors in the passed in collection and activate if all predecessors passed
