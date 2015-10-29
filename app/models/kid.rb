@@ -73,9 +73,12 @@ class Kid < ActiveRecord::Base
   end
   
   def available_bubble_groups
-    active_bubble_groups = bubble_group_statuses.select(&:active?).map(&:bubble_group).uniq
-    #bubble_group_statuses.active.any? ? BubbleGroup.joins(:bubble_group_statuses).merge(bubble_group_statuses.active).uniq : classroom.bubble_groups
-    active_bubble_groups.any? ? active_bubble_groups : classroom.bubble_groups
+    if bubble_group_statuses.active.any?
+      BubbleGroup.joins(:bubble_group_statuses).merge(bubble_group_statuses.active).uniq
+    else
+      active_bubble_groups = bubble_group_statuses.select(&:active?).map(&:bubble_group).uniq
+      active_bubble_groups.any? ? active_bubble_groups : classroom.bubble_groups
+    end
   end
 
   def generate_access_token
