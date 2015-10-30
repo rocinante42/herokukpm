@@ -21,6 +21,7 @@ class Kid < ActiveRecord::Base
   before_create :generate_access_token
 
   before_create :set_token_expiration_time
+  after_create :create_none_bg_statuses
 
   def full_name
     "#{self.first_name} #{self.last_name}"
@@ -95,5 +96,12 @@ class Kid < ActiveRecord::Base
 
   def set_token_expiration_time
     self.token_expiration_time = DateTime.now + 5.minutes
+  end
+
+  def create_none_bg_statuses
+    classroom.bubble_groups.each do |bg|
+      general_bg_status = BubbleGroupStatus.where(classroom: classroom, bubble_group:bg).first
+      BubbleGroupStatus.create(kid_id:self.id, classroom: classroom, bubble_group:bg, general_id: general_bg_status.id, active: BubbleGroupStatus::ACTIVE_NONE)
+    end
   end
 end

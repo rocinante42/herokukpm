@@ -81,13 +81,12 @@ class UsersController < ApplicationController
       @total_bg_statuses_hash = {}
       BubbleGroup.all.find_each do |bg|
         next unless @current_classroom_type.bubble_groups.include? bg
-        bg_status = @current_classroom.bubble_group_statuses.general.where(bubble_group: bg, active: [BubbleGroupStatus::ACTIVE_ACTIVE, BubbleGroupStatus::ACTIVE_INACTIVE]).first_or_initialize
-        bg_status.active = BubbleGroupStatus::ACTIVE_NONE if bg_status.new_record?
+        bg_status = @current_classroom.bubble_group_statuses.general.where(bubble_group:bg).first_or_initialize
         @total_bg_statuses_hash[bg.id] = {}
         @total_bg_statuses_hash[bg.id][:bubble_group] = bg
         @total_bg_statuses_hash[bg.id][:global_bg_status] = bg_status
         @current_classroom.students.each do |kid|
-          bg_status = kid.bubble_group_statuses.where(bubble_group: bg, active: [BubbleGroupStatus::ACTIVE_ACTIVE, BubbleGroupStatus::ACTIVE_INACTIVE]).first_or_initialize
+          bg_status = kid.bubble_group_statuses.where(bubble_group: bg).first_or_initialize
           bg_status.active = BubbleGroupStatus::ACTIVE_NONE if bg_status.new_record?
           @total_bg_statuses_hash[bg.id][:kid_bg_statuses] ||= {}
           @total_bg_statuses_hash[bg.id][:kid_bg_statuses][kid.id] = bg_status

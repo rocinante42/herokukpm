@@ -42,7 +42,6 @@ class BubbleGroupStatus < ActiveRecord::Base
   after_update :update_all_sub_bg_statuses, if: Proc.new{ |bg_status| bg_status.general? }
 
   def active?
-    puts "here!!!!"
     case self.active
     when ACTIVE_ACTIVE
       return true
@@ -50,11 +49,14 @@ class BubbleGroupStatus < ActiveRecord::Base
       return false
     else
       return true if self.bubble_statuses.passed.count > 0
-
-      bubble_ids = self.bubble_group.bubbles.joins(:triggers).where(triggers: { bubble_group: self.bubble_group }).in_category(classroom_categories).ids.uniq
+      bubble_ids = self.bubble_group.triggers.pluck(:bubble_id).uniq
       unpassed_triggers = self.kid.bubble_statuses.where(bubble_id: bubble_ids).passed
 
       return (unpassed_triggers.count == bubble_ids.count)
+      #bubble_ids = self.bubble_group.bubbles.joins(:triggers).where(triggers: { bubble_group: self.bubble_group }).in_category(classroom_categories).ids.uniq
+      #unpassed_triggers = self.kid.bubble_statuses.where(bubble_id: bubble_ids).passed
+
+      #return (unpassed_triggers.count == bubble_ids.count)
     end
   end
 
@@ -341,7 +343,7 @@ class BubbleGroupStatus < ActiveRecord::Base
   end
 
   def humanized_status
-    active? ? 'Selected' : 'Not Selected'
+    active ==  ACTIVE_ACTIVE ? 'Selected' : 'Not Selected'
   end
 
   private

@@ -83,7 +83,7 @@ class BubbleGroupStatusesController < ApplicationController
 
     bubble_groups.each_with_index do |bg, index|
       next if selected[index].blank?
-      bubble_group_status = BubbleGroupStatus.where(bubble_group:bg, classroom:classroom).first_or_initialize
+      bubble_group_status = BubbleGroupStatus.where(bubble_group:bg, classroom:classroom, kid:nil).first_or_initialize
       bubble_group_status.active = BubbleGroupStatus::ACTIVE_ACTIVE
       bubble_group_status.time_limit = time_limit
       bubble_group_status.save!

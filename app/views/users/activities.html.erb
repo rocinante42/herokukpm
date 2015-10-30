@@ -82,7 +82,7 @@
               <div class="btn-multi center-block">
                 <div class="extra-action">
                   <div class="extra-container">
-                    <% unless info[:global_bg_status].active? %>
+                    <% unless info[:global_bg_status].active == BubbleGroupStatus::ACTIVE_ACTIVE %>
                       <div class="dropdown simple select bulkTime" data-target="selected_<%= bg_id %>">
                         <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           <span class="value"><%= info[:global_bg_status].humanized_status %></span>

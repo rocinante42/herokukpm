@@ -10,6 +10,8 @@ class Classroom < ActiveRecord::Base
   validates_presence_of :school, :name, :classroom_type
   validates_uniqueness_of :name, scope: :school
 
+  after_create :create_general_bg_statuses
+
   def class_type
     classroom_type
   end
@@ -20,5 +22,11 @@ class Classroom < ActiveRecord::Base
 
   def first_grade?
     classroom_type.type_name.downcase.eql? 'first grade'
+  end
+
+  def create_general_bg_statuses
+    bubble_groups.each do |bg|
+      BubbleGroupStatus.create(bubble_group:bg, classroom:self, active: BubbleGroupStatus::ACTIVE_NONE)
+    end
   end
 end
