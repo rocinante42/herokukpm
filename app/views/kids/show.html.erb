@@ -68,7 +68,7 @@
                 <th><p class="font-xlarge ">Bubble Group:</p></th><th><p class="font-xlarge ">Status:</p></th><th><p class="font-xlarge ">Actions:</p></th>
             </tr>
           </thead>
-            <% @kid.bubble_group_statuses.each do |bubble_group_status| %>
+            <% @kid.bubble_group_statuses.select(&:active?).each do |bubble_group_status| %>
           <tr>
               <td><p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p></td>
               <td><p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p></td>

@@ -9,9 +9,8 @@ class Kid < ActiveRecord::Base
 
   has_many :bubble_group_statuses, dependent: :destroy
   has_many :bubble_statuses, through: :bubble_group_statuses
-  has_many :assignments
-  has_many :bubble_groups, through: :assignments
-  has_many :kid_activities, through: :assignments
+  has_many :bubble_groups, through: :bubble_group_statuses
+  has_many :kid_activities, through: :bubble_group_statuses
   has_many :family_relationships, dependent: :destroy
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
@@ -22,6 +21,7 @@ class Kid < ActiveRecord::Base
   before_create :generate_access_token
 
   before_create :set_token_expiration_time
+  after_create :create_none_bg_statuses
 
   def full_name
     "#{self.first_name} #{self.last_name}"
@@ -74,7 +74,12 @@ class Kid < ActiveRecord::Base
   end
   
   def available_bubble_groups
-    assignments.active.any? ? BubbleGroup.joins(:assignments).merge(assignments.active).uniq : classroom.bubble_groups
+    if bubble_group_statuses.active.any?
+      BubbleGroup.joins(:bubble_group_statuses).merge(bubble_group_statuses.active).uniq
+    else
+      active_bubble_groups = bubble_group_statuses.select(&:active?).map(&:bubble_group).uniq
+      active_bubble_groups.any? ? active_bubble_groups : classroom.bubble_groups
+    end
   end
 
   def generate_access_token
@@ -91,5 +96,12 @@ class Kid < ActiveRecord::Base
 
   def set_token_expiration_time
     self.token_expiration_time = DateTime.now + 5.minutes
+  end
+
+  def create_none_bg_statuses
+    BubbleGroup.all.find_each do |bg|
+      general_bg_status = BubbleGroupStatus.where(classroom: classroom, bubble_group:bg).first
+      BubbleGroupStatus.create(kid_id:self.id, classroom: classroom, bubble_group:bg, general_id: general_bg_status.id, active: BubbleGroupStatus::ACTIVE_NONE)
+    end
   end
 end

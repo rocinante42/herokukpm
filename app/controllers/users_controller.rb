@@ -78,19 +78,18 @@ class UsersController < ApplicationController
 
   def activities
     if @current_classroom
-      @total_assignments_hash = {}
+      @total_bg_statuses_hash = {}
       BubbleGroup.all.find_each do |bg|
         next unless @current_classroom_type.bubble_groups.include? bg
-        assignment = @current_classroom.assignments.general.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
-        assignment.status = Assignment::NONE if assignment.new_record?
-        @total_assignments_hash[bg.id] = {}
-        @total_assignments_hash[bg.id][:bubble_group] = bg
-        @total_assignments_hash[bg.id][:global_assignment] = assignment
+        bg_status = @current_classroom.bubble_group_statuses.general.where(bubble_group:bg).first_or_initialize
+        @total_bg_statuses_hash[bg.id] = {}
+        @total_bg_statuses_hash[bg.id][:bubble_group] = bg
+        @total_bg_statuses_hash[bg.id][:global_bg_status] = bg_status
         @current_classroom.students.each do |kid|
-          assignment = kid.assignments.where(bubble_group: bg, status: [Assignment::ACTIVE, Assignment::INACTIVE]).first_or_initialize
-          assignment.status = Assignment::NONE if assignment.new_record?
-          @total_assignments_hash[bg.id][:kid_assignments] ||= {}
-          @total_assignments_hash[bg.id][:kid_assignments][kid.id] = assignment
+          bg_status = kid.bubble_group_statuses.where(bubble_group: bg).first_or_initialize
+          bg_status.active = BubbleGroupStatus::ACTIVE_NONE if bg_status.new_record?
+          @total_bg_statuses_hash[bg.id][:kid_bg_statuses] ||= {}
+          @total_bg_statuses_hash[bg.id][:kid_bg_statuses][kid.id] = bg_status
         end
       end
     end
@@ -121,7 +120,7 @@ class UsersController < ApplicationController
     if @current_classroom
       @time_intervals_and_kids = []
       kids = @current_classroom.students.includes(:kid_activities)
-      if KidActivity.joins(:assignment).where(assignments:{kid_id: kids.pluck(:id), status: Assignment::ACTIVE}).any?
+      if KidActivity.joins(:bubble_group_status).where(bubble_group_statuses:{kid_id: kids.pluck(:id), active: BubbleGroupStatus::ACTIVE_ACTIVE}).any?
         kids_time = kids.map(&:recent_play_time)
         max_time = kids_time.max{|a,b| a <=> b }
         step = max_time / 5

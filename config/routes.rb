@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     member do
       get :reset
     end
+    collection do
+      get 'bulk_update'
+      post 'bulk_submit'
+    end
   end
 
   resources :bubble_statuses
@@ -51,14 +55,6 @@ Rails.application.routes.draw do
   resources :bubbles
 
   resources :users_admin, controller: 'users'
-
-
-  resources :assignments do
-    collection do
-      get 'bulk_update'
-      post 'bulk_submit'
-    end
-  end
 
   get 'dashboard' => 'users#dashboard'
   get 'activities' => 'users#activities'
