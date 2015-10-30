@@ -25,7 +25,7 @@ class Classroom < ActiveRecord::Base
   end
 
   def create_general_bg_statuses
-    bubble_groups.each do |bg|
+    BubbleGroup.all.find_each do |bg|
       BubbleGroupStatus.create(bubble_group:bg, classroom:self, active: BubbleGroupStatus::ACTIVE_NONE)
     end
   end
