@@ -133,14 +133,14 @@ class BubbleGroupStatus < ActiveRecord::Base
       self.save!
 
       ## reset the bubble statuses for each bubble
-      self.bubble_group.bubbles.in_category(classroom_categories).each do |bubble|
+      self.bubble_group.bubbles.each do |bubble|
         status = self.bubble_statuses.find_or_initialize_by(bubble: bubble)
         status.reset
         status.save!
       end
 
       ## activate the minima
-      self.poset.minima(classroom_categories).each do |bubble|
+      self.poset.minima.each do |bubble|
         status = self.bubble_statuses.find_by(bubble: bubble)
         status.active = true
         status.save!
@@ -275,7 +275,8 @@ class BubbleGroupStatus < ActiveRecord::Base
   ## select a bubble for the kid to play
   def available_bubbles
     ## get statuses of currently available bubbles
-    bubbles = self.bubble_statuses.where(bubble: self.current_poset.bubbles.in_category(classroom_categories)).active
+    #bubbles = self.bubble_statuses.where(bubble: self.current_poset.bubbles.in_category(classroom_categories)).active
+    bubbles = self.bubble_statuses.where(bubble: self.current_poset.bubbles).active
     ## refine the bubbles, if possible
     case current_poset_type
     when "Forward"
