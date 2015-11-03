@@ -10,6 +10,10 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    redirect_to root_path
+  end
+
   def redirect_parent_to_kid_report
     if user_signed_in? && current_user.parent?
       kids_reports_paths = current_user.kids.map{|kid| [reports_kid_path(kid), download_report_kid_path(kid)]}.flatten
