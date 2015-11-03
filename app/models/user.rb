@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
 
   validates_presence_of :classroom, if: :teacher?
+  validates_presence_of :first_name, :last_name, unless: :parent?
 
   before_save :assign_role, :set_school
   after_create :welcome_email
