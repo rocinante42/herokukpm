@@ -169,13 +169,13 @@ class BubbleGroupStatus < ActiveRecord::Base
       activation_check(bubble_status)
 
       ## activate and pass all necessary nodes in the full set, and check successors for activation
-      bubble_status.downset(self.bubble_group.full_poset, classroom_categories).where('passed = (?) OR active = (?) OR id = (?)', false, true, bubble_status.id).each do |status|
+      bubble_status.downset(self.bubble_group.full_poset).where('passed = (?) OR active = (?) OR id = (?)', false, true, bubble_status.id).each do |status|
         status.update_columns(passed: true, active: false)
-        check_predecessors(status.successors(self.bubble_group.full_poset, classroom_categories).failed, self.bubble_group.full_poset)
+        check_predecessors(status.successors(self.bubble_group.full_poset).failed, self.bubble_group.full_poset)
       end
 
       ## if the bubble is a maximal, reactivate it
-      if bubble_status.successors(nil, classroom_categories).count == 0
+      if bubble_status.successors(nil).count == 0
         bubble_status.update_columns( active: true )
       end
 
@@ -213,23 +213,23 @@ class BubbleGroupStatus < ActiveRecord::Base
       self.poset = self.bubble_group.full_poset
     else
       ## fail and deactivate everything in the upset
-      bubble_status.upset(self.bubble_group.full_poset, classroom_categories).update_all(passed: false, active: false)
+      bubble_status.upset(self.bubble_group.full_poset).update_all(passed: false, active: false)
       bubble_status.reload
 
       ## if this bubble is a minimum, reactivate it
-      if bubble_status.predecessors(nil, classroom_categories).count == 0
+      if bubble_status.predecessors(nil).count == 0
         bubble_status.active = true
         bubble_status.save!
       end
 
       ## activate all predecessors
-      bubble_status.predecessors(nil, classroom_categories).each do |predecessor|
+      bubble_status.predecessors(nil).each do |predecessor|
         predecessor.update( active: true )
       end
 
       ## activate all required nodes in the full poset
       if self.poset != self.bubble_group.full_poset
-        bubble_status.predecessors(self.bubble_group.full_poset, classroom_categories).each do |predecessor|
+        bubble_status.predecessors(self.bubble_group.full_poset).each do |predecessor|
           predecessor.update( active: true )
         end
       end
@@ -356,7 +356,7 @@ class BubbleGroupStatus < ActiveRecord::Base
     ## check the predecessors in the passed in collection and activate if all predecessors passed
     def check_predecessors(statuses, poset)
       statuses.each do |status|
-        unless status.predecessors(poset, classroom_categories).exists?( passed: false )
+        unless status.predecessors(poset).exists?( passed: false )
           status.active = true
           status.save!
         end
@@ -365,7 +365,7 @@ class BubbleGroupStatus < ActiveRecord::Base
 
     def activation_check(bubble_status)
       ## get active bubbles in the downset
-      statuses = bubble_status.downset(self.current_poset, classroom_categories).active
+      statuses = bubble_status.downset(self.current_poset).active
 
       ## deactivate and check successors for each of those
       statuses.each do |status|
@@ -373,7 +373,7 @@ class BubbleGroupStatus < ActiveRecord::Base
         status.save!
 
         ## activate if failed and predecessors are all passed
-        check_predecessors(status.successors(nil, classroom_categories).failed, self.current_poset)
+        check_predecessors(status.successors(nil).failed, self.current_poset)
       end
     end
 
@@ -395,11 +395,11 @@ class BubbleGroupStatus < ActiveRecord::Base
       poset ||= self.current_poset
 
       ## fetch the passed bubble statuses in that poset
-      passed = self.bubble_statuses.where(bubble: poset.bubbles.in_category(classroom_categories)).where(passed: true)
+      passed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: true)
 
       ## activate nodes where all successors in that poset are failed
       passed.each do |passed_status|
-        unless passed_status.successors(poset, classroom_categories).exists? passed: true
+        unless passed_status.successors(poset).exists? passed: true
           passed_status.active = true
           passed_status.save
         end
@@ -412,11 +412,11 @@ class BubbleGroupStatus < ActiveRecord::Base
       poset = self.bubble_group.full_poset
 
       ## check all active passed in the full poset
-      passed = self.bubble_statuses.where(bubble: poset.bubbles.in_category(classroom_categories)).where(passed: true, active: true)
+      passed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: true, active: true)
 
       ## deactivate if ALL SUCCESSORS are passed
       passed.each do |passed_status|
-        unless passed_status.successors(poset, classroom_categories).exists? passed: false
+        unless passed_status.successors(poset).exists? passed: false
           passed_status.active = false
           passed_status.save
         end
@@ -429,11 +429,11 @@ class BubbleGroupStatus < ActiveRecord::Base
       poset = self.bubble_group.full_poset
 
       ## check all active failed in the full poset
-      failed = self.bubble_statuses.where(bubble: poset.bubbles.in_category(classroom_categories)).where(passed: false, active: true)
+      failed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: false, active: true)
 
       ## deactivate unless ALL PREDECESSORS are passed
       failed.each do |failed_status|
-        if failed_status.predecessors(poset, classroom_categories).exists? passed: false
+        if failed_status.predecessors(poset).exists? passed: false
           failed_status.active = false
           failed_status.save
         end
