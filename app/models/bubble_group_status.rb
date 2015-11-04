@@ -298,7 +298,7 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   def single_track_activity
     kid_activities.last.touch if (inactive? || none?) && kid_activities.any?
-    kid_activities.create if active?
+    kid_activities.create if active == ACTIVE_ACTIVE
   end
 
   def time_left_in_seconds
@@ -307,8 +307,8 @@ class BubbleGroupStatus < ActiveRecord::Base
   end
 
   def single_time_left_in_seconds
-    last_activity_progress = active? ? Time.now - kid_activities.last.created_at : 0
-    ((time_limit || 2.hours) - kid_activities.map(&:total_time).inject(:+) - last_activity_progress)
+    last_activity_progress = active == ACTIVE_ACTIVE ? Time.now - kid_activities.last.created_at : 0
+    ((time_limit || 2.hours) - last_activity_progress)
   end
 
   def expired?
@@ -331,7 +331,7 @@ class BubbleGroupStatus < ActiveRecord::Base
     classroom.students.each do |kid|
       bubble_group_status = sub_bubble_group_statuses.where(bubble_group: bubble_group, kid:kid, classroom: classroom).first_or_initialize
       if bubble_group_status.new_record?
-        bubble_group_status.active = ACTIVE_ACTIVE
+        bubble_group_status.active = ACTIVE_NONE
         bubble_group_status.time_limit = time_limit
         bubble_group_status.general = self
         bubble_group_status.save!
@@ -340,7 +340,7 @@ class BubbleGroupStatus < ActiveRecord::Base
   end
 
   def update_all_sub_bg_statuses
-    sub_bubble_group_statuses.update_all(active:self.active)
+    sub_bubble_group_statuses.update_all(active:self.active, time_limit:time_limit)
   end
 
   def humanized_status
