@@ -79,16 +79,17 @@ class KidsController < ApplicationController
   # POST /kids.json
   def create
     @kid = Kid.new(kid_params)
-
     respond_to do |format|
-      if @kid.save
-        format.html { redirect_to @kid, notice: 'Kid was successfully created.' }
-        format.json { render :show, status: :created, location: @kid }
-      else
-        set_available_values_for_kid
-        (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
-        format.html { render :new }
-        format.json { render json: @kid.errors, status: :unprocessable_entity }
+      begin
+        if @kid.save
+          format.html { redirect_to @kid, notice: 'Kid was successfully created.' }
+          format.json { render :show, status: :created, location: @kid }
+        else
+          set_kid_errors format: format, action: :new
+        end
+      rescue ActiveRecord::RecordNotUnique
+        @kid.errors.add(:base, "Parent's email is already in use")
+        set_kid_errors format: format, action: :new
       end
     end
   end
@@ -97,14 +98,16 @@ class KidsController < ApplicationController
   # PATCH/PUT /kids/1.json
   def update
     respond_to do |format|
-      if @kid.update(kid_params)
-        format.html { redirect_to @kid, notice: 'Kid was successfully updated.' }
-        format.json { render :show, status: :ok, location: @kid }
-      else
-        set_available_values_for_kid
-        (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
-        format.html { render :edit }
-        format.json { render json: @kid.errors, status: :unprocessable_entity }
+      begin
+        if @kid.update(kid_params)
+          format.html { redirect_to @kid, notice: 'Kid was successfully updated.' }
+          format.json { render :show, status: :ok, location: @kid }
+        else
+          set_kid_errors format: format, action: :edit
+        end
+      rescue ActiveRecord::RecordNotUnique
+        @kid.errors.add(:base, "Parent's email is already in use")
+        set_kid_errors format: format, action: :edit
       end
     end
   end
@@ -253,6 +256,13 @@ class KidsController < ApplicationController
     @kid.generate_access_token
     @kid.save
     redirect_to action: :show, format: :json
+  end
+
+  def set_kid_errors format:, action:
+    set_available_values_for_kid
+    (20 - @kid.parents.count).times{@kid.family_relationships.build.build_parent}
+    format.html { render action }
+    format.json { render json: @kid.errors, status: :unprocessable_entity }
   end
 
   private
