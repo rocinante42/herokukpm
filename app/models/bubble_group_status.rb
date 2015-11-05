@@ -123,29 +123,33 @@ class BubbleGroupStatus < ActiveRecord::Base
 
   ## sets up the statuses on all bubbles for the bubble group
   def reset!
-    ## this should all be done in a single transaction, since we should do everything or nothing
-    ActiveRecord::Base.transaction do
-      ## reset the counters and the poset
-      self.classroom ||= kid.try(:classroom)
-      self.pass_counter = 0
-      self.fail_counter = 0
-      self.poset = self.bubble_group.full_poset
-      self.save!
+    if general?
+      sub_bubble_group_statuses.each(&:reset!)
+    else
+      ActiveRecord::Base.transaction do
+        ## reset the counters and the poset
+        self.classroom ||= kid.try(:classroom)
+        self.pass_counter = 0
+        self.fail_counter = 0
+        self.poset = self.bubble_group.full_poset
+        self.save!
 
-      ## reset the bubble statuses for each bubble
-      self.bubble_group.bubbles.each do |bubble|
-        status = self.bubble_statuses.find_or_initialize_by(bubble: bubble)
-        status.reset
-        status.save!
-      end
+        ## reset the bubble statuses for each bubble
+        self.bubble_group.bubbles.each do |bubble|
+          status = self.bubble_statuses.find_or_initialize_by(bubble: bubble)
+          status.reset
+          status.save!
+        end
 
-      ## activate the minima
-      self.poset.minima.each do |bubble|
-        status = self.bubble_statuses.find_by(bubble: bubble)
-        status.active = true
-        status.save!
+        ## activate the minima
+        self.poset.minima.each do |bubble|
+          status = self.bubble_statuses.find_by(bubble: bubble)
+          status.active = true
+          status.save!
+        end
       end
     end
+    ## this should all be done in a single transaction, since we should do everything or nothing
   end
 
   ## traversal methods
