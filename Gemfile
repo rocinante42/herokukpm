@@ -43,6 +43,7 @@ gem 'whenever', :require => false
 gem 'rubyzip'
 gem 'prawn'
 gem 'will_paginate'
+gem 'clockwork'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

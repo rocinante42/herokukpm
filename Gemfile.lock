@@ -39,6 +39,9 @@ GEM
     builder (3.2.2)
     cancancan (1.10.1)
     chronic (0.10.2)
+    clockwork (1.2.0)
+      activesupport
+      tzinfo
     coderay (1.1.0)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -167,6 +170,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.3.4)
   bootstrap-table-rails
   cancancan (~> 1.10)
+  clockwork
   coffee-rails (~> 4.0.0)
   devise
   font-awesome-sass
