@@ -264,7 +264,7 @@ class UsersController < ApplicationController
           @current_school = School.find(params[:school])
           @current_classroom = @current_school.classrooms.sample
         end
-        @current_classroom_type = @current_classroom.classroom_type
+        @current_classroom_type = @current_classroom.try(:classroom_type)
 
         @classroom_hash = {}
         @school_hash[@current_school.id][:classrooms].each do |ct_id, classrooms|

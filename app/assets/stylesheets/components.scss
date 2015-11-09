@@ -166,8 +166,8 @@ table.table.fit.schools tr{height:50px; border-bottom: 1px solid #dddddd;}
 
 .dropdown.simple.bulkTime a{ border-radius: 100px; height: 30px;}
 
-.padding-wall{ padding: 200px 0; }
-
+.padding-wall{ padding: 200px 0 20px 0; }
+.FirstClassroom{ display: inline-block; a:first-child{margin-right: 15px;}}
 .dropdown.simple.selected > a{text-align:center; background: #167f3a;}
 .dropdown.simple.bulkSelectTime{text-align:left;}
 .dropdown.simple.bulkSelectTime > a{ padding-top: 5px; padding-bottom: 5px; border-radius: 100px;}
