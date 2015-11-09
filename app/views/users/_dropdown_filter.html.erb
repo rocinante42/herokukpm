@@ -7,7 +7,7 @@
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
         <% @school_hash.each do |sc_id, values| %>
-          <li><%= link_to values[:name], dashboard_classroom_path(school: sc_id) %></li>
+          <li><%= link_to values[:name], self.send(page + '_path', school: sc_id) %></li>
         <% end %>
       </ul>
     </div>

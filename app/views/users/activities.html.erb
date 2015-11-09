@@ -36,7 +36,7 @@
           </tr>
           <tr>
             <% unless current_user.teacher? %>
-              <%= render 'dropdown_filter' %>
+              <%= render 'dropdown_filter', page: 'activities' %>
               <td>
                 <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
               </td>
