@@ -15,7 +15,6 @@
 <div class="container">
   <%= form_for @user, url: @user.new_record? ? users_admin_index_path : users_admin_path, html: {class: 'form-horizontal form-classic form-vpad'} do |f| %>
     <%= render 'shared/error_messages', :object => @user %>
-    <%= hidden_field_tag :url, url_for(:back) %>
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
         <div class="form-group">
