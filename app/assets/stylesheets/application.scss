@@ -35,9 +35,8 @@ $color-main: #363636;
 
 @import url(http://fonts.googleapis.com/css?family=Cabin:400,700);
 .font-brand {font-family: 'Cabin', sans-serif;}
-
-body {font-family: "Myriad Pro", sans-serif; color:#808080;}
-i {vertical-align:middle;}
+html{height: 100%;}
+body {font-family: "Myriad Pro", sans-serif; color:#808080;height:100%;}
 .nowrap {white-space:nowrap;}
 a, a:focus, a:hover, a:active {display:inline-block; text-decoration:none;}
 .font-small {font-size:12px;}
