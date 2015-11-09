@@ -40,7 +40,7 @@ $title-color: #296cbd;
   }
 }
 
-#kmFooter {background:$color-brand; height:45px;
+#kmFooter {background:$color-brand; height:45px;margin-top: -45px;
   .bg {height:100%; background:url(asset_path('footer_bg.png')) bottom center repeat;}
   h5 {margin:15px 0; color:$color-inv;}
 }
