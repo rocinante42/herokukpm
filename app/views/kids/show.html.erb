@@ -60,25 +60,27 @@
   </div>
 </div>
 <% if current_user.admin? %>
-<div class="row">
-  <div class="col-sm-6 col-sm-offset-3">
-      <table id="table" data-toggle="table" data-cache="false" data-height="299">
-          <thead>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <table id="table" data-toggle="table" data-cache="false" data-height="299">
+            <thead>
+              <tr>
+                  <th><p class="font-xlarge ">Bubble Group:</p></th><th><p class="font-xlarge ">Status:</p></th><th><p class="font-xlarge ">Actions:</p></th>
+              </tr>
+            </thead>
+              <% @kid.bubble_group_statuses.select(&:active?).each do |bubble_group_status| %>
             <tr>
-                <th><p class="font-xlarge ">Bubble Group:</p></th><th><p class="font-xlarge ">Status:</p></th><th><p class="font-xlarge ">Actions:</p></th>
+                <td><p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p></td>
+                <td><p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p></td>
+                <td><p class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></p></td>
             </tr>
-          </thead>
-            <% @kid.bubble_group_statuses.select(&:active?).each do |bubble_group_status| %>
-          <tr>
-              <td><p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p></td>
-              <td><p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p></td>
-              <td><p class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></p></td>
-          </tr>
-          <% end %>
-      </table>
-      <script type="text/javascript">
-      $('#table').bootstrapTable();
-      </script>
+            <% end %>
+        </table>
+        <script type="text/javascript">
+        $('#table').bootstrapTable();
+        </script>
+    </div>
   </div>
 </div>
 
