@@ -54,7 +54,7 @@ $icon-height: 20px; //font-awesome default icon height
   }
   a {color:$color-inv;}
   .extra-action .dropdown.simple {width:100%; text-align:left;
-    > a {width:100%; padding-top:4px; padding-bottom:2px;
+    > a {width:100%; padding-top:6px; padding-bottom:2px;
       > span:first-child {min-width:$width - $border - $extra-action-offset - $dd-toggle-padding * 2 - 13px} /* 13px is a caret size (10px) + space between inline-blocks (3px)*/
     }
   }
@@ -170,7 +170,7 @@ table.table.fit.schools tr{height:50px; border-bottom: 1px solid #dddddd;}
 .FirstClassroom{ display: inline-block; a:first-child{margin-right: 15px;}}
 .dropdown.simple.selected > a{text-align:center; background: #167f3a;}
 .dropdown.simple.bulkSelectTime{text-align:left;}
-.dropdown.simple.bulkSelectTime > a{ padding-top: 5px; padding-bottom: 5px; border-radius: 100px;}
+.dropdown.simple.bulkSelectTime > a{ padding-top: 6px; padding-bottom: 6px; border-radius: 100px; height: 32px;}
 .status{
   float: left;
   background: #e2e2e2;
