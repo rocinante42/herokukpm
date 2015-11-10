@@ -12,7 +12,14 @@
 
 <div class="container kmSection">
   <div class="row text-center">
-    <h3 class="padding-wall">You don't have a classroom assigned to you.</h3>
+    <h3 class="padding-wall">Selected school doesn't have any classroom.</h3>
+    <div class="FirstClassroom">
+      <%= link_to 'Back', url_for(:back), class: 'btn btn-danger btn-large btn-wide btn-simple' %>
+      <%= link_to new_classroom_path(school:@current_school), class: 'btn btn-warning btn-simple btn-large btn-wide' do %>
+        <i class="fa fa-plus"></i>
+        <span>Add Your First Classroom</span>
+      <% end %>
+    </div>
   </div>
 </div>
 
