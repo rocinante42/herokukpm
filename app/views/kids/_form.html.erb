@@ -13,6 +13,7 @@
 </div>
 
 <%= form_for @kid, html: {class: 'form-horizontal form-classic form-vpad'} do |f| %>
+  <%= hidden_field_tag :url, url_for(:back) %>
   <%= render 'shared/error_messages', object: @kid %>
     <div class="row">
       <div class="col-md-6 col-md-offset-3">
