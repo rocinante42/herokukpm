@@ -115,10 +115,15 @@
         </tr>
       </tbody>
     </table>
-
   </div>
-  <div class="row actions text-right">
-    <h4 class="col-sm-offset-4">Set Time for Selected Bubble Groups:</h4>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="actions ">
+      <div class="col-sm-offset-4 col-sm-4"><h4>Set Time for Selected Bubble Groups:</h4></div>
+    </div>
+  </div>
+  <div class="row">
     <% if @current_classroom.bubble_group_statuses.active.any? %>
       <div class="activities status  col-sm-6">
         Activities are selected
@@ -127,6 +132,11 @@
       <div class=" noactivities status col-sm-8">
         No activities are selected
       </div>
+    <% end %>
+    <% if @current_classroom.bubble_group_statuses.active.any? %>
+      <div class="col-sm-6 text-right">
+    <% else %>
+      <div class="col-sm-4 text-right">
     <% end %>
     <div class="dropdown simple medium select timeLimit bulkSelectTime">
       <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -140,12 +150,13 @@
       </ul>
     </div>
     <% if @current_classroom.bubble_group_statuses.active.any? %>
-      <%= link_to 'Reset', bulk_update_bubble_group_statuses_path(classroom_id: @current_classroom, status: BubbleGroupStatus::ACTIVE_NONE), class: 'btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
+      <%= link_to 'Reset', bulk_update_bubble_group_statuses_path(classroom_id: @current_classroom, status: BubbleGroupStatus::ACTIVE_NONE), class: 'resetActivities btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
     <% end %>
-    <%= link_to 'Submit', 'javascript:', onclick: "$('#bulk_submit_selected').submit();return false;" ,class: 'btn btn-success btn-simple btn-large btn-wide' %>
+      <%= link_to 'Submit', 'javascript:', onclick: "$('#bulk_submit_selected').submit();return false;" ,class: ' btn btn-success btn-simple btn-large btn-wide' %>
+    </div>
+    </div>
   </div>
 </div>
-
 <script>
   $(document).ready(function(){
     $('.action-media').click(function(){
