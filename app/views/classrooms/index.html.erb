@@ -23,12 +23,12 @@
           <td>
             <div class="dropdown simple medium select classroomType">
               <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                <span class="value"><%= @current_school.name %></span>
+                <span class="value"><%= truncate(@current_school.name, :length => 17) %></span>
                 <span class="caret"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-right">
                 <% @schools.find_each do |school| %>
-                  <li><a href="javascript:" data-id="<%= school.id %>"><%= school.name %></a></li>
+                  <li><a href="javascript:" data-id="<%= school.id %>"><%=  truncate(school.name, :length => 17) %></a></li>
                 <% end %>
               </ul>
               <%= hidden_field_tag :school, @current_school.id %>
