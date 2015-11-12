@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     @user.classroom = Classroom.find_by(id:user_params[:classroom_id])
     respond_to do |format|
       if @user.save
-        format.html { redirect_to dashboard_classroom_path(classroom: @user.classroom), notice: 'User was successfully created.' }
+        format.html { redirect_to params[:url] || dashboard_classroom_path(classroom: @user.classroom), notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
         set_classrooms
