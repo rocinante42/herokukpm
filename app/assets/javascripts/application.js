@@ -30,10 +30,12 @@ function initDropdownSelect(classroom_hash)
       classrooms.forEach(function(el){
         $('.dropdown.select.classroom ul').append('<li><a href="javascript:" data-id="' + el[0] + '">' + el[1] + '</a></li>');
       });
+      $('.dropdown.select.classroom .dropdown-toggle').attr('data-toggle', 'dropdown');
     }
     else
     {
       $('.dropdown.select.classroom span.value').text('');
+      $('.dropdown.select.classroom .dropdown-toggle').attr('data-toggle', '');
     }
   });
 }

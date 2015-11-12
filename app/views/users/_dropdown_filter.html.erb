@@ -2,12 +2,12 @@
   <td>
     <div class="dropdown simple medium select schools">
       <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <span class="value"><%= @current_school.name %></span>
+        <span class="value"><%= truncate(@current_school.name, :length => 17) %></span>
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-right">
         <% @school_hash.each do |sc_id, values| %>
-          <li><%= link_to values[:name], self.send(page + '_path', school: sc_id) %></li>
+          <li><%= link_to truncate(values[:name], :length => 17), self.send(page + '_path', school: sc_id) %></li>
         <% end %>
       </ul>
     </div>
@@ -30,12 +30,12 @@
 <td>
   <div class="dropdown simple medium select classroom">
     <a href="javascript:" class="dropdown-toggle nowrap" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      <span class="value"><%= @current_classroom.name %></span>
+      <span class="value"><%= truncate(@current_classroom.name, :length => 17) %></span>
       <span class="caret"></span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right">
       <% @school_hash[@current_school.id][:classrooms][@current_classroom_type.id].to_a.each do |cr| %>
-        <li><a href="javascript:" data-id="<%= cr[0] %>"><%= cr[1] %></a></li>
+        <li><a href="javascript:" data-id="<%= cr[0] %>"><%=  truncate(cr[1], :length => 17) %></a></li>
       <% end %>
     </ul>
     <%= hidden_field_tag :classroom, @current_classroom.id %>
