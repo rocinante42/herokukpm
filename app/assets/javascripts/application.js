@@ -17,18 +17,23 @@
 //= require bootstrap-sprockets
 //= require_tree .
 
+function truncateText(text,length) {
+    return text.length > length ? text.substring(0, length - 3) + '...' : text;
+}
+
 function initDropdownSelect(classroom_hash)
 {
   $('.dropdown.select.classroomType ul > li > a').click(function(){
     var id = $(this).data('id');
     var classrooms = classroom_hash[id];
+    var length = 17;
     $('.dropdown.select.classroom ul').html('');
     if(typeof classrooms !== 'undefined' && classrooms.length)
     {
-      $('.dropdown.select.classroom span.value').text(classrooms[0][1]);
+      $('.dropdown.select.classroom span.value').text(truncateText(classrooms[0][1],length));
       $('.dropdown.select.classroom input[type="hidden"]').val(classrooms[0][0]);
       classrooms.forEach(function(el){
-        $('.dropdown.select.classroom ul').append('<li><a href="javascript:" data-id="' + el[0] + '">' + el[1] + '</a></li>');
+        $('.dropdown.select.classroom ul').append('<li><a href="javascript:" data-id="' + el[0] + '">' + truncateText(el[1],length) + '</a></li>');
       });
       $('.dropdown.select.classroom .dropdown-toggle').attr('data-toggle', 'dropdown');
     }
