@@ -2,7 +2,7 @@ class Poset < ActiveRecord::Base
   require 'csv'
 
   has_many :edges, dependent: :destroy
-
+  validates :name, length: { in: 2..50 }
   def bubble_group
     BubbleGroup.where('full_poset_id = (?) OR forward_poset_id = (?) OR backward_poset_id = (?)', self, self, self).first
   end

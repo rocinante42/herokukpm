@@ -4,7 +4,7 @@ class BubbleGame < ActiveRecord::Base
   belongs_to :game
 
   validates :bubble, :game, presence: true
-
+  validates :skin, length: { maximum: 50 }
   def self.create_from_csv csv_file, bubble_group = nil, bubble_game_params = {}
     bubble_games = []
 
