@@ -17,7 +17,7 @@ class Kid < ActiveRecord::Base
 
   validates_presence_of :first_name, :last_name
   validates :classroom, has_classroom: true
-  validates :first_name, :last_name, length: { in: 2..35 }
+  validates :first_name, :last_name, length: { in: 2..50 }
   before_create :generate_access_token
 
   before_create :set_token_expiration_time

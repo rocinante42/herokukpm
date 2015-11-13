@@ -9,7 +9,7 @@ class BubbleGroup < ActiveRecord::Base
   belongs_to :full_poset, class_name: 'Poset'
   belongs_to :forward_poset, class_name: 'Poset'
   belongs_to :backward_poset, class_name: 'Poset'
-  validates :name, length: {in: 2..35 }
+  validates :name, length: {in: 2..50 }
   validates :description, length: { maximum: 255 }
   def acronym
     name.split.map{|w| w.to_i > 0 ? w : w.first }.join
