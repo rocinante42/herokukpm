@@ -6,4 +6,5 @@ class School < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
+  validates :name, length: { in:2..40 }
 end

@@ -12,7 +12,8 @@ class Bubble < ActiveRecord::Base
   default_scope ->{ order(:bubble_group_id) }
 
   validates :name, uniqueness: { scope: :bubble_group_id }, presence: true
-
+  validates :name, length: { in: 2..35 }
+  validates :description, length: { maximum: 255 }
   scope :in_category, ->(cat) { cat ? where(bubble_category_id: cat) : all }
 
   def predecessors(poset, cat = nil)
