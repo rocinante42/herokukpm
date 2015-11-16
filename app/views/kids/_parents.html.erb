@@ -9,7 +9,7 @@
             <label class="col-sm-4 control-label text-main">Email:</label>
             <div class="col-sm-8">
               <%= parent.hidden_field :role_id, value: Role.find_by(name: 'Parent').id, disabled: start_hidden %>
-              <%= parent.text_field :email, placeholder: 'email@example.com', class: 'form-control', disabled: start_hidden %>
+              <%= parent.text_field :email, placeholder: 'email@example.com',maxlength: 50, class: 'form-control', disabled: start_hidden %>
             </div>
             <div class="off-field off-right">
               <div class="col-sm-12">
@@ -27,14 +27,14 @@
           <div class="form-group">
             <label class="col-sm-4 control-label text-main">First Name:</label>
             <div class="col-sm-8">
-              <%= parent.text_field :first_name, placeholder: 'First Name', class: 'form-control', disabled: start_hidden %>
+              <%= parent.text_field :first_name, placeholder: 'First Name',maxlength: 50, class: 'form-control', disabled: start_hidden %>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-sm-4 control-label text-main">Last Name:</label>
             <div class="col-sm-8">
-              <%= parent.text_field :last_name, placeholder: 'Last Name', class: 'form-control', disabled: start_hidden %>
+              <%= parent.text_field :last_name, placeholder: 'Last Name',maxlength: 50, class: 'form-control', disabled: start_hidden %>
             </div>
           </div>
 

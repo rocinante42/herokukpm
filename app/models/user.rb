@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
 
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
-  validates :first_name, :last_name, :direct_phone, :alternate_phone, :email, length: { in: 2..50 }
+  validates :first_name, :last_name, :email, length: { in: 2..50 }
+  validates :direct_phone, :alternate_phone, length: { maximum: 50 }
 
   validates_presence_of :classroom, if: :teacher?
   validates_presence_of :first_name, :last_name, unless: :parent?
