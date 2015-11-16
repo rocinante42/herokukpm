@@ -19,7 +19,6 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name, :last_name, unless: :parent?
 
   before_save :assign_role, :set_school
-  after_create :welcome_email
   after_save :welcome_email, :if => :email_changed?
 
   before_validation on: :create do
