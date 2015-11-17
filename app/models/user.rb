@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :classroom, if: :teacher?
   validates_presence_of :first_name, :last_name, unless: :parent?
+  validates_presence_of :school, if: :teacher_admin?
 
   before_save :assign_role, :set_school
   after_create :welcome_email
