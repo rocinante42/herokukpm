@@ -19,9 +19,9 @@
           <tr>
             <td class="text-center minimal"><%= link_to bubble_game.bubble.try(:name), bubble_game.bubble %></td>
             <td class="text-center"><%= link_to bubble_game.game.try(:name), bubble_game.game %></td>
-            <td class="text-center"><%= bubble_game.skin %></td>
-            <td class="text-center"><%= bubble_game.game_params %></td>
-            <td class="text-center"><%= bubble_game.scoring_params %></td>
+            <td class="text-center"><%= truncate(bubble_game.skin, length: 30) %></td>
+            <td class="text-center"><%= truncate(bubble_game.game_params, length: 30) %></td>
+            <td class="text-center"><%= truncate(bubble_game.scoring_params, length: 30) %></td>
             <td class="actions minimal">
               <%= link_to 'View', bubble_game, class: 'btn btn-info btn-simple btn-narrow' %>
               <%= link_to 'Edit', edit_bubble_game_path(bubble_game), class: 'btn btn-warning btn-simple btn-narrow' %>
