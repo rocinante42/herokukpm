@@ -9,7 +9,7 @@ class Classroom < ActiveRecord::Base
 
   validates_presence_of :school, :name, :classroom_type
   validates_uniqueness_of :name, scope: :school
-  validates :name, length: {maximum:50 }
+  validates :name, length: {in: 2..50 }
   after_create :create_general_bg_statuses
 
   def class_type

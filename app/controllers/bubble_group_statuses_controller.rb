@@ -7,7 +7,7 @@ class BubbleGroupStatusesController < ApplicationController
   # GET /bubble_group_statuses
   # GET /bubble_group_statuses.json
   def index
-    @bubble_group_statuses = BubbleGroupStatus.joins(:kid)
+    @bubble_group_statuses = BubbleGroupStatus.all
   end
 
   # GET /bubble_group_statuses/1
