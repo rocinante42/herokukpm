@@ -20,6 +20,8 @@
           <td>
             <h4>Choose Classroom:</h4>
           </td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+          <td><h4>Classroom Type:</h4></td>
         </tr>
         <tr>
           <td>
@@ -53,6 +55,10 @@
           <td>
             <%= submit_tag 'Set', class: 'btn btn-warning btn-simple' %>
           </td>
+            <td class="text-center">
+              <p><%= @current_classroom.classroom_type.type_name %></p>
+            </td>
+
         </tr>
         </tbody>
       </table>
