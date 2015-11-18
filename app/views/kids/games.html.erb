@@ -1,27 +1,26 @@
-<h2>Kid <%= link_to @kid.full_name, @kid %> can play <%= @games_hash.count %> games</h2>
-
-<table>
-  <tr>
-    <th>Bubble Group</th>
-    <th>Game</th>
-    <th>BubbleGame</th>
-    <th>Bubble</th>
-    <th colspan="3">Actions</th>
-  </tr>
+<div class="container">
+  <div class="row">
+    <h2 class="text-center">Kid <%= link_to @kid.full_name, @kid %> can play <%= @games_hash.count %> games</h2>
+    <div class="col-sm-2 col-sm-offset-1"><strong>Bubble Group</strong></div>
+    <div  class="col-sm-2"><strong>Game</strong></div>
+    <div  class="col-sm-2"><strong>BubbleGame</strong></div>
+    <div  class="col-sm-2"><strong>Bubble</strong></div>
+    <div  class="col-sm-2"><strong>Actions</strong></div>
+  </div>
   <% @games_hash.each do |game, bubble_games| %>
     <% bubble_games.each do |bubble_game| %>
       <% bubble = bubble_game.bubble %>
-      <tr>
-        <td><%= link_to bubble.bubble_group.name, bubble.bubble_group %></td>
-        <td><%= link_to game.name, game %></td>
-        <td><%= link_to bubble_game.name, bubble_game %></td>
-        <td><%= link_to bubble.name, bubble %></td>
-
-        <td><%= link_to "Pass", games_kid_path(@kid, bubble_id: bubble.id, result: "pass") %></td>
-        <td><%= link_to "Fail", games_kid_path(@kid, bubble_id: bubble.id, result: "fail") %></td>
-        <td><%= link_to "Enjoy", games_kid_path(@kid, bubble_id: bubble.id, result: "enjoy") %></td>
-      </tr>
+        <div class="row">
+          <div class="col-sm-2 col-sm-offset-1"><%= link_to bubble.bubble_group.name, bubble.bubble_group %></div>
+          <div class="col-sm-2"><%= link_to game.name, game %></div>
+          <div class="col-sm-2"><%= link_to bubble_game.name, bubble_game %></div>
+          <div class="col-sm-2"><%= link_to bubble.name, bubble %></div>
+          <div class="col-sm-2">
+            <span><%= link_to "Pass", games_kid_path(@kid, bubble_id: bubble.id, result: "pass") %></span>
+            <span><%= link_to "Fail", games_kid_path(@kid, bubble_id: bubble.id, result: "fail") %></span>
+            <span><%= link_to "Enjoy", games_kid_path(@kid, bubble_id: bubble.id, result: "enjoy") %></span>
+          </div>
+        </div>
     <% end %>
   <% end %>
-</table>
-
+</div>
