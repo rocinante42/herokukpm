@@ -14,6 +14,7 @@ class Ability
       can :manage, User do |u|
         (user.students & u.kids).any?
       end
+      can [:bulk_submit, :bulk_update], BubbleGroupStatus
       ##Others ability with classroom
       can :read, BubbleCategory
       can :read, BubbleGame
