@@ -100,7 +100,7 @@ class Kid < ActiveRecord::Base
 
   def create_none_bg_statuses
     BubbleGroup.all.find_each do |bg|
-      general_bg_status = BubbleGroupStatus.where(classroom: classroom, bubble_group:bg).first
+      general_bg_status = BubbleGroupStatus.where(classroom: classroom, bubble_group:bg).first_or_create
       BubbleGroupStatus.create(kid_id:self.id, classroom: classroom, bubble_group:bg, general_id: general_bg_status.id, active: BubbleGroupStatus::ACTIVE_NONE)
     end
   end
