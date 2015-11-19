@@ -106,7 +106,7 @@ class BubbleGroupsController < ApplicationController
         bubble_category_file = params[:bubble_group][:bubble_category_file]
         if bubble_category_file
           puts "delete bubble_categories !!!!!"
-          categories = BubbleCategory.joins(:bubbles).merge(@bubble_group.bubbles).uniq
+          categories = BubbleCategory.joins(:bubbles).merge(@bubble_group.bubbles)
           categories.destroy_all if destroy_old_data
           BubbleCategory.create_from_csv(bubble_category_file, bubble_group: @bubble_group)
         end
