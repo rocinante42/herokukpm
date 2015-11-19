@@ -26,7 +26,7 @@
             <div class="grid-col">
               <div class="media">
                 <div class="media-left">
-                  <%= image_tag 'student_avatar_medium.jpg', class: 'media-object' %>
+                  <%= image_tag kid_avatar_for(kid: @kid, size: 'medium'), class: 'media-object' %>
                 </div>
                 <div class="media-body media-middle">
                   <h3 class="text-main"><%= @kid.full_name %></h3>
