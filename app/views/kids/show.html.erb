@@ -66,19 +66,23 @@
         <table id="table" data-toggle="table" data-cache="false" data-height="299">
             <thead>
               <tr>
-                  <th><p class="font-xlarge ">Bubble Group:</p></th><th><p class="font-xlarge ">Status:</p></th><th><p class="font-xlarge ">Actions:</p></th>
+                <th><span class="font-xlarge ">Bubble Group:</span></th>
+                <th><span class="font-xlarge ">Status:</span></th>
+                <th><span class="font-xlarge ">Actions:</span></th>
               </tr>
             </thead>
+            <tbody>
               <% @kid.bubble_group_statuses.select(&:active?).each do |bubble_group_status| %>
-            <tr>
-                <td><p class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></p></td>
-                <td><p class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></p></td>
-                <td><p class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></p></td>
-            </tr>
-            <% end %>
+                <tr>
+                  <td><span class="font-xlarge text-info"><%= link_to bubble_group_status.bubble_group.name, bubble_group_status.bubble_group %></span></td>
+                  <td><span class="font-xlarge text-info"><%= link_to "Status", bubble_group_status %></span></td>
+                  <td><span class="font-xlarge text-info"><%= link_to "Reset", reset_bubble_group_status_path(bubble_group_status) %></span></td>
+                </tr>
+              <% end %>
+            </tbody>
         </table>
         <script type="text/javascript">
-        $('#table').bootstrapTable();
+          $('#table').bootstrapTable();
         </script>
     </div>
   </div>
