@@ -61,6 +61,7 @@ class Kid < ActiveRecord::Base
   def full_info
     {
       'Name' => full_name,
+      'Gender' => humanize_gender,
       'Age' => "#{age} years",
       'Language' => primary_language,
       'School' => classroom.school.name,

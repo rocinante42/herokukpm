@@ -2,7 +2,7 @@
 
 <div class="container kmSection">
   <div class="row text-center">
-    <%= image_tag "student_avatar_medium.jpg", class: 'img-responsive center-block' %>
+    <%= image_tag kid_avatar_for(kid: @kid, size: 'medium'), class: 'img-responsive center-block' %>
   </div>
   <% items = {
     'Access Token:' => "#{@kid.access_token}",
