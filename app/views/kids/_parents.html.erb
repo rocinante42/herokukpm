@@ -14,11 +14,11 @@
             <div class="off-field off-right">
               <div class="col-sm-12">
                 <% if fr.object.parent.new_record? %>
-                  <%= link_to 'javascript:;', class:'text-danger control-label remove-template' do %>
+                  <%= link_to 'javascript:;', id:'beforeCreateParent', class:'text-danger control-label remove-template remove-modal-trigger' do %>
                     Remove
                   <% end %>
                 <% else %>
-                  <%= link_to 'Remove', users_admin_path(fr.object.parent), method: :delete, remote: true, class:'text-danger control-label remove-template' %>
+                  <%= link_to 'Remove', users_admin_path(fr.object.parent), method: :delete, id:'afterCreateParent', remote: true, class:'text-danger control-label remove-template remove-modal-trigger' %>
                 <% end %>
               </div>
             </div>
@@ -43,3 +43,40 @@
     <% end %>
   </div>
 <% end %>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="removeModalLabel">
+  <div class="modal-dialog removeModal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Remove parent:</h4>
+      </div>
+      <div class="modal-body">
+        <h4>Are you sure?</h4>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="removeSend" data-dismiss="modal">Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function(){
+    $(".remove-modal-trigger").click(function(e, data){
+      if (data && data.pass) {
+        return true;
+      }
+      $(this).attr('id', $(this).attr('id') + "1");
+      $('#removeModal').data('id', $(this).attr('id')).modal();
+      return false;
+    });
+    $('#removeModal #removeSend').click(function(){
+      $("#" + $(this).closest('.modal').data('id')).trigger('click', {pass: true});
+    });
+  });
+</script>
