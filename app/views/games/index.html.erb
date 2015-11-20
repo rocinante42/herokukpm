@@ -15,7 +15,7 @@
         <% @games.each do |game| %>
           <tr>
             <td class="text-center minimal text-main"><%= game.name %></td>
-            <td class="text-center text-main"><%= game.description %></td>
+            <td class="text-center text-main"><%= truncate(game.description, length:50) %></td>
             <td class="actions minimal">
               <%= link_to 'View', game, class: 'btn btn-info btn-simple btn-narrow' %>
               <%= link_to 'Edit', edit_game_path(game), class: 'btn btn-warning btn-simple btn-narrow' %>
