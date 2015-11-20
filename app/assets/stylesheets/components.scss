@@ -1,7 +1,7 @@
 $dd-toggle-padding: 10px;
 .dropdown {display:inline-block;
   > a {color:$color-inv;
-    > span {display:inline-block; vertical-align:middle;}
+    > span {display:inline-block; vertical-align:middle; margin-bottom:1px; margin-top:2px;}
   }
   &.simple {
     > a {padding-top:2px; padding-left:$dd-toggle-padding; padding-right:$dd-toggle-padding; background:$color-brand-fade; border-radius:10px;}
