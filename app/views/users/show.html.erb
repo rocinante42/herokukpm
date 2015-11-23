@@ -49,7 +49,7 @@
         <div class="form-group">
           <%= label_tag :name, "School", class: "col-sm-4 control-label text-main" %>
           <div class="col-sm-8">
-            <span class="form-control form-control-static"><%= @user.classroom.try(:school).try(:name) %></span>
+            <span class="form-control form-control-static"><%= @user.try(:school).try(:name) %></span>
           </div>
         </div>
       <% end %>
