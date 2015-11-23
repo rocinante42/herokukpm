@@ -74,10 +74,13 @@ class BubbleGroupStatusesController < ApplicationController
     classroom = Classroom.find(params[:classroom_id])
     bubble_groups = classroom.bubble_groups.where(id: params[:bubble_groups])
     time_limit = params[:time_limit]
-    selected = params[:selected]
+    selected = params[:selected].reject(&:blank?)
 
-    if time_limit.blank?
-      flash[:error] = "No time limit specified."
+    if time_limit.blank? || selected.blank?
+      errors = []
+      errors << 'No time limit specified.' if time_limit.blank?
+      errors << 'No activities selected.' if selected.blank?
+      flash[:error] = errors
       redirect_to activities_path(classroom: classroom.id) and return
     end
 
