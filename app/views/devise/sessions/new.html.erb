@@ -64,3 +64,10 @@
     </div>
   </div>
 </div>
+<script>
+  $('#user_password').on('keyup paste',function(){
+    if ($('#user_password').val().length > 7) {$('#flash_alert').hide();}
+    else {$('#flash_alert').show();}
+  });
+
+</script>
