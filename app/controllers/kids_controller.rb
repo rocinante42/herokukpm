@@ -16,7 +16,7 @@ class KidsController < ApplicationController
       @current_classroom = Classroom.find(params[:classroom])
       @current_school = @current_classroom.school
     else
-      @current_school = @schools.sample
+      @current_school = School.joins(:classrooms).where.not(classrooms: {school_id: nil}).sample
       @current_classroom = @current_school.classrooms.sample
     end
     @schools.each do |school|
