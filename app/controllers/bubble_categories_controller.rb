@@ -5,7 +5,7 @@ class BubbleCategoriesController < ApplicationController
   # GET /bubble_categories
   # GET /bubble_categories.json
   def index
-    @bubble_categories = BubbleCategory.all
+    @grouped_bubble_categories = BubbleGroup.includes(:bubble_categories).to_a.inject({}) {|h, bg| h[bg.name] = bg.bubble_categories.uniq; h}
   end
 
   # GET /bubble_categories/1
