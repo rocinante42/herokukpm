@@ -109,7 +109,7 @@
           <td></td>
           <% if can? :create, Kid %>
             <td style="padding-top:13px;">
-              <%= link_to new_kid_path(classroom: @current_classroom), class: 'btn btn-info btn-simple btn-large btn-wide' do %>
+              <%= link_to new_kid_path(classroom: @current_classroom, url: dashboard_classroom_path), class: 'btn btn-info btn-simple btn-large btn-wide' do %>
                 <i class="fa fa-plus"></i>
                 <span>Add New Student</span>
               <% end %>
