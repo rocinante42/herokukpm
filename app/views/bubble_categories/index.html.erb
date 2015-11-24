@@ -11,15 +11,20 @@
         </thead>
 
         <tbody>
-        <% @bubble_categories.each do |bubble_category| %>
+        <% @grouped_bubble_categories.each do |group_name, bubble_categories| %>
           <tr>
-            <td><%= bubble_category.name %></td>
-            <td class="actions minimal">
-              <%= link_to 'View', bubble_category, class: 'btn btn-info btn-simple btn-narrow' %>
-              <%= link_to 'Edit', edit_bubble_category_path(bubble_category), class: 'btn btn-warning btn-simple btn-narrow' %>
-              <%= link_to 'Delete', bubble_category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
-            </td>
+            <td colspan="2"><%= group_name %></td>
           </tr>
+          <% bubble_categories.each do |bubble_category| %>
+            <tr>
+              <td><%= bubble_category.name %></td>
+              <td class="actions minimal">
+                <%= link_to 'View', bubble_category, class: 'btn btn-info btn-simple btn-narrow' %>
+                <%= link_to 'Edit', edit_bubble_category_path(bubble_category), class: 'btn btn-warning btn-simple btn-narrow' %>
+                <%= link_to 'Delete', bubble_category, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
+              </td>
+            </tr>
+          <% end %>
         <% end %>
         </tbody>
       </table>
