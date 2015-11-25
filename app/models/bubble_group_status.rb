@@ -6,7 +6,7 @@ class BubbleGroupStatus < ActiveRecord::Base
   belongs_to :general, class_name: 'BubbleGroupStatus', foreign_key: 'general_id'
   has_many :sub_bubble_group_statuses, class_name: 'BubbleGroupStatus', foreign_key: 'general_id'
   has_many :kid_activities
-
+  validates :pass_counter, :fail_counter, numericality: true
   has_many :bubble_statuses, dependent: :destroy
   has_many :triggers, through: :bubble_group
 
