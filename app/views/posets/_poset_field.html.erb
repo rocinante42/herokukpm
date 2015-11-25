@@ -14,7 +14,7 @@
           <li><a href="javascript:" data-id="<%= poset.id %>"><%= poset.name %></a></li>
         <% end %>
       </ul>
-      <%= f.hidden_field :backward_poset_id, value: bg_poset.try(:id) %>
+      <%= f.hidden_field "#{type}_poset_id", value: bg_poset.try(:id) %>
     </div>
   </div>
 </div>

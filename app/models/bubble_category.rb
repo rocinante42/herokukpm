@@ -20,6 +20,7 @@ class BubbleCategory < ActiveRecord::Base
         ## find the bubble
         bubble = bubbles.where(name: bubble_name).first
         category = categories.find_or_create_by(name: category_name)
+        category.classroom_types << ClassroomType.joins(:bubble_groups).where(bubble_groups: {id: category.bubble_groups.pluck(:id).uniq}).uniq
 
         ## update the bubble, if possible
         bubble.update(bubble_category_id: category.id) if bubble
