@@ -6,6 +6,7 @@
   .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a {background:$color-brand; border-radius:0; color:$color-brand-fade; font-size:20px;}
 }
 
+.nav-pills.simple li.active > a#oneBubbleGroup{border-radius: 100px;}
 .nav-pills.simple {
   > li {
     &:first-child > a {border-radius:100px 0 0 100px; border-left:none;}
