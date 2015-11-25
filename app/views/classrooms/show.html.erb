@@ -1,6 +1,7 @@
 <%= render 'shared/section_title', title: 'Show Classroom' %>
 <div class="container kmSection">
   <div class="row">
+    <h4 class="text-center text-brand"><%= notice %></h4>
     <div class="col-md-12">
       <table class="table">
         <tbody>
@@ -69,7 +70,9 @@
       <div class="col-md-12">
         <%= link_to 'Back', classrooms_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
         <%= link_to 'Edit', edit_classroom_path(@classroom), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
-        <%= submit_tag "Save", class: 'btn btn-info btn-simple btn-large btn-narrow' %>
+        <% if @classroom.students.any? %>
+          <%= submit_tag "Save", class: 'btn btn-info btn-simple btn-large btn-narrow' %>
+        <% end %>
       </div>
     </div>
   <% end %>
