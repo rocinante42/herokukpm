@@ -158,7 +158,7 @@
           <% end %>
           <% if can? :edit, kid %>
             <td class="minimal">
-              <%= link_to 'Edit', edit_kid_path(kid), class: 'btn btn-warning btn-simple btn-extended' %>
+              <%= link_to 'Edit', edit_kid_path(kid, url: dashboard_classroom_path), class: 'btn btn-warning btn-simple btn-extended' %>
             </td>
           <% end %>
           <% if can? :destroy, kid %>
