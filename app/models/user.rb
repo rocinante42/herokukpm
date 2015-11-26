@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   delegate :students, to: :classroom
 
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
-  validates_format_of :direct_phone, with: /(\d+-)*\d+/, allow_blank: true
+  validates_format_of :direct_phone, with: /\A\+?(\d+-)*\d+\z/, allow_blank: true
   validates :first_name, :last_name, :direct_phone, :alternate_phone, :email, length: { maximum: 50 }
 
   validates_presence_of :classroom, if: :teacher?
