@@ -387,7 +387,7 @@ class BubbleGroupStatus < ActiveRecord::Base
       poset ||= self.current_poset
 
       ## fetch the failed bubble statuses in that poset
-      failed = self.bubble_statuses.where(bubble: poset.bubbles.in_category(classroom_categories)).where(passed: false)
+      failed = self.bubble_statuses.where(bubble: poset.bubbles).where(passed: false)
 
       ## activate nodes where all predecessors in that poset are passed
       check_predecessors(failed, poset)
