@@ -86,7 +86,7 @@ custom_categories = {
   },
   # First Grade
   type_2 => {
-    'Addition and Subtraction Count On' => ['6-10', '11-15', '16-20']
+    'Addition and Subtraction Count On' => ['1-5', '6-10', '11-15', '16-20']
   }
 }
 
