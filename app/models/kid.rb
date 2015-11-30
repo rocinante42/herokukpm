@@ -17,7 +17,7 @@ class Kid < ActiveRecord::Base
   validates :age, :numericality => { :greater_than => 0 }
   validates_presence_of :first_name, :last_name
   validates :classroom, has_classroom: true
-  validates :first_name, :last_name,:primary_language, length: { maximum: 50 }
+  validates :first_name, :last_name,:primary_language, length: { maximum: 25 }
   validates :primary_language, format: { with: /\A[a-zA-Z]+\z/,message: "only allows letters" }
   before_create :generate_access_token
 
