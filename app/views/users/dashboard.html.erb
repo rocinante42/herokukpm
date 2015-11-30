@@ -96,7 +96,7 @@
                 <ul class="list-unstyled">
                   <% item[:kids].each do |kid| %>
                     <li>
-                      <%= link_to kid.full_name, kid %>
+                      <%= link_to truncate(kid.full_name, length: 17), kid %>
                     </li>
                   <% end %>
                 </ul>
