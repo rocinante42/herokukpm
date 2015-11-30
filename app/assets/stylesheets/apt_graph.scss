@@ -26,7 +26,7 @@
   @media (min-height: $min-height) {
     .apt-body {
       .apt-y-axis {line-height:$row-height;}
-      .grid {height: $row-height * 10; margin-bottom:$row-height / 2; background-size: auto $row-height;}
+      .grid {height: $row-height * 10; margin-bottom:$row-height / 2; background-size: 1px $row-height;}
       .apt-bar {bottom:-$row-height / 2;}
       &.mixed {
         $total-bar-width: 10px;
