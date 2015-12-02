@@ -11,8 +11,15 @@ class BubbleGroup < ActiveRecord::Base
   belongs_to :backward_poset, class_name: 'Poset'
   validates :name, length: {maximum: 50 }
   validates :description, length: { maximum: 255 }
+
+  after_save :update_bg_statuses_poset, if: :full_poset_id_changed?
+
   def acronym
     name.split.map{|w| w.to_i > 0 ? w : w.first }.join
   end
 
+  private
+    def update_bg_statuses_poset
+      bubble_group_statuses.update_all(poset_id: full_poset_id)
+    end
 end
