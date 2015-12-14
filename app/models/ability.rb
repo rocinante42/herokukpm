@@ -42,6 +42,7 @@ class Ability
       can :manage, User, User.teachers do |u|
         u.school == user.school
       end
+      can [:bulk_submit, :bulk_update], BubbleGroupStatus
     end
     unless user.parent?
       can [:dashboard, :dashboard_classroom, :activities], User
