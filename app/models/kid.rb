@@ -14,11 +14,11 @@ class Kid < ActiveRecord::Base
   has_many :family_relationships, dependent: :destroy
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
-  validates :age, :numericality => { :greater_than => 0 }
+  validates :age, :numericality => { :greater_than_or_equal_to => 0, :less_than_or_equal_to => 99 }, :allow_nil => true
   validates_presence_of :first_name, :last_name
   validates :classroom, has_classroom: true
   validates :first_name, :last_name,:primary_language, length: { maximum: 25 }
-  validates :primary_language, format: { with: /\A[a-zA-Z]+\z/,message: "only allows letters" }
+  validates :primary_language, format: { with: /\A[a-zA-Z]+\z/,message: "only allows letters" },:allow_blank => true
   before_create :generate_access_token
 
   before_create :set_token_expiration_time
