@@ -14,7 +14,7 @@ class Kid < ActiveRecord::Base
   has_many :family_relationships, dependent: :destroy
   has_many :parents, through: :family_relationships
   accepts_nested_attributes_for :family_relationships
-  validates :age, :numericality => { :greater_than => 0 }
+  validates :age, :numericality => { :only_integer => true, :greater_than_or_equal_to => 0, :less_than_or_equal_to => 99 }
   validates_presence_of :first_name, :last_name
   validates :classroom, has_classroom: true
   validates :first_name, :last_name,:primary_language, length: { maximum: 25 }
