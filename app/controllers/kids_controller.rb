@@ -101,7 +101,7 @@ class KidsController < ApplicationController
       begin
         if @kid.update(kid_params)
           url = params[:url] || @kid
-          format.html { redirect_to url, notice: 'Kid was successfully updated.' }
+          format.html { redirect_to  url, classroom: params[:kid][:classroom_id], school: params[:school], notice: 'Kid was successfully updated.' }
           format.json { render :show, status: :ok, location: @kid }
         else
           set_kid_errors format: format, action: :edit
