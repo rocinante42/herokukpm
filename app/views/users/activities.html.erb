@@ -156,6 +156,34 @@
     </div>
     </div>
   </div>
+<% if @current_classroom.bubble_group_statuses.active.any? %>
+  <div class="container">
+    <div class="row">
+      <h4>List Of Selected Activities</h4>
+      <table class="table fit">
+        <thead>
+          <tr>
+            <th>Active Bubble Group</th>
+            <th>Time Left</th>
+            <th></th>
+          </tr>
+
+        </thead>
+        <tbody>
+          <% @active_bg_statuses.each do |bg_status| %>
+            <tr>
+              <td><%= bg_status.bubble_group.name %></td>
+              <td><%= Time.at(bg_status.time_left_in_seconds / bg_status.sub_bubble_group_statuses.count).utc.strftime("%-Hh %Mmin") %></td>
+              <% if can? :reset, bg_status %>
+                <td class="minimal"><%= link_to 'Reset', [:reset, bg_status], class: 'btn btn-warning btn-warning-brand btn-simple btn-extended' %></td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% end %>
 </div>
 <script>
   $(document).ready(function(){
