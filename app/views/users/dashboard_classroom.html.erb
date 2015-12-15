@@ -124,6 +124,7 @@
       <tr class="no-border-top">
         <th class="text-center">Avatar</th>
         <th class="text-center">Students</th>
+        <th class="text-center">4 Number Code</th>
         <th class="text-center">Download Report</th>
         <% if @current_classroom.kindergarten? %>
           <th class="text-center">Download Report</th>
@@ -141,6 +142,9 @@
           </td>
           <td>
             <span class="text-main font-large"><%= kid.full_name %></span>
+          </td>
+          <td>
+            <span class="text-main font-large"><%= kid.access_token.last(4) %></span>
           </td>
           <% if can? :reports, kid %>
             <% if kid.kindergarten? %>
