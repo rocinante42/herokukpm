@@ -54,7 +54,11 @@
       </div>
     </div>
     <div class="row text-center actions">
-      <%= link_to 'Cancel', params[:url] || users_admin_index_path, class: 'btn btn-large btn-warning btn-wide btn-simple' %>
+      <% if  params[:school] %>
+          <%= link_to 'Cancel', dashboard_classroom_path( classroom: params[:classroom], school: params[:school]), class: 'btn btn-large btn-warning btn-wide btn-simple' %>
+      <% else %>
+          <%= link_to 'Cancel', params[:url] || users_admin_index_path, class: 'btn btn-large btn-warning btn-wide btn-simple' %>
+      <% end %>
       <% if @user.persisted? %>
         <%= link_to 'Delete', users_admin_path(@user), method: :delete,  class: 'btn btn-danger btn-large btn-wide btn-simple' %>
         <%= f.submit 'Confirm', class: 'btn btn-info btn-large btn-wide btn-simple' %>
