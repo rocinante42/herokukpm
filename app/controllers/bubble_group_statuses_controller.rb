@@ -67,7 +67,11 @@ class BubbleGroupStatusesController < ApplicationController
   ## POST /bubble_group_statuses/1/reset
   def reset
     @bubble_group_status.reset!
-    render action: :show
+    @bubble_group_status.update(active:BubbleGroupStatus::ACTIVE_NONE)
+    respond_to do |format|
+      format.html{ redirect_to :back }
+      format.json{ render action: :show}
+    end
   end
 
   def bulk_submit
