@@ -23,6 +23,7 @@ class Kid < ActiveRecord::Base
 
   before_create :set_token_expiration_time
   after_create :create_none_bg_statuses
+  after_save :reset_bg_statuses, if: Proc.new {|kid| kid.classroom_id_was != nil && kid.classroom_id_changed?}
 
   def full_name
     "#{self.first_name} #{self.last_name}"
@@ -105,5 +106,10 @@ class Kid < ActiveRecord::Base
       general_bg_status = BubbleGroupStatus.where(classroom: classroom, bubble_group:bg).first_or_create
       BubbleGroupStatus.create(kid_id:self.id, classroom: classroom, bubble_group:bg, general_id: general_bg_status.id, active: BubbleGroupStatus::ACTIVE_NONE)
     end
+  end
+
+  def reset_bg_statuses
+    bubble_group_statuses.destroy_all
+    create_none_bg_statuses
   end
 end
