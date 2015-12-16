@@ -10,7 +10,9 @@ class User < ActiveRecord::Base
   has_many :family_relationships, dependent: :destroy
   has_many :kids, through: :family_relationships
   delegate :students, to: :classroom
-
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "avatar.png"
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
+  validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 1.megabytes
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /\A\+?(\d+-)*\d+\z/, allow_blank: true
   validates :first_name, :last_name, length: { maximum: 25 }, format: { with: /\A^[a-zA-Z]*$\z/, message: "only allows letters" }

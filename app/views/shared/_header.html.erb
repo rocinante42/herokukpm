@@ -31,7 +31,7 @@
               <% end %>
             </div>
             <div class="media-left media-right media-middle">
-              <%= image_tag 'avatar.png', class: 'img-responisve img-circle' %>
+              <%= image_tag @current_user.avatar.url(:thumb), class: 'img-responisve img-circle' %>
             </div>
             <div class="media-right media-middle">
               <div class="dropdown">
