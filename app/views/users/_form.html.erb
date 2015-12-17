@@ -42,6 +42,13 @@
             <%= f.text_field :email, placeholder: 'Email', class: 'form-control' %>
           </div>
         </div>
+        <div class="form-group">
+          <%= f.label :avatar, "Avatar", class: "col-sm-4 control-label text-main" %>
+          <div class="col-sm-8">
+            <%= f.file_field :avatar, as: :file %>
+            <p class="help-block">Preferable image 100x100 pixels.</p>
+          </div>
+        </div>
         <%= render 'form_object_dropdown', f: f, type: :role, options: @roles %>
         <%= render 'form_object_dropdown', f: f, type: :school, options: @schools %>
         <%= render 'form_object_dropdown', f: f, type: :classroom, options: @classrooms %>
