@@ -165,6 +165,7 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.datetime "updated_at"
   end
 
+
   create_table "schools", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
