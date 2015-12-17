@@ -34,7 +34,7 @@ gem 'spring',        group: :development
 gem 'devise'
 gem 'cancancan', '~> 1.10'
 
-
+gem 'paperclip', git: 'git://github.com/thoughtbot/paperclip.git'
 gem 'pry', group: :development
 gem 'pry-remote', group: :development
 gem 'pry-nav', group: :development

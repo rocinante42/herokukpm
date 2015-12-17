@@ -225,7 +225,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :direct_phone, :role_id, :classroom_id, :school_id)
+      params.require(:user).permit(:first_name, :avatar, :last_name, :email, :direct_phone, :role_id, :classroom_id, :school_id)
     end
 
     def set_available_classrooms
