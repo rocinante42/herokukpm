@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151029124702) do
+ActiveRecord::Schema.define(version: 20151216102419) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "bubble_categories", force: true do |t|
     t.string   "name"
@@ -28,8 +31,8 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.integer  "bubble_id"
     t.integer  "game_id"
     t.string   "skin"
-    t.text     "game_params",    limit: 255
-    t.text     "scoring_params", limit: 255
+    t.text     "game_params"
+    t.text     "scoring_params"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -48,7 +51,7 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.integer  "time_limit"
   end
 
-  add_index "bubble_group_statuses", ["classroom_id"], name: "index_bubble_group_statuses_on_classroom_id"
+  add_index "bubble_group_statuses", ["classroom_id"], name: "index_bubble_group_statuses_on_classroom_id", using: :btree
 
   create_table "bubble_groups", force: true do |t|
     t.string   "name"
@@ -65,8 +68,8 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.integer "classroom_type_id"
   end
 
-  add_index "bubble_groups_classroom_types", ["bubble_group_id"], name: "index_bubble_groups_classroom_types_on_bubble_group_id"
-  add_index "bubble_groups_classroom_types", ["classroom_type_id"], name: "index_bubble_groups_classroom_types_on_classroom_type_id"
+  add_index "bubble_groups_classroom_types", ["bubble_group_id"], name: "index_bubble_groups_classroom_types_on_bubble_group_id", using: :btree
+  add_index "bubble_groups_classroom_types", ["classroom_type_id"], name: "index_bubble_groups_classroom_types_on_classroom_type_id", using: :btree
 
   create_table "bubble_statuses", force: true do |t|
     t.integer  "bubble_group_status_id"
@@ -86,7 +89,7 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.integer  "bubble_category_id"
   end
 
-  add_index "bubbles", ["bubble_category_id"], name: "index_bubbles_on_bubble_category_id"
+  add_index "bubbles", ["bubble_category_id"], name: "index_bubbles_on_bubble_category_id", using: :btree
 
   create_table "classroom_types", force: true do |t|
     t.string   "type_name"
@@ -103,7 +106,7 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.datetime "updated_at"
   end
 
-  add_index "classrooms", ["classroom_type_id"], name: "index_classrooms_on_classroom_type_id"
+  add_index "classrooms", ["classroom_type_id"], name: "index_classrooms_on_classroom_type_id", using: :btree
 
   create_table "edges", force: true do |t|
     t.integer  "source_id"
@@ -120,8 +123,8 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.datetime "updated_at"
   end
 
-  add_index "family_relationships", ["kid_id"], name: "index_family_relationships_on_kid_id"
-  add_index "family_relationships", ["user_id"], name: "index_family_relationships_on_user_id"
+  add_index "family_relationships", ["kid_id"], name: "index_family_relationships_on_kid_id", using: :btree
+  add_index "family_relationships", ["user_id"], name: "index_family_relationships_on_user_id", using: :btree
 
   create_table "games", force: true do |t|
     t.string   "name"
@@ -165,7 +168,6 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.datetime "updated_at"
   end
 
-
   create_table "schools", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -199,12 +201,16 @@ ActiveRecord::Schema.define(version: 20151029124702) do
     t.datetime "updated_at",                          null: false
     t.integer  "school_id"
     t.integer  "classroom_id"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
-  add_index "users", ["classroom_id"], name: "index_users_on_classroom_id"
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  add_index "users", ["role_id"], name: "index_users_on_role_id"
-  add_index "users", ["school_id"], name: "index_users_on_school_id"
+  add_index "users", ["classroom_id"], name: "index_users_on_classroom_id", using: :btree
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+  add_index "users", ["role_id"], name: "index_users_on_role_id", using: :btree
+  add_index "users", ["school_id"], name: "index_users_on_school_id", using: :btree
 
 end
