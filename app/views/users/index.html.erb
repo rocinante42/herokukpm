@@ -24,8 +24,14 @@
       <% @users.each do |user| %>
         <tr class="text-center v-middle">
           <td class="minimal">
-            <%= link_to users_admin_path(user) do %>
-              <%= image_tag 'teacher_avatar.png' %>
+            <% if user.role.name == 'Parent' %>
+             <%= link_to users_admin_path(user) do %>
+                <%= image_tag 'parent_avatar_small.png' %>
+              <% end %>
+            <% else %>
+              <%= link_to users_admin_path(user) do %>
+                <%= image_tag 'teacher_avatar.png' %>
+              <% end %>
             <% end %>
           </td>
 
