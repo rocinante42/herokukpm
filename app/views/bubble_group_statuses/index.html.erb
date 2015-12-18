@@ -24,7 +24,6 @@
             <td class="text-center text-main"><%= bubble_group_status.fail_counter %></td>
             <td class="actions minimal">
               <%= link_to 'View', bubble_group_status, class: 'btn btn-info btn-simple btn-narrow' %>
-              <%= link_to 'Edit', edit_bubble_group_status_path(bubble_group_status), class: 'btn btn-warning btn-simple btn-narrow' %>
               <%= link_to 'Reset', reset_bubble_group_status_path(bubble_group_status), class: 'btn btn-warning btn-simple btn-narrow' %>
               <%= link_to 'Delete', bubble_group_status, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-simple btn-narrow' %>
             </td>
