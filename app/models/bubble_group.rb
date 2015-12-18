@@ -9,7 +9,7 @@ class BubbleGroup < ActiveRecord::Base
   belongs_to :full_poset, class_name: 'Poset'
   belongs_to :forward_poset, class_name: 'Poset'
   belongs_to :backward_poset, class_name: 'Poset'
-  validates :name, length: {maximum: 50 }
+  validates :name, length: {maximum: 50 }, presence: true
   validates :description, length: { maximum: 255 }
 
   after_save :update_bg_statuses_poset, if: :full_poset_id_changed?
