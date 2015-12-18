@@ -1,26 +1,33 @@
-<% if @game %>
-  <h2>Kid <%= link_to @kid.full_name, @kid %> is playing <%= link_to @game.name, @game %></h2>
-
-  <table>
-    <tr>
-      <th>Bubble</th>
-      <th>Bubble-Game</th>
-      <th>Game</th>
-    </tr>
-    <tr>
-      <td><%= link_to @bubble.name, @bubble %></td>
-      <td><%= link_to @bubble_game.name, @bubble_game %></td>
-      <td><%= link_to @game.name, @game %></td>
-    </tr>
-  </table>
-
-  <div>
-    <h3>Options</h3>
-    <%= link_to "Pass",  play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'pass') %> |
-    <%= link_to "Fail",  play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'fail') %> |
-    <%= link_to "Enjoy", play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'enjoy') %>
+<div class="container">
+  <% if @game %>
+    <div class="row">
+      <h2 class="centered">Kid <%= link_to @kid.full_name, @kid %> is playing <%= link_to @game.name, @game %></h2>
+      <p>&nbsp;</p>
+      <div class="col-sm-6 col-sm-offset-3">
+        <div class="row">
+          <div class="col-sm-4 text-center">Bubble</div>
+          <div class="col-sm-4 text-center">Bubble-Game</div>
+          <div class="col-sm-4 text-center">Game</div>
+        </div>
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <div class="row">
+        <div class="col-sm-4 text-center"><%= link_to @bubble.name, @bubble %></div>
+        <div class="col-sm-4 text-center"><%= link_to @bubble_game.name, @bubble_game %></div>
+        <div class="col-sm-4 text-center"><%= link_to @game.name, @game %></div>
+      </div>
+    </div>
+    <p>&nbsp;</p>
+    <div class="centered">
+      <h3>Options</h3>
+      <%= link_to "Pass",  play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'pass') %> |
+      <%= link_to "Fail",  play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'fail') %> |
+      <%= link_to "Enjoy", play_game_kid_path(@kid, bubble_id: @bubble.id, result: 'enjoy') %>
+    </div>
+  <% else %>
+    <h2>Kid <%= link_to @kid.full_name, @kid %> has no games to play.</h2>
+  <% end %>
   </div>
-<% else %>
-  <h2>Kid <%= link_to @kid.full_name, @kid %> has no games to play.</h2>
-<% end %>
-
+</div>

@@ -152,7 +152,7 @@
     <% if @current_classroom.bubble_group_statuses.active.any? %>
       <%= link_to 'Reset', bulk_update_bubble_group_statuses_path(classroom_id: @current_classroom, status: BubbleGroupStatus::ACTIVE_NONE), class: 'resetActivities btn btn-warning btn-warning-brand btn-simple btn-large btn-wide' %>
     <% end %>
-      <%= link_to 'Submit', 'javascript:', onclick: "$('#bulk_submit_selected').submit();return false;" ,class: ' btn btn-success btn-simple btn-large btn-wide' %>
+      <%= link_to 'Submit', 'javascript:', onclick: "$('#bulk_submit_selected').submit();return false;" ,class: 'btnSubmitActivities btn btn-success btn-simple btn-large btn-wide' %>
     </div>
     </div>
   </div>

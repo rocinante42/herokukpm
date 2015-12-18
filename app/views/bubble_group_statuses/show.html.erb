@@ -37,7 +37,6 @@
   <div class="row actions text-right">
     <div class="col-md-12">
       <%= link_to 'Back', bubble_group_statuses_path, class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
-      <%= link_to 'Edit', edit_bubble_group_status_path(@bubble_group_status), class: 'btn btn-warning btn-simple btn-large btn-narrow' %>
       <%= link_to 'Reset', reset_bubble_group_status_path(@bubble_group_status), class: 'btn btn-danger btn-simple btn-large btn-narrow' %>
       <%= link_to 'Play', play_kid_path(@bubble_group_status.kid, bubble_group_id: @bubble_group_status.bubble_group.id), class: 'btn btn-info btn-simple btn-large btn-narrow' %>
     </div>
