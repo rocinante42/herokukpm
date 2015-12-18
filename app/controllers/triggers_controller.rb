@@ -35,6 +35,7 @@ class TriggersController < ApplicationController
           format.html { redirect_to @trigger, notice: 'Trigger was successfully created.' }
           format.json { render :show, status: :created, location: @trigger }
         else
+          flash[:errors] = @new_trigger.errors.full_messages
           format.html { render :new }
           format.json { render json: @trigger.errors, status: :unprocessable_entity }
         end
