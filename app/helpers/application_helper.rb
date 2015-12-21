@@ -14,4 +14,11 @@ module ApplicationHelper
     end
     nil
   end
+  def formatted_duration total_seconds
+    days = (total_seconds / (60 * 60 * 24)).round
+    if days > 0
+      days =  days - 1
+    end
+    "#{days }d " if days != 0
+  end
 end
