@@ -1,7 +1,9 @@
 <%= render 'shared/section_title', title: 'Show Classroom' %>
 <div class="container kmSection">
   <div class="row">
-    <h4 class="text-center text-brand"><%= notice %></h4>
+    <% if notice %>
+      <h4 class="text-center text-notification"><%= notice %></h4>
+    <% end %>
     <div class="col-md-12">
       <table class="table">
         <tbody>
