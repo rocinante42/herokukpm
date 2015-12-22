@@ -173,7 +173,7 @@
           <% @active_bg_statuses.each do |bg_status| %>
             <tr>
               <td><%= bg_status.bubble_group.name %></td>
-              <td><%= Time.at(bg_status.time_left_in_seconds / bg_status.sub_bubble_group_statuses.count).utc.strftime("%-Hh %Mmin") %></td>
+              <td><%= formatted_duration(bg_status.time_left_in_seconds / bg_status.sub_bubble_group_statuses.count) %><%= Time.at(bg_status.time_left_in_seconds / bg_status.sub_bubble_group_statuses.count).utc.strftime("%-Hh %Mmin") %></td>
               <% if can? :reset, bg_status %>
                 <td class="minimal"><%= link_to 'Reset', [:reset, bg_status], class: 'btn btn-warning btn-warning-brand btn-simple btn-extended' %></td>
               <% end %>
