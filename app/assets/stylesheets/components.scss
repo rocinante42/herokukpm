@@ -177,11 +177,13 @@ table.table.fit.schools tr{height:50px; border-bottom: 1px solid #dddddd;}
   text-align: center;
   border-radius: 15px;
 }
+.text-cut{word-wrap: break-word;word-break: break-word;}
 .activities{ color: green;  border: 1px solid green; }
 .errors-list{ color: $color-error-lst; }
 .btnSubmitActivities{
   margin-top: -3px;
 }
+.activitiesClassroom{width: 250px;}
 .noactivities{
   color: black;
   border: 1px solid grey;

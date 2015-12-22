@@ -1,5 +1,5 @@
 <% object = @user.send(type) %>
-<div class="form-group <%= type.to_s %> <%= !@user.can_have?(type) || @user.new_record? && !object ? 'hidden' : '' unless type == :role %>">
+<div class="form-group <%= type.to_s %> <%= !@user.can_have?(type) || !@user.new_record? && !object ? 'hidden' : '' unless type == :role %>">
   <% unless @user.role.try(:name) == 'Parent' %>
     <%= f.label "#{type}_id", type.to_s.capitalize,class: "col-sm-4 control-label text-main" %>
     <% if @user.new_record? || object.is_a?(Role) && params[:edit_role] == 'false' || !current_user.can_change?(type) and object.present? %>
