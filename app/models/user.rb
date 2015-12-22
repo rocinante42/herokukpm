@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name, length: { maximum: 25 }, format: { with: /\A^[a-zA-Z]*$\z/, message: "only allows letters" }
   validates :direct_phone, :alternate_phone, :email, length: { maximum: 50 }
 
-  validates_presence_of :classroom, if: :teacher?
+  validates_presence_of :classroom, :school, if: :teacher?
   validates_presence_of :first_name, :last_name, unless: :parent?
   validates_presence_of :school, if: :teacher_admin?
 
