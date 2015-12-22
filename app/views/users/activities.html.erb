@@ -73,9 +73,9 @@
     <table class="table fit">
       <thead>
         <tr class="v-middle">
-          <th class="text-center">Classroom</th>
+          <th class="text-center activitiesClassroom">Classroom</th>
           <% @total_bg_statuses_hash.each do |bg_id, info| %>
-            <th class="text-center"><%= bubble_group_two_lines_name info[:bubble_group].name %></th>
+            <th class="text-center activitiesClassroom"><%= bubble_group_two_lines_name info[:bubble_group].name %></th>
           <% end %>
         </tr>
       </thead>
