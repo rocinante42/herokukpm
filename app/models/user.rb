@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 1.megabytes
   scope :teachers, ->{ joins(:role).where( roles: { name: "Teacher" })}
   validates_format_of :direct_phone, with: /\A\+?(\d+-)*\d+\z/, allow_blank: true
-  validates :first_name, :last_name, length: { maximum: 25 }, format: { with: /\A^[a-zA-Z]*$\z/, message: "only allows letters" }
+  validates :first_name, :last_name, length: { maximum: 25 }, format: { with: /\A^[a-zA-Z]*(\s?)[a-zA-Z]*$\z/, message: "only allows letters" }
   validates :direct_phone, :alternate_phone, :email, length: { maximum: 50 }
 
   validates_presence_of :classroom, :school, if: :teacher?
