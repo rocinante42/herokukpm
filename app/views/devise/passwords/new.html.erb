@@ -3,13 +3,13 @@
     <div class="tab-pane fade in active" id="login_form">
       <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {class:'form-horizontal', method: :post}) do |f| %>
         <div class="row">
-          <%= devise_error_messages! %>
           <div class="col-md-6 col-md-offset-3">
             <div class="form-group">
               <%= f.label :email, class: 'col-sm-4 control-label' %>
               <div class="col-sm-8">
                 <%= f.email_field :email, class: 'form-control', placeholder: 'E-mail', autofocus: true %>
               </div>
+              <div class="text-notification pull-right"><%= devise_error_messages! %></div>
             </div>
           </div>
         </div>
