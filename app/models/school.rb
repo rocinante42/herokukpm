@@ -6,5 +6,5 @@ class School < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
-  validates :name, length: { maximum: 50 }, format: { with: /\A([a-zA-Z]+)(.*)\z/ }
+  validates :name, length: { maximum: 50 }, format: { with: /\A(([a-zA-Z]+)(.*))?\z/ }
 end
