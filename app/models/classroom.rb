@@ -25,7 +25,7 @@ class Classroom < ActiveRecord::Base
   end
 
   def subitize?
-    classroom_type.type_name.downcase.eql? 'Subitize'
+    classroom_type.type_name.downcase.eql? 'subitize'
   end
   def create_general_bg_statuses
     BubbleGroup.all.find_each do |bg|
