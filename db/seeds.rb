@@ -11,6 +11,12 @@ type_2 = ClassroomType.find_or_create_by({
   type_description:"Children with age from 6  to 8 years old"
   })
 
+p "Creating Class Type Subitize"
+type_3 = ClassroomType.find_or_create_by({
+  type_name: "Subitize",
+  type_description:"This is a test"
+  })
+
 p"Creating Posets and Bubbles"
 require 'csv'
 require 'zip'
