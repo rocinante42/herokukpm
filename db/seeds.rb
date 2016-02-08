@@ -17,16 +17,17 @@ type_3 = ClassroomType.find_or_create_by({
   type_description:"This is a test"
   })
 
+
 p"Creating Posets and Bubbles"
 require 'csv'
 require 'zip'
 require 'tempfile'
 
-Zip::File.open('./db/bubble_groups.zip') do |zip_file|
+Zip::File.open('./db/bubble_groups2.zip') do |zip_file|
   # Handle entries one by one
   ["Counting and Cardinality to 20", "Base 10 How Many", "Base 10 Produce",
    "Number Line Model", "Addition and Subtraction Count All", "Addition and Subtraction Count On",
-   "Addition and Subtraction Compare"
+   "Addition and Subtraction Compare", "AdditionSubtracionDiagrams", "base10Feb2016", "Mult-DivFeb2016", "Ordinal"
    ].each{ |bg_name| BubbleGroup.find_or_create_by(name: bg_name) }
   zip_file.each do |entry|
     next if entry.name =~ /__MACOSX/ or entry.name =~ /\.DS_Store/ or entry.file? or entry.name.eql? 'bubble_groups/'
@@ -130,7 +131,7 @@ parent_role = Role.find_or_create_by({
 #////////////////////School///////////////////////////
 p "Creating School"
 school_1 = School.find_or_create_by({
-  name: "BestTeam"
+  name: "Pilot"
   })
 
 p "Creating Teacher Administrator for School"
@@ -149,14 +150,14 @@ User.new({
 #////////////////////Classrooms///////////////////////////
 p "Creating Classroom_1"
 classroom_1 = Classroom.find_or_create_by({
-  name: "Clever",
+  name: "A",
   classroom_type_id: type_1.id,
   school_id:school_1.id
   })
 
 p "Creating Classroom_2"
 classroom_2 = Classroom.find_or_create_by({
-  name: "Smart",
+  name: "B",
   classroom_type_id: type_2.id,
   school_id:school_1.id
   })
@@ -164,8 +165,8 @@ classroom_2 = Classroom.find_or_create_by({
 #/////////////////////Users//////////////////////////
 p "Creating Admin User"
 user_1 = User.new({
-  first_name: "Sem",
-  last_name:"Sem" ,
+  first_name: "Admin",
+  last_name:"Admin" ,
   direct_phone:"123-123-1231",
   email: "admin@test.com",
   password: "password",
