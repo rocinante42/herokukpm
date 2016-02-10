@@ -11,7 +11,7 @@ type_2 = ClassroomType.find_or_create_by({
   type_description:"Children with age from 6  to 8 years old"
   })
 
-p "Creating Class Type Subitize"
+p "Creating Class Type Perceptual Learning"
 type_3 = ClassroomType.find_or_create_by({
   type_name: "Perceptual Learning",
   type_description:"Children from second to fifth grade"
@@ -80,8 +80,10 @@ end
 
 ##adding bubble groups to classroom types(Kindergarten, First Grade)
 common_groups = BubbleGroup.where(name: ['Counting and Cardinality to 20', 'Base 10 How Many', 'Base 10 Produce', 'Number Line Model', 'Addition and Subtraction Count All'])
+perceptual_groups = BubbleGroup.where(name: ["AdditionSubtracionDiagrams", "base10Feb2016", "Mult-DivFeb2016", "Ordinal"])
 type_1.bubble_groups << common_groups
 type_2.bubble_groups << common_groups + BubbleGroup.where(name: ['Addition and Subtraction Count On', 'Addition and Subtraction Compare'])
+type_3.bubble_groups << perceptual_groups
 
 ##adding custom bubble categories to classroom types (Kindergarten, First Grade)
 custom_categories = {
