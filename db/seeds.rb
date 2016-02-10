@@ -202,16 +202,6 @@ user_3 = User.new({
   classroom: classroom_2
    })
 user_3.save(validate:false)
-p "Creating Parent User"
-parent_carero = User.new({
-  first_name: "Victor",
-  last_name:"Carero" ,
-  direct_phone:"123-123-1233" ,
-  email: "carero@test.com",
-  password: "password",
-  password_confirmation: "password",
-  role: parent_role
-   })
 p "Creating Admin User"
 user_4 = User.new({
   first_name: "Admin2",
@@ -223,6 +213,16 @@ user_4 = User.new({
   role: super_role
   })
 user_4.save(validate:false)
+p "Creating Parent User"
+parent_carero = User.new({
+  first_name: "Victor",
+  last_name:"Carero" ,
+  direct_phone:"123-123-1233" ,
+  email: "carero@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: parent_role
+   })
 parent_carero.save(validate:false)
 parent_ora = User.new({
   first_name: "Mike",
