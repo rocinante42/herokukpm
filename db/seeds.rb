@@ -13,8 +13,8 @@ type_2 = ClassroomType.find_or_create_by({
 
 p "Creating Class Type Subitize"
 type_3 = ClassroomType.find_or_create_by({
-  type_name: "Subitize",
-  type_description:"This is a test"
+  type_name: "Perceptual Learning",
+  type_description:"Children from second to fifth grade"
   })
 
 
