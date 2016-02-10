@@ -210,6 +210,17 @@ parent_carero = User.new({
   password_confirmation: "password",
   role: parent_role
    })
+p "Creating Admin User"
+user_4 = User.new({
+  first_name: "Admin2",
+  last_name:"Admin2" ,
+  direct_phone:"123-123-1231",
+  email: "admin2@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: super_role
+  })
+user_4.save(validate:false)
 parent_carero.save(validate:false)
 parent_ora = User.new({
   first_name: "Mike",
