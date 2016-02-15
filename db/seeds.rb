@@ -27,7 +27,7 @@ Zip::File.open('./db/bubble_groups2.zip') do |zip_file|
   # Handle entries one by one
   ["Counting and Cardinality to 20", "Base 10 How Many", "Base 10 Produce",
    "Number Line Model", "Addition and Subtraction Count All", "Addition and Subtraction Count On",
-   "Addition and Subtraction Compare", "AdditionSubtracionDiagrams", "base10Feb2016", "Mult-DivFeb2016", "Ordinal"
+   "Addition and Subtraction Compare", "AdditionSubtractionDiagrams", "base10Feb2016", "Mult-DivFeb2016", "Ordinal"
    ].each{ |bg_name| BubbleGroup.find_or_create_by(name: bg_name) }
   zip_file.each do |entry|
     next if entry.name =~ /__MACOSX/ or entry.name =~ /\.DS_Store/ or entry.file? or entry.name.eql? 'bubble_groups/'
@@ -80,12 +80,12 @@ end
 
 ##adding bubble groups to classroom types(Kindergarten, First Grade)
 common_groups = BubbleGroup.where(name: ['Counting and Cardinality to 20', 'Base 10 How Many', 'Base 10 Produce', 'Number Line Model', 'Addition and Subtraction Count All'])
-perceptual_groups = BubbleGroup.where(name: ["AdditionSubtracionDiagrams", "base10Feb2016", "Mult-DivFeb2016", "Ordinal"])
+perceptual_groups = BubbleGroup.where(name: ["AdditionSubtractionDiagrams", "base10Feb2016", "Mult-DivFeb2016", "Ordinal"])
 type_1.bubble_groups << common_groups
 type_2.bubble_groups << common_groups + BubbleGroup.where(name: ['Addition and Subtraction Count On', 'Addition and Subtraction Compare'])
 type_3.bubble_groups << perceptual_groups
 
-##adding custom bubble categories to classroom types (Kindergarten, First Grade)
+##adding custom bubble categories to classroom types (Kindergarten, First Grade, Perceptual Learning)
 custom_categories = {
   # Kindergarten:
   type_1 => {
@@ -165,6 +165,47 @@ classroom_2 = Classroom.find_or_create_by({
   })
 
 #/////////////////////Users//////////////////////////
+p "Creating Admin2 User"
+user_4 = User.new({
+  first_name: "Admin2",
+  last_name:"Admin2" ,
+  direct_phone:"122-123-1231",
+  email: "admin2@test.com",
+  password: "password",
+  password_confirmation: "password",
+  role: super_role
+  })
+user_4.save(validate:false)
+user_10 = User.new({
+  first_name: "Mario",
+  last_name:"Lopez" ,
+  direct_phone:"122-123-1231",
+  email: "mlopez@du.edu",
+  password: "password",
+  password_confirmation: "password",
+  role: super_role
+  })
+user_10.save(validate:false)
+user_11 = User.new({
+  first_name: "Alvaro",
+  last_name:"Arias" ,
+  direct_phone:"122-123-1231",
+  email: "aarias@du.edu",
+  password: "password",
+  password_confirmation: "password",
+  role: super_role
+  })
+user_11.save(validate:false)
+user_12 = User.new({
+  first_name: "Jenny",
+  last_name:"Lerner" ,
+  direct_phone:"122-123-1231",
+  email: "jenny@lerner-consulting.com",
+  password: "password",
+  password_confirmation: "password",
+  role: super_role
+  })
+user_12.save(validate:false)
 p "Creating Admin User"
 user_1 = User.new({
   first_name: "Admin",
@@ -202,17 +243,6 @@ user_3 = User.new({
   classroom: classroom_2
    })
 user_3.save(validate:false)
-p "Creating Admin User"
-user_4 = User.new({
-  first_name: "Admin2",
-  last_name:"Admin2" ,
-  direct_phone:"123-123-1231",
-  email: "admin2@test.com",
-  password: "password",
-  password_confirmation: "password",
-  role: super_role
-  })
-user_4.save(validate:false)
 p "Creating Parent User"
 parent_carero = User.new({
   first_name: "Victor",
