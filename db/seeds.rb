@@ -23,7 +23,7 @@ require 'csv'
 require 'zip'
 require 'tempfile'
 
-Zip::File.open('./db/bubble_groups2.zip') do |zip_file|
+Zip::File.open('./db/bubble_groups3.zip') do |zip_file|
   # Handle entries one by one
   ["Counting and Cardinality to 20", "Base 10 How Many", "Base 10 Produce",
    "Number Line Model", "Addition and Subtraction Count All", "Addition and Subtraction Count On",
