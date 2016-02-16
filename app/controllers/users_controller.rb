@@ -139,7 +139,7 @@ class UsersController < ApplicationController
         @kids_count_per_timegroup = Array.new(5,0)
         @time_intervals_and_kids = Array.new(5,{})
         @time_intervals_and_kids.each_with_index do |item, index|
-          item[:time_interval] = [24 * 0 ,24 * (1)]
+          item[:time_interval] = [24 * 0 ,24 * (5)]
           item[:kids] = []
         end
       end
