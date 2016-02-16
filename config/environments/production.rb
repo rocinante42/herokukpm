@@ -81,14 +81,14 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'kidsplaymath.herokuapp.com' }
+  config.action_mailer.default_url_options = { :host => 'portal.kidsplaymath.org' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
       :address => "smtp.gmail.com",
       :port => 587,
       :authentication => :plain,
-      :domain => 'elephantheadsoft.com',
-      :user_name => 'no_reply@elephantheadsoft.com',
-      :password => '3l3Ph@nt'
+      :domain => 'kidsplaymath.org',
+      :user_name => 'no-reply@kidsplaymath.org',
+      :password => 'Liliputiense42'
   }
 end
