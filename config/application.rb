@@ -24,9 +24,9 @@ module KidsPlay
          :address => "smtp.gmail.com",
          :port => 587,
          :authentication => :plain,
-         :domain => 'elephantheadsoft.com',
-         :user_name => 'no_reply@elephantheadsoft.com',
-         :password => '3l3Ph@nt'
+         :domain => 'kidsplaymath.org',
+         :user_name => 'no-reply@kidsplaymath.org',
+         :password => 'Liliputiense42'
     }
 
   end
