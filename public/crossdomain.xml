@@ -4,5 +4,7 @@
   <site-control permitted-cross-domain-policies="all"/>
   <allow-access-from domain="*.emotionrays.com" />
   <allow-access-from domain="*.oddimation.com" secure="false" />
+  <allow-access-from domain="*.kidsplaymath.org" secure="false" />
   <allow-http-request-headers-from domain="*.oddimation.com" headers="*" secure="false"/>
+  <allow-http-request-headers-from domain="*.kidsplaymath.org" headers="*" secure="false"/>
 </cross-domain-policy>
