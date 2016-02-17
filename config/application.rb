@@ -25,8 +25,8 @@ module KidsPlay
          :port => 587,
          :authentication => :plain,
          :domain => 'kidsplaymath.org',
-         :user_name => 'no-reply@kidsplaymath.org',
-         :password => 'Liliputiense42'
+         :user_name => 'no_reply@kidsplaymath.org',
+         :password => '=bqS7BHq'
     }
 
   end
