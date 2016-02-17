@@ -26,7 +26,7 @@ module KidsPlay
          :authentication => :plain,
          :domain => 'kidsplaymath.org',
          :user_name => 'no_reply@kidsplaymath.org',
-         :password => '=bqS7BHq'
+         :password => 'Liliputiense82'
     }
 
   end
