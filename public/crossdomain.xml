@@ -7,4 +7,5 @@
   <allow-access-from domain="*.kidsplaymath.org" secure="false" />
   <allow-http-request-headers-from domain="*.oddimation.com" headers="*" secure="false"/>
   <allow-http-request-headers-from domain="*.kidsplaymath.org" headers="*" secure="false"/>
+  <allow-http-request-headers-from domain="http://kidsplaymath.org" headers="*" secure="false"/>
 </cross-domain-policy>
