@@ -1,5 +1,5 @@
 class Api::KidsController < Api::ApiController
-  before_action :authenticate, except:[:sign_in]
+  before_action :authenticate, :sign_in, except:[:sign_in]
   before_action :set_kid, except:[:sign_in]
   skip_before_filter :verify_authenticity_token, :only => [:result, :sign_in]
 
@@ -111,7 +111,7 @@ class Api::KidsController < Api::ApiController
   def sign_in
     puts "kid sign in"
     kid = Kid.where(access_token: params[:access_token]).first
-    
+    puts "kids where found on line 114"
     render json: {status: :nein} and return false unless kid
     kid.update_column(:token_expiration_time, DateTime.now + 5.minutes)
     kids = Kid.where(classroom: kid.classroom).where.not(id: kid.id).to_a.sample(3)
