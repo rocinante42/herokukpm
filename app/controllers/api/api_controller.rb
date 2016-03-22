@@ -3,6 +3,7 @@ class Api::ApiController < ApplicationController
   def authenticate
     puts "estoy en aunthenticate"
     access_token = params[:access_token]
+    puts access_token
     kid = Kid.where(access_token: access_token).first
     render json: {status: :unathorized} and return false unless kid
 
