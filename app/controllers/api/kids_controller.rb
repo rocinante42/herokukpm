@@ -121,5 +121,7 @@ class Api::KidsController < Api::ApiController
   def set_kid
     puts "estoy en set kid y funciona"
     @kid = Kid.find(params[:id])
+    puts @kid
+    puts "estoy despues de kid y funciona"
   end
 end
