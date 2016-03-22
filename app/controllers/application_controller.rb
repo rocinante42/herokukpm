@@ -34,6 +34,7 @@ end
   end
 
   def redirect_parent_to_kid_report
+    puts "solving this hahaha"
     if user_signed_in? && current_user.parent?
       kids_reports_paths = current_user.kids.map{|kid| [reports_kid_path(kid), download_report_kid_path(kid)]}.flatten
       available_paths = kids_reports_paths  + [destroy_user_session_path, edit_user_registration_path, user_registration_path]
