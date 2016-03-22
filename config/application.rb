@@ -21,10 +21,10 @@ module KidsPlay
     # config.i18n.default_locale = :de
 
     config.middleware.insert_before 0, "Rack::Cors" do
-        allow do
-            origins '*'
-            resource '*', :headers => :any, :methods => [:get, :post, :options]
-        end
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
     end
     ActionMailer::Base.smtp_settings = {
          :address => "smtp.gmail.com",
