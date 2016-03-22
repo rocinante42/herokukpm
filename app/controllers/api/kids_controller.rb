@@ -1,5 +1,5 @@
 class Api::KidsController < Api::ApiController
-  before_action :authenticate, :sign_in, except:[:sign_in]
+  before_action :authenticate, except:[:sign_in]
   before_action :set_kid, except:[:sign_in]
   skip_before_filter :verify_authenticity_token, :only => [:result, :sign_in]
 
