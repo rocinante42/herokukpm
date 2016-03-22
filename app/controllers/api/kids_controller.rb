@@ -109,7 +109,7 @@ class Api::KidsController < Api::ApiController
 
   def sign_in
     kid = Kid.where(access_token: params[:access_token]).first
-    render json: {status: :unathorized} and return false unless kid
+    render json: {status: :nein} and return false unless kid
     kid.update_column(:token_expiration_time, DateTime.now + 5.minutes)
     kids = Kid.where(classroom: kid.classroom).where.not(id: kid.id).to_a.sample(3)
     kids << kid
