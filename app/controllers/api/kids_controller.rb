@@ -11,6 +11,7 @@ class Api::KidsController < Api::ApiController
     ## handle the result, if present
     if params.has_key?(:result) && params.has_key?(:bubble_id)
       ## get the bubble status
+      puts "No te estoy ignorando"
       bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
     end
