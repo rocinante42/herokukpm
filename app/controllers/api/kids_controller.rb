@@ -16,6 +16,8 @@ class Api::KidsController < Api::ApiController
       puts "buble_id"
       puts params[:bubble_id]
       bubble_status = @kid.bubble_statuses.find_by(bubble_id: params[:bubble_id])
+      puts "imprimiendo status bubble"
+      puts bubble_status
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
     end
 
