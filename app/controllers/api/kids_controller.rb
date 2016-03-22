@@ -3,8 +3,8 @@ class Api::KidsController < Api::ApiController
   before_action :set_kid, except:[:sign_in]
   skip_before_filter :verify_authenticity_token, :only => [:result, :sign_in]
 
-  def show
-  end
+  #def show
+  #end
   
   def play_game
     ## handle the result, if present
