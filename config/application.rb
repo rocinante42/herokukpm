@@ -20,11 +20,12 @@ module KidsPlay
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    config.action_dispatch.default_headers = {
-    'Access-Control-Allow-Origin' => 'http://kidsplaymath.org',
-    'Access-Control-Request-Method' => %w{GET POST OPTIONS}.join(",")
-    }
-
+    config.middleware.insert_before 0, "Rack::Cors" do
+        allow do
+            origins '*'
+            resource '*', :headers => :any, :methods => [:get, :post, :options]
+        end
+    end
     ActionMailer::Base.smtp_settings = {
          :address => "smtp.gmail.com",
          :port => 587,
