@@ -16,7 +16,7 @@ class Api::ApiController < ApplicationController
       puts "en medio de authenticate regresando el json"
       kids = Kid.where(classroom: kid.classroom).where.not(id: kid.id).to_a.sample(3)
       kids << kid
-      render json: {kids: kids}
+      render json: {kids: kids}, :callback => params['callback']
     end
     #test code
     render json: {status: :unathorized} and return false unless kid
