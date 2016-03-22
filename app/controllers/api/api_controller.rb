@@ -7,7 +7,7 @@ class Api::ApiController < ApplicationController
     kid = Kid.where(access_token: access_token).first
     puts "kid a punto de nueva funcion"
     #new test code
-    flag = params[:bichitos]
+    flag = params[:javascript_flag]
     if flag
       kid = Kid.where(access_token: params[:access_token]).first
       puts "kids where found on line 114"
