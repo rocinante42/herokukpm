@@ -110,8 +110,11 @@ class Api::KidsController < Api::ApiController
       bubble_status.bubble_group_status.safe_handle_result! bubble_status, params[:result]
       success = true
     end
-
-    render json: {success: success}
+    if params[:javascript_flag]
+      render json: {success: success}, :callback => params['callback']
+    else
+      render json: {success: success}
+    end
   end
 
   def sign_in
